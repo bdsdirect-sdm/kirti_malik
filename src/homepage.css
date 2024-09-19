@@ -1,0 +1,147 @@
+
+.headertop{
+    max-width: 100%;
+   
+}
+.custom-navbar{
+    background-color: #445CD5;
+   
+ padding-left: 30px;
+
+ padding-top: 30px;
+ padding-bottom: 30px;
+}
+
+.custom-navbar .navbar-brand{
+    font-weight: 400;
+    font-size: 30px;
+    font-family: adobe-clean, "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link {
+    color: #ffffff !important; /* Use !important if necessary */
+}
+
+.navbar-nav{
+   max-width: 100%;
+padding-right: 0;
+}
+.custom-navbar .navbar-nav {
+    margin-left: auto; /* Push the items to the right */
+}
+
+.custom-navbar .nav-item{
+    padding-right: 15px;
+    font-size: 25px;
+}
+.buttonClass {
+    display: inline-block; 
+    border-radius: 30px;
+    padding: 0.5rem 1rem; 
+    text-decoration: none; 
+    background-color: #F9F9FF;
+    font-size: 20px;
+}
+
+.bgstyle{
+     max-width: 100%;
+    min-height: 500px;
+    width: 1920px;
+    background-image: url(images/bgimage.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    
+   
+}
+
+.col-5{
+   
+    max-width: 100%;
+    margin-top: 11%;
+    color: #ffffff;
+}
+
+.bgstyle .row h1,p{
+    color: #ffffff;
+    padding-left: 40px;
+    padding-top: 20px;
+}
+.col-7{
+    max-width: 100%;
+    margin-top: 11%;
+}
+
+.col-7 img{
+    max-width: 100%;
+    height: 600px;
+    width: 700px;
+    padding-left: 20px;
+}
+
+button{
+    background-color: #F9F9FF;
+    border-radius: 15px ;
+    height: 50px;
+    width: 200px;
+    font-size: large;
+    margin-left: 8%;
+}
+.btn{
+    display: flex;
+  
+}
+.btn p{
+    padding-left: 4px;
+}
+.container{
+    max-width: 100%;
+   padding-top: 30px;
+   background-color: #F9F9FF;
+   gap: 0;
+   margin: 0;
+ 
+   
+}
+
+.container p{
+    color: black;
+    font-size: 15px;
+    color: #808080;
+ 
+}
+
+.container .container2{
+    padding-top: 40px;
+}
+.container3{
+    border: 2px solid black;
+    padding-bottom: 2 px;
+}
+.container .container3 .col-6 img{ 
+   
+    background-color: #EBEBF8;
+    margin-left: 30%;
+    border-radius: 10px;
+ 
+}
+
+.container4{
+    margin: 0;
+   
+}
+
+.container5{
+    margin-top: 7%;
+}
+.container6{
+    max-width: 100%;
+    margin-top: 7%;
+    padding-top: 10px;
+    background-color: #EBEBF8;
+}
+
+.container6 h6{
+    color: #8A8A8A;
+    padding-top: 2px;
+    
+}
