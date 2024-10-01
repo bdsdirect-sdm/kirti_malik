@@ -1,0 +1,56 @@
+swagger: '2.0'
+info:
+  title: user registration API
+  version: 1.0.0
+  description: API for user registration and authentication
+
+host: localhost:8000
+basePath: /api/users
+
+schemes:
+  - http
+  - https
+
+tags:
+  - name: User
+    
+
+paths:
+  /register:
+    post:
+      security:
+        - basicAuth: []
+        - Key: []
+      tags:
+        - User
+      summary: Register a new user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createPerson
+          required: true
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+              confirmPassword:
+                type: string
+              termsAndConditions:
+                type: boolean
+      responses:
+        '201':
+          description: User registered successfully
+        '409':
+          description: Error while creating user
+        '500':
+          description: Internal server error
