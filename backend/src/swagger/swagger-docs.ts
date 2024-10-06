@@ -13,8 +13,8 @@ export const apiDoc=(app:Router)=>{
                 version: '1.0.0',
                 description:'API FOR USER REGISTRATION'
             },
-            host: 'localhost:8000',
-            basePath:'/api/users',
+            host: 'localhost:8080',
+            basePath:'/api',
             schemes:['http','https'],
             tags:[
                 {

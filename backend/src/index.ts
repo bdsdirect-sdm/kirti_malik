@@ -1,34 +1,36 @@
+
+
 import express from 'express';
 import dotenv from 'dotenv';
 import sequelize from './config/db';
-import userRouter from './router/userRegisterRouter';
-import loginRouter from './router/userLoginRouter';
-import router from './router/userProfileRouter';
-import updateRouter from './router/updateRouter';
-import { apiDoc } from './swagger/swagger-docs';
 import cors from 'cors';
+import User from './models/user'; 
+import Address from './models/address';
+import { Sequelize } from 'sequelize';
+import userRouter from './router/userRouter';
+import { apiDoc } from './swagger/swagger-docs';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000
-;
+const PORT = process.env.PORT || 8080;
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-app.use('/api/users', userRouter);
-app.use('/api/users',loginRouter);
-app.use('/api/users',router);
-app.use('/api/users',updateRouter)
+app.use('/api',userRouter)
 
-sequelize.sync().then(() => {
-  
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// console.log(User === sequelize.models.User); 
+// console.log(Address === sequelize.models.Address)
+
+sequelize.sync({ force: false })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Unable to sync the database:', err);
   });
-}).catch((err) => {
-  console.error('Unable to connect to the database:', err);
-});
 
-apiDoc(app);
+  apiDoc(app);

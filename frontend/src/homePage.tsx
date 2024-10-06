@@ -9,11 +9,9 @@ const HomePage: React.FC = () => {
             <div className='text-center mt-5'>
                 <h1 className='display-4'>Welcome to Our Application</h1>
                 <div className='mt-4'>
-                    <Link to="/login">
-                        <button className="btn btn-primary mx-2">Login</button>
-                    </Link>
+                
                     <Link to="/register">
-                        <button className="btn btn-secondary mx-2">Register</button>
+                        <button className="btn btn-secondary mx-2">Add user</button>
                     </Link>
                 </div>
             </div>

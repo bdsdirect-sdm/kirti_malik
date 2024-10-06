@@ -1,126 +1,247 @@
-import React from 'react';
-import {  Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { Link,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 interface UserData {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  password: string;
-  confirmPassword: string;
-  termsAndConditions: boolean;
+  profilePhoto: File | null;
+  companyAddress: string;
+  companyState: string;
+  companyCity: string;
+  companyZip: string;
+  homeAddress: string;
+  homeState: string;
+  homeCity: string;
+  homeZip: string;
 }
 
 const validationSchema = Yup.object().shape({
-  first_name: Yup.string()
+  firstName: Yup.string()
     .required('First name is required')
     .min(2, 'Must be 2 characters long'),
-  last_name: Yup.string()
+  lastName: Yup.string()
     .required('Last name is required')
     .min(2, 'Must be 2 characters long'),
   email: Yup.string()
     .required('Email is required')
     .email('Invalid email format'),
-
-  password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Minimum 6 characters'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Must be the same as password')
-    .required('Confirm password is required'),
-
-  termsAndConditions: Yup.boolean()
-    .oneOf([true], 'You must accept the terms and conditions'),
+  profilePhoto: Yup.mixed()
+    .required('Profile photo is required'),
+  companyAddress: Yup.string().required('Company address is required'),
+  companyState: Yup.string().required('Company state is required'),
+  companyCity: Yup.string().required('Company city is required'),
+  companyZip: Yup.string().required('Company ZIP code is required'),
+  homeAddress: Yup.string().required('Home address is required'),
+  homeState: Yup.string().required('Home state is required'),
+  homeCity: Yup.string().required('Home city is required'),
+  homeZip: Yup.string().required('Home ZIP code is required'),
 });
 
 const RegistrationForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const location = useLocation(); // Access the passed state
+  const userData = location.state;
 
-  const navigate=useNavigate();
-  const initialValues: UserData = {
-    first_name: '',
-    last_name: '',
+  const [initialValues, setInitialValues] = useState<UserData>({
+    firstName: '',
+    lastName: '',
     email: '',
-    password: '',
-    confirmPassword: '',
-    termsAndConditions: true,
-  };
+    profilePhoto: null,
+    companyAddress: '',
+    companyState: '',
+    companyCity: '',
+    companyZip: '',
+    homeAddress: '',
+    homeState: '',
+    homeCity: '',
+    homeZip: '',
+  });
 
-  const handleSubmit = async (values: UserData, {resetForm}:{resetForm:()=>void}) => {
+  // Set initial form values when in "Update" mode
+  useEffect(() => {
+    if (userData) {
+      setInitialValues({
+        firstName: userData.firstName || '',
+        lastName: userData.lastName || '',
+        email: userData.email || '',
+        profilePhoto: null, // Files cannot be prefilled
+        companyAddress: userData.address?.companyAddress || '',
+        companyState: userData.address?.companyState || '',
+        companyCity: userData.address?.companyCity || '',
+        companyZip: userData.address?.companyZip || '',
+        homeAddress: userData.address?.homeAddress || '',
+        homeState: userData.address?.homeState || '',
+        homeCity: userData.address?.homeCity || '',
+        homeZip: userData.address?.homeZip || '',
+      });
+    }
+  }, [userData]);
+
+  // Form submission handler
+  const handleSubmit = async (values: UserData, { resetForm }: { resetForm: () => void }) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/users/register', values);
-      alert('Registration successful');
-      console.log('Registration successful:', response.data);
-     navigate("/login")
+      const formData = new FormData();
+      formData.append('firstName', values.firstName);
+      formData.append('lastName', values.lastName);
+      formData.append('email', values.email);
+      if (values.profilePhoto) formData.append('profilePhoto', values.profilePhoto as File); // Only append if a file is selected
+      formData.append('companyAddress', values.companyAddress);
+      formData.append('companyState', values.companyState);
+      formData.append('companyCity', values.companyCity);
+      formData.append('companyZip', values.companyZip);
+      formData.append('homeAddress', values.homeAddress);
+      formData.append('homeState', values.homeState);
+      formData.append('homeCity', values.homeCity);
+      formData.append('homeZip', values.homeZip);
 
-      if(response.status===200)
-        {
-          //  navigate('/login')
-        }
-        else{
-            console.error(response.data.message || 'registration failed')
-        }
-    }
-     catch (error) {
+      let response;
+      if (id) {
+        // Update existing user
+        response = await axios.put(`http://localhost:8080/api/profile/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        alert('Profile updated successfully!');
+        navigate(`/profile/${id}`);
+      } else {
+        // Create a new user
+        response = await axios.post('http://localhost:8080/api/register', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        const newUserId = response.data.user.id;
+        alert('Registration successful!');
+        navigate(`/profile/${newUserId}`);
+      }
+
+      resetForm();
+    } catch (error) {
       console.error('Error during registration:', error);
-      alert('Registration failed. Please try again.');
+      alert('Something went wrong. Please try again.');
     }
-    resetForm();
   };
-  
+
+  // Validation schema for the form
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    companyAddress: Yup.string().required('Company address is required'),
+    companyState: Yup.string().required('Company state is required'),
+    companyCity: Yup.string().required('Company city is required'),
+    companyZip: Yup.string().required('Company ZIP is required'),
+    homeAddress: Yup.string().required('Home address is required'),
+    homeState: Yup.string().required('Home state is required'),
+    homeCity: Yup.string().required('Home city is required'),
+    homeZip: Yup.string().required('Home ZIP is required'),
+  });
 
   return (
-    <div className="container mt-5 bg-info">
-      <h1>SIGN UP PAGE</h1>
+    <div className="container mt-5 bg-light p-4">
+      <h1 className="text-center mb-4">{id ? 'Update Profile' : 'Sign Up'}</h1>
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        enableReinitialize
         onSubmit={handleSubmit}
       >
-        {({ }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form>
             <div className="form-group">
-              <label htmlFor="first_name">First Name</label>
-              <Field className="form-control" name="first_name" type="text" />
-              <ErrorMessage name="first_name" component="div" className="text-danger" />
+              <label htmlFor="firstName">First Name</label>
+              <Field className="form-control" name="firstName" type="text" />
+              <ErrorMessage name="firstName" component="div" className="text-danger" />
             </div>
 
             <div className="form-group">
-              <label htmlFor="last_name">Last Name</label>
-              <Field className="form-control" name="last_name" type="text" />
-              <ErrorMessage name="last_name" component="div" className="text-danger" />
+              <label htmlFor="lastName">Last Name</label>
+              <Field className="form-control" name="lastName" type="text" />
+              <ErrorMessage name="lastName" component="div" className="text-danger" />
             </div>
 
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <Field className="form-control" name="email" type="text" />
+              <Field className="form-control" name="email" type="email" />
               <ErrorMessage name="email" component="div" className="text-danger" />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Field className="form-control" name="password" type="password" />
-              <ErrorMessage name="password" component="div" className="text-danger" />
+              <label htmlFor="profilePhoto">Profile Photo</label>
+              <input
+                type="file"
+                name="profilePhoto"
+                className="form-control"
+                onChange={(event) => {
+                  if (event.currentTarget.files) {
+                    setFieldValue('profilePhoto', event.currentTarget.files[0]);
+                  }
+                }}
+              />
+              <ErrorMessage name="profilePhoto" component="div" className="text-danger" />
             </div>
 
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <Field className="form-control" name="confirmPassword" type="password" />
-              <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
+              <label htmlFor="companyAddress">Company Address</label>
+              <Field className="form-control" name="companyAddress" type="text" />
+              <ErrorMessage name="companyAddress" component="div" className="text-danger" />
             </div>
 
-            <div className="form-group form-check">
-              <Field className="form-check-input" type="checkbox" name="termsAndConditions" />
-              <label className="form-check-label">I accept the terms and conditions</label>
-              <ErrorMessage name="termsAndConditions" component="div" className="text-danger" />
+            <div className="form-group">
+              <label htmlFor="companyState">Company State</label>
+              <Field className="form-control" name="companyState" type="text" />
+              <ErrorMessage name="companyState" component="div" className="text-danger" />
             </div>
 
-    
+            <div className="form-group">
+              <label htmlFor="companyCity">Company City</label>
+              <Field className="form-control" name="companyCity" type="text" />
+              <ErrorMessage name="companyCity" component="div" className="text-danger" />
+            </div>
 
-            <button type="submit" className="btn btn-primary btn-block">Submit</button>
-            
+            <div className="form-group">
+              <label htmlFor="companyZip">Company ZIP</label>
+              <Field className="form-control" name="companyZip" type="text" />
+              <ErrorMessage name="companyZip" component="div" className="text-danger" />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="homeAddress">Home Address</label>
+              <Field className="form-control" name="homeAddress" type="text" />
+              <ErrorMessage name="homeAddress" component="div" className="text-danger" />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="homeState">Home State</label>
+              <Field className="form-control" name="homeState" type="text" />
+              <ErrorMessage name="homeState" component="div" className="text-danger" />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="homeCity">Home City</label>
+              <Field className="form-control" name="homeCity" type="text" />
+              <ErrorMessage name="homeCity" component="div" className="text-danger" />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="homeZip">Home ZIP</label>
+              <Field className="form-control" name="homeZip" type="text" />
+              <ErrorMessage name="homeZip" component="div" className="text-danger" />
+            </div>
+
+            <div className="text-center">
+              <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
+                {id ? 'Update' : 'Register'}
+              </button>
+            </div>
           </Form>
         )}
       </Formik>

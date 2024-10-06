@@ -1,19 +1,16 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/db";
+import Address from "./address"; // Import Address model
+
+console.log("User model file is being loaded");
 
 class User extends Model {
-  public id!: number; 
-  public first_name!: string; 
-  public last_name!: string;
-  public email!: string; 
-  public password!: string; 
-  public termsAndConditions!: boolean; 
-  public gender?: string;
-  public dob?: Date;      
-  public phoneNumber?: string;
-
- 
-  static id: any;
+  public id!: number;
+  public firstName!: string;
+  public lastName!: string;
+  public profilePhoto!: string;
+  public email!: string; // Adding email field to the class
+  public address?: Address;
 }
 
 User.init(
@@ -23,46 +20,43 @@ User.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    first_name: {
+    firstName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    last_name: {
+    lastName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true, // It's a good idea to make email unique
+      unique: true,
     },
-    password: {
+    profilePhoto: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    termsAndConditions: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
-    gender: {
-      type: DataTypes.STRING, // Optional field
-      allowNull: true,
-    },
-    dob: {
-      type: DataTypes.DATE, // Optional field
-      allowNull: true,
-    },
-    phoneNumber: {
-      type: DataTypes.STRING, // Optional field
       allowNull: true,
     },
   },
   {
     sequelize,
     modelName: 'User',
+    tableName: 'users', 
   }
 );
 
+
+User.hasOne(Address, {
+  foreignKey: 'userId',
+  onDelete: 'CASCADE',
+  as: 'address', // Add alias
+});
+
+Address.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user', // Add alias (optional if needed)
+});
+
 export default User;
 
-console.log('User model initialized successfully');
+
