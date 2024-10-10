@@ -29,9 +29,11 @@ export const registerUser=async(req:Request,res:any)=>{
 export const getUser=async(req:Request,res:any)=>{
     try{
 
+        const{page=1,limit=3}=req.query
+        const offset=(Number(page)-1)*Number(limit)
     }
     catch{
-        
+
     }
 
 }
