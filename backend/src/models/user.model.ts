@@ -1,11 +1,13 @@
 import { DataTypes, Model } from "sequelize"; 
 import sequelize from "../config/db";
+import JobSeeker from "./jobSeeker.model";
+import JobAgency from "./JobAgency.model";
 
 class User extends Model{
   public id!: number; 
-  public name!: string; 
   public email!: string; 
-  public password!: string; 
+  public password!:string
+  public userType!:number
 }
 User.init(
   {
@@ -13,10 +15,6 @@ User.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
     },
 
     email: {
@@ -28,6 +26,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    userType: {
+      type: DataTypes.INTEGER,
+      allowNull: false, // 1 for Job Seeker, 2 for Agency
+    },
   
   },
   {
@@ -35,6 +37,24 @@ User.init(
     modelName: 'User',
   }
 );
+
+User.hasOne(JobSeeker, {
+  foreignKey: 'userId',
+  as: 'jobSeeker',
+});
+JobSeeker.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user', 
+});
+
+User.hasOne(JobAgency, {
+  foreignKey: 'userId',
+  as: 'agency',
+});
+JobAgency.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user',
+});
 
 export default User;
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
-import RegistrationForm from './register';
+import RegistrationForm from './listing';
+import Register from './Register';
 
 function App() {
   return (
     <div>
-         <RegistrationForm/>
+         <Register/>
     </div>
   );
 }

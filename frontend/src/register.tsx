@@ -1,118 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { Formik, Form, ErrorMessage, Field } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-interface UserData {
-  name: string;
-  email: string;
-  password: string;
-  id: string;
-}
 
-interface registerResponse{
-  message:string;
-  user:UserData
-}
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required('First name is required')
-    .min(2, 'Must be 2 characters long'),
-  email: Yup.string()
-    .required('Email is required')
-    .email('Invalid email format'),
-  password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Minimum 6 characters'),
-});
+const Register = () => {
+  const [userType, setUserType] = useState<'job seeker'| 'job agency'>('job seeker'); 
 
-const registerUser = async (newUser: UserData): Promise<registerResponse> => {
-  const response = await axios.post<registerResponse>('http://localhost:8000/api/register', newUser);
-  console.log('api response',response.data)
-  return response.data;
-};
-
-const RegistrationForm: React.FC = () => {
-  const initialValues: UserData = {
-    name: '',
-    email: '',
-    password: '',
-    id: ''
+  const handleUserTypeChange = (type:'job seeker' | 'job agency') => {
+    setUserType(type);
   };
 
-  const [user, setUser] = useState<UserData | null>(null); 
-
-  const mutation = useMutation<registerResponse, Error, UserData>({
-    mutationFn: registerUser,
-    onSuccess: (data) => {
-      alert('User registered successfully');
-      setUser(data.user); 
-      console.log('User registered', data);
-    },
-    onError: (error: Error) => {
-      console.error('Registration failed', error);
-    }
-  });
-
-  const handleSubmit = async (values: UserData) => {
-    console.log('submitting.....',values)
-    mutation.mutate(values);
-    console.log('this is user name',values.name)
-  };
-
-
-  useEffect(() => {
-    if (user) {
-      console.log('User state updated:', user); 
-    }
-  }, [user]);
-
-  console.log('this is user',user)
   return (
-    <div className="container mt-5 bg-info">
-      <h1>SIGN UP PAGE</h1>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {() => (
-          <Form>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <Field className="form-control" name="name" type="text" />
-              <ErrorMessage name="name" component="div" className="text-danger" />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <Field className="form-control" name="email" type="text" />
-              <ErrorMessage name="email" component="div" className="text-danger" />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Field className="form-control" name="password" type="password" />
-              <ErrorMessage name="password" component="div" className="text-danger" />
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-block">Submit</button>
-          </Form>
-        )}
-      </Formik>
-
-      {user && (
-        <div className="mt-5">
-          <h2>User Profile</h2>
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          
+    <div className='container'>
+      <div className='row'>
+        <div className='col-6 d-flex align-items-center justify-content-center'>
+          <div>
+            <h1>Welcome to the Job Portal</h1>
+            <p>Find your dream job or connect with job seekers.</p>
+          </div>
         </div>
-      )}
+        <div className='col-6 mt-5'>
+          <form className='p-4 border rounded shadow-sm'>
+            <div className='mb-3 text-center'>
+              <button 
+                type='button' 
+                className={`btn ${userType === 'job seeker' ? 'btn-primary' : 'btn-light'}`} 
+                onClick={() => handleUserTypeChange('job seeker')}
+              >
+                Job Seeker
+              </button>
+              <button 
+                type='button' 
+                className={`btn ${userType === 'job agency' ? 'btn-primary' : 'btn-light'}`} 
+                onClick={() => handleUserTypeChange('job agency')}
+              >
+                Job Agency
+              </button>
+            </div>
+
+            <div className='mb-3'>
+              <label className='form-label'>First Name</label>
+              <input
+                type='text'
+                className='form-control'
+                name='firstName'
+                required
+              />
+            </div>
+            <div className='mb-3'>
+              <label className='form-label'>Last Name</label>
+              <input
+                type='text'
+                className='form-control'
+                name='lastName'
+                required
+              />
+            </div>
+            <div className='mb-3'>
+              <label className='form-label'>Phone Number</label>
+              <input
+                type='text'
+                className='form-control'
+                name='phoneNumber'
+                required
+              />
+            </div>
+            <div className='mb-3'>
+              <label className='form-label'>Email</label>
+              <input
+                type='email'
+                className='form-control'
+                name='email'
+                required
+              />
+            </div>
+
+            <div className='mb-3'>
+              <label>Gender</label>
+              <div>
+                <label className='me-2'>
+                  <input type='radio' name='gender' value='male' /> Male
+                </label>
+                <label>
+                  <input type='radio' name='gender' value='female' /> Female
+                </label>
+              </div>
+            </div>
+
+            
+            {userType === 'job seeker' && (
+              <>
+                <div className='mb-3'>
+                  <label className='form-label'>Choose Agency</label>
+                  <select name='agency' className='form-control' required>
+                    <option value=''>Select Agency</option>
+                    {/* Add your agency options here */}
+                    <option value='agency1'>Agency 1</option>
+                    <option value='agency2'>Agency 2</option>
+                  </select>
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>Upload Resume</label>
+                  <input type='file' className='form-control' name='resume' required />
+                </div>
+              </>
+            )}
+
+            {userType === 'job agency' && (
+              <>
+                <div className='mb-3'>
+                  <label className='form-label'>Agency Name</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    name='agencyName'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>Agency Address</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    name='agencyAddress'
+                    required
+                  />
+                </div>
+              </>
+            )}
+
+            <button type='submit' className='btn btn-success'>
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default RegistrationForm;
+export default Register;
