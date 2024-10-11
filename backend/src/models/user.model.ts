@@ -1,36 +1,76 @@
 import { DataTypes, Model } from "sequelize"; 
 import sequelize from "../config/db";
-import JobSeeker from "./jobSeeker.model";
-import JobAgency from "./JobAgency.model";
 
-class User extends Model{
+class User extends Model {
   public id!: number; 
+  public firstName!: string;
+  public lastName!: string;
   public email!: string; 
-  public password!:string
-  public userType!:number
+  public phone!: string;
+  public gender!: string;
+  public userType!: string;
+  public profileImage!: string;
+  public resume?: string;
+  public password!: string;
+  public agencyId?: number;
+  public hobbies?: string[]; // Added hobbies as an array of strings
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
+
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true, // It's a good idea to make email unique
+      unique: true,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    profileImage: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    resume: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    agencyId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userType: {
-      type: DataTypes.INTEGER,
-      allowNull: false, // 1 for Job Seeker, 2 for Agency
+    hobbies: { 
+      type: DataTypes.JSON, 
+      allowNull: true,
     },
-  
   },
   {
     sequelize,
@@ -38,24 +78,5 @@ User.init(
   }
 );
 
-User.hasOne(JobSeeker, {
-  foreignKey: 'userId',
-  as: 'jobSeeker',
-});
-JobSeeker.belongsTo(User, {
-  foreignKey: 'userId',
-  as: 'user', 
-});
-
-User.hasOne(JobAgency, {
-  foreignKey: 'userId',
-  as: 'agency',
-});
-JobAgency.belongsTo(User, {
-  foreignKey: 'userId',
-  as: 'user',
-});
-
 export default User;
 
-console.log('User model initialized successfully');

@@ -1,28 +1,119 @@
-// import { Request,Response } from "express";
 
-// import { sentRegistrationEmail } from "../config/mailer";
+import { Request,Response } from "express";
+import User from "../models/user.model"
+import { sendWelcomeEmail } from "../config/mailer";
+import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+import {v4 as uuidv4} from 'uuid';
 
-// export const registerUser=async(req:Request,res:any)=>{
-//     const{name,email,password}=req.body;
-   
-//     try{
 
-//         const existingUser=await User.findOne({where: { email }});
-//         if(existingUser)
-//         {
-//             return res.status(400).json({message:'user already exists with that email'})
-//         }
+  export const registerUser =   async (req: any, res: any ) => {
+    console.log('hello')
+    try {
+        const password = Math.random().toString(36).slice(-8);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const agencyId = req.body.userType === 'job agency' ? uuidv4() : null;
+      const user = {        
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        phone: req.body.phone,
+        gender: req.body.gender,
+        userType: req.body.userType,
+        hobbies: req.body.hobbies,
+        agencyId: agencyId,
+        profileImage: req.files['profileImage'][0].path,
+        resume: req.body.userType === 'job seeker' ? req.files['resume'][0].path : null,
+        
+        password:hashedPassword,
+      };
+  
+      console.log('Received files:', req.files);
+console.log('Body:', req.body);
 
-//         const user=await User.create({
-//             name,email,password
-//         });
-//       //  await sentRegistrationEmail(user.email,user.name);
-//         res.status(201).json({message:'User registered',user})
+       const newUser=await User.create(user);
+       console.log("newUser==",newUser)
+       await sendWelcomeEmail(newUser.email,password)
+      return res.status(201).json({ message: "User added successfully", user:newUser, });
+  
+    } catch (error) {
+      console.error('Error adding user:', error);
+      return res.status(500).json({ message: "Server error", error });
+    }
+  };
+  
 
-//     }catch(error){
 
-//         res.status(201).json({message:'someting went wrong',error})
-//     }
 
-// }
+  export const loginUser = async (req: Request, res: any) => {
+    try {
+        
+        const { email, password } = req.body ;
+      
 
+        const user = await User.findOne({ where: { email } })
+        if (!user || !(await bcrypt.compare(password,user.password))) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+       
+        const token = jwt.sign({ userId: user.id ,email: user.email}, 'kirti', {
+            expiresIn: '1h', 
+        });
+        res.status(200).json({token})
+    } catch (error) {
+        console.error('error during login',error);
+        return res.status(500).json({ message: 'Server error' });
+    }
+
+};
+
+
+export const getJobSeekers = async (req: Request, res: any) => {
+    try {
+        const jobSeekers = await User.findAll({ where: { userType: 'Job Seeker' } });
+    
+        return res.status(200).json(jobSeekers);
+    } catch (error) {
+        console.error('Error fetching job seekers:', error);
+        return res.status(500).json({ message: 'Server error', error });
+    }
+};    
+
+
+
+
+export const getAgencies = async (req: Request, res:any) => {
+    try {
+        const agencies = await User.findAll({
+            where: { userType: 'job agency' }, 
+        });
+
+        return res.status(200).json(agencies);
+    } catch (error) {
+        console.error('Error fetching agencies:', error);
+        return res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+export const getAgencyProfile = async (req: any, res: any) => {
+    const userId = req.user.id; 
+
+    try {
+        const agency = await User.findOne({ 
+            where: { 
+                id: userId,
+                userType: 'job agency' 
+            } 
+        });
+
+        if (!agency) {
+            return res.status(404).json({ message: 'Agency not found' });
+        }
+
+        return res.status(200).json(agency);
+    } catch (error) {
+        console.error('Error fetching agency profile:', error);
+        return res.status(500).json({ message: 'Server error', error });
+    }
+};
