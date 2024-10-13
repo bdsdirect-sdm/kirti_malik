@@ -60,7 +60,7 @@ User.init(
       allowNull: true,
     },
     agencyId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     password: {
@@ -69,7 +69,7 @@ User.init(
     },
     hobbies: { 
       type: DataTypes.JSON, 
-      allowNull: true,
+      allowNull: false,
     },
   },
   {

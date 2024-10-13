@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Register from './Register'; 
-import Login from './Agencylogin'; 
-import JobSeekers from './jobSeeker';
-import AgencyProfile from './agencyProfile';
-import SeekerLogin from './seekerLogin';
+import Login from './login'; 
+import AgencyDashboard from './AgencyDashboard';
+import JobSeekerDashboard from './jobSeekerDashboard';
+
 
 const App: React.FC = () => {
   return (
@@ -13,10 +13,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/register" replace />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/loginAgency" element={<Login />} />
-          <Route path="/loginSeeker" element={<SeekerLogin />} />
-          <Route path="/jobseekers" element={<JobSeekers />} />
-          <Route path="/agency" element={<AgencyProfile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/agencyDashboard" element={<AgencyDashboard />} />
+          <Route path="/jobSeekersDashboard" element={<JobSeekerDashboard />} />
+        
         </Routes>
       </div>
     </Router>

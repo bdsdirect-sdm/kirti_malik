@@ -29,14 +29,24 @@ const Login: React.FC = () => {
     const handleSubmit = async (values: LoginData) => {
         try {
             const response = await axios.post('http://localhost:8000/app/login', values);
-            const token = response.data.token;
+            const {token, associatedJobSeekers, agencyDetails}=response.data;
+    
+            if(token)
+            { if(associatedJobSeekers)
+            {
+                localStorage.setItem('associatedJobSeekers',JSON.stringify(associatedJobSeekers));
+                alert('login successful');
+                navigate('/agencyDashboard')
+            }
+            else if(agencyDetails)
+            {
+                localStorage.setItem('agencyDetails',JSON.stringify(agencyDetails));
+                alert('login successful');
+                navigate('/jobSeekersDashboard');
+            }
 
-            if (token) {
-                localStorage.setItem('token', token);
-                alert('Login successful');
-                navigate('/jobseekers'); 
-            } else {
-                alert('Login failed: No token received');
+            }else{
+                alert('login failed, no token recieved')
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -74,10 +84,19 @@ const Login: React.FC = () => {
                                 <ErrorMessage name="password" component="div" className="invalid-feedback" />
                             </div>
 
-                            <button type="submit" className="btn btn-primary btn-block mt-4">Submit</button>
-                            <button type="button" className="btn btn-secondary btn-block mt-3" onClick={handleSignup}>
-                                Sign Up
-                            </button>
+                            <div className='d-flex justify-content-between mt-4'>
+                           <button type='submit' className='btn btn-primary'>
+                              login
+                             </button>
+                              <button 
+                             type='button' 
+                             className='btn btn-secondary'
+                               onClick={() => navigate('/register')}
+                                   >
+                               create a new account
+                                  </button>
+                                  </div>
+
                         </Form>
                     )}
                 </Formik>

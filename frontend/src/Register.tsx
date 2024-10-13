@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import './register.css';
 import { useMutation } from '@tanstack/react-query';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +23,12 @@ interface UserData {
 const addUser = async (newUser: FormData): Promise<UserData> => {
   const response = await axios.post<UserData>('http://localhost:8000/app/register', newUser);
   return response.data;
-}
+};
 
 const fetchAgencies = async () => {
   const response = await axios.get('http://localhost:8000/app/agencies'); 
   return response.data;
-}
+};
 
 const Register: React.FC = () => {
   const [userType, setUserType] = useState<'job seeker' | 'job agency'>('job seeker');
@@ -54,7 +55,7 @@ const Register: React.FC = () => {
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-    phone: Yup.string().required('Phone Number is required'),
+    phone: Yup.string().min(10,'minimum 10 digits required').required('Phone Number is required'),
     email: Yup.string().email('Invalid email format').required('Email is required'),
     gender: Yup.string().required('Gender is required'),
     hobbies: Yup.array().min(1, 'At least one hobby is required').of(Yup.string()),
@@ -68,12 +69,7 @@ const Register: React.FC = () => {
     onSuccess: (data) => {
       alert('User registered successfully');
       console.log('User registered:', data);
-     
-      if (data.userType === 'job seeker') {
-        navigate('/loginJobSeeker'); 
-      } else {
-        navigate('/loginAgency'); 
-      }
+      navigate('/login');
     },
     onError: (error) => {
       console.error('Registration failed:', error);
@@ -113,6 +109,7 @@ const Register: React.FC = () => {
           <div>
             <h1>Welcome to the Job Portal</h1>
             <p>Find your dream job or connect with job seekers.</p>
+           
           </div>
         </div>
         <div className='col-6 mt-5'>
@@ -251,9 +248,19 @@ const Register: React.FC = () => {
                   </>
                 )}
 
-                <button type='submit' className='btn btn-success'>
-                  Submit
-                </button>
+<div className='d-flex justify-content-between mt-4'>
+  <button type='submit' className='btn btn-primary'>
+    Register
+  </button>
+  <button 
+    type='button' 
+    className='btn btn-secondary'
+    onClick={() => navigate('/login')}
+  >
+    Already have an account? Login
+  </button>
+</div>
+
               </Form>
             )}
           </Formik>
