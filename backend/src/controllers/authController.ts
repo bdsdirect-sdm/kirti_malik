@@ -3,11 +3,18 @@ import User from "../models/user.model"
 import { sendWelcomeEmail } from "../config/mailer";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
+import { validationResult } from 'express-validator';
 
 
 
 export const registerUser = async (req: any, res: any) => {
     console.log('hello');
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
         const password = Math.random().toString(36).slice(-8);
         const hashedPassword = await bcrypt.hash(password, 10);

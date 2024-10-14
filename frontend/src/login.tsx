@@ -29,10 +29,16 @@ const Login: React.FC = () => {
     const handleSubmit = async (values: LoginData) => {
         try {
             const response = await axios.post('http://localhost:8000/app/login', values);
+            console.log(response.data);
+
             const {token, associatedJobSeekers, agencyDetails}=response.data;
+            
     
             if(token)
-            { if(associatedJobSeekers)
+                
+            { 
+                localStorage.setItem('token',token);
+                if(associatedJobSeekers)
             {
                 localStorage.setItem('associatedJobSeekers',JSON.stringify(associatedJobSeekers));
                 alert('login successful');
@@ -42,7 +48,9 @@ const Login: React.FC = () => {
             {
                 localStorage.setItem('agencyDetails',JSON.stringify(agencyDetails));
                 alert('login successful');
+                console.log('navigating to job seeker dashboard')
                 navigate('/jobSeekersDashboard');
+                console.log('navigation done')
             }
 
             }else{
@@ -57,9 +65,7 @@ const Login: React.FC = () => {
         }
     };
 
-    const handleSignup = () => {
-        navigate('/register'); 
-    };
+
 
     return (
         <div className="container mt-5">
@@ -86,14 +92,14 @@ const Login: React.FC = () => {
 
                             <div className='d-flex justify-content-between mt-4'>
                            <button type='submit' className='btn btn-primary'>
-                              login
+                              Login
                              </button>
                               <button 
                              type='button' 
                              className='btn btn-secondary'
                                onClick={() => navigate('/register')}
                                    >
-                               create a new account
+                               Create a New Account
                                   </button>
                                   </div>
 

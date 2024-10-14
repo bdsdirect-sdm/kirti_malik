@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate } from 'react-router-dom';
 
+
 interface UserData {
   firstName: string;
   lastName: string;
@@ -55,7 +56,8 @@ const Register: React.FC = () => {
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-    phone: Yup.string().min(10,'minimum 10 digits required').required('Phone Number is required'),
+    phone: Yup.string().min(10,'minimum 10 digits required').required('Phone Number is required')
+    .matches(/^[0-9]+$/, 'Phone number must only contain digits.'),
     email: Yup.string().email('Invalid email format').required('Email is required'),
     gender: Yup.string().required('Gender is required'),
     hobbies: Yup.array().min(1, 'At least one hobby is required').of(Yup.string()),

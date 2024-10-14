@@ -9,6 +9,8 @@ const JobSeekerDashboard: React.FC = () => {
         const token = localStorage.getItem('token');
         const agency = localStorage.getItem('agencyDetails');
 
+        console.log('let us check the token',token)
+
         if (!token) {
             navigate('/login'); 
         }

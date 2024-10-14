@@ -13,7 +13,7 @@ class User extends Model {
   public resume?: string;
   public password!: string;
   public agencyId?: number;
-  public hobbies?: string[]; // Added hobbies as an array of strings
+  public hobbies?: string[]; 
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import { getAgencies, loginUser, registerUser } from '../controllers/authController';
+import { RegisterValidator } from '../middlewares/validator';
 
 const router = express.Router();
 
@@ -48,7 +49,7 @@ const fileFilter = (req:any, file:any, cb:any) => {
 const upload = multer({ storage, fileFilter });
 
 
-router.post('/register', upload.fields([{ name: 'profileImage' }, { name: 'resume' }]), registerUser);
+router.post('/register', upload.fields([{ name: 'profileImage' }, { name: 'resume' }]),RegisterValidator, registerUser);
 router.post('/login', loginUser);
 router.get('/agencies', getAgencies);
 
