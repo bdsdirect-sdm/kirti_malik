@@ -1,0 +1,108 @@
+swagger: '2.0'
+info:
+  title: Job Portal API
+  version: 1.0.0
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      description: This endpoint allows a user to register with the job portal.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: firstName
+          required: true
+          type: string
+          description: First name of the user.
+        - in: formData
+          name: lastName
+          required: true
+          type: string
+          description: Last name of the user.
+        - in: formData
+          name: email
+          required: true
+          type: string
+          format: email
+          description: Email address of the user.
+        - in: formData
+          name: phone
+          required: true
+          type: string
+          description: Phone number of the user.
+        - in: formData
+          name: gender
+          required: true
+          type: string
+          description: Gender of the user.
+        - in: formData
+          name: userType
+          required: true
+          type: string
+          enum: [job seeker, job agency]
+          description: Type of user registering.
+        - in: formData
+          name: hobbies
+          required: false
+          type: array
+          items:
+            type: string
+          description: List of hobbies.
+        - in: formData
+          name: profileImage
+          required: false
+          type: file
+          description: Profile image of the user.
+        - in: formData
+          name: resume
+          required: false
+          type: file
+          description: Resume file (optional, only for job seekers).
+        - in: formData
+          name: agency
+          required: false
+          type: string
+          description: Agency ID (only for job seekers).
+      responses:
+        '201':
+          description: User registered successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  email:
+                    type: string
+        '400':
+          description: Invalid input
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    msg:
+                      type: string
+                    param:
+                      type: string
+        '500':
+          description: Server error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              error:
+                type: string

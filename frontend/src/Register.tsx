@@ -61,9 +61,39 @@ const Register: React.FC = () => {
     email: Yup.string().email('Invalid email format').required('Email is required'),
     gender: Yup.string().required('Gender is required'),
     hobbies: Yup.array().min(1, 'At least one hobby is required').of(Yup.string()),
-    profileImage: Yup.mixed().required('Profile Image is required'),
+    profileImage: Yup.mixed().test(
+      "file type","unsupported file format",
+      (value)=>{
+        if(value)
+        {
+          const file=value as File;
+          return(
+            file.type==='image.png' || file.type==='image.jpg' || file.type==='image.jpeg'
+          );
+        }else{
+          return true;
+        }
+      }
+    ).required('Profile Image is required'),
     agency: userType === 'job seeker' ? Yup.string().required('Agency is required') : Yup.string().notRequired(),
-    resume: userType === 'job seeker' ? Yup.mixed().required('Resume is required') : Yup.mixed().notRequired(),
+    resume: userType === 'job seeker' ? Yup.mixed()
+    .test(
+      "file type", "unsupported file format",
+      (value)=>{
+        if(value)
+        {
+          const file=value as File;
+          return file.type==='application/pdf'
+        }
+        else{
+          return true;
+          
+        }
+      }
+
+    )
+    
+    .required('Resume is required') : Yup.mixed().notRequired(),
   });
 
   const mutation = useMutation<UserData, Error, FormData>({
