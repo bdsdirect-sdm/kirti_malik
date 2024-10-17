@@ -42,7 +42,7 @@ const fileFilter = (req:any, file:any, cb:any) => {
 
 const upload = multer({ storage, fileFilter });
 export const uploadMiddleware = upload.fields([
-    { name: 'profilePhoto', maxCount: 1 },
-    { name: 'appointmentLetter', maxCount: 1 },
+    { name: 'profileImage', maxCount: 1 },
+    { name: 'resume', maxCount: 1 },
   ]);
   

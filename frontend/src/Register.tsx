@@ -27,7 +27,7 @@ const addUser = async (newUser: FormData): Promise<UserData> => {
 };
 
 const fetchAgencies = async () => {
-  const response = await axios.get('http://localhost:8000/app/agencies'); 
+  const response = await axios.get('http://localhost:8080/app/agencies'); 
   return response.data;
 };
 

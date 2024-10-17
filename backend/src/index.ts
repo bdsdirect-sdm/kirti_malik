@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.use('/app',router)
 apiDoc(router)
+const port=process.env.PORT;
 
 const syncDatabase = async () => {
   try {
@@ -23,6 +24,6 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-app.listen(8000, () => {
-  console.log('Server is running on port 8000');
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

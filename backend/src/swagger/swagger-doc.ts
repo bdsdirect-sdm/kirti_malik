@@ -14,8 +14,8 @@ export const apiDoc= (app:Router)=>{
             version:'1.0.0',
             description:'API FOR JOB PORTAL'
         },
-        host:'localhost:8000',
-        basePath:'app/',
+        host:'localhost:8080',
+        basePath:'/app',
         schemes:['http','https'],
         tags:[
             {
