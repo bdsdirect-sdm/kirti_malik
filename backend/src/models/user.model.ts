@@ -14,6 +14,7 @@ class User extends Model {
   public password!: string;
   public agencyId?: number;
   public hobbies?: string[]; 
+  public status!: 'pending' | 'confirmed' | 'declined';
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -69,6 +70,11 @@ User.init(
     },
     hobbies: { 
       type: DataTypes.JSON, 
+      allowNull: false,
+    },
+    status:{
+      type:DataTypes.ENUM('pending','confirmed','declined'),
+      defaultValue:'pending',
       allowNull: false,
     },
   },
