@@ -20,6 +20,7 @@ const validationSchema = Yup.object().shape({
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
+    
 
     const initialValues: LoginData = {
         email: '',
@@ -28,33 +29,31 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (values: LoginData) => {
         try {
-            const response = await axios.post('http://localhost:8000/app/login', values);
+            const response = await axios.post('http://localhost:8080/app/login', values);
             console.log(response.data);
 
-            const {token, associatedJobSeekers, agencyDetails}=response.data;
-            
-    
-            if(token)
-                
-            { 
-                localStorage.setItem('token',token);
-                if(associatedJobSeekers)
-            {
-                localStorage.setItem('associatedJobSeekers',JSON.stringify(associatedJobSeekers));
-                alert('login successful');
-                navigate('/agencyDashboard')
-            }
-            else if(agencyDetails)
-            {
-                localStorage.setItem('agencyDetails',JSON.stringify(agencyDetails));
-                alert('login successful');
-                console.log('navigating to job seeker dashboard')
-                navigate('/jobSeekersDashboard');
-                console.log('navigation done')
-            }
+            const { token, associatedJobSeekers, agencyDetails, firstName, status ,userId} = response.data;
+           
+            if (token) {
+                localStorage.setItem('token', token);
+                localStorage.setItem('firstName', firstName);
+                localStorage.setItem('status', status);
+                localStorage.setItem('userId',userId)
+             
 
-            }else{
-                alert('login failed, no token recieved')
+                if (associatedJobSeekers) {
+                    localStorage.setItem('associatedJobSeekers', JSON.stringify(associatedJobSeekers));
+                    alert('Login successful');
+                    navigate('/agencyDashboard');
+                } else if (agencyDetails) {
+                    localStorage.setItem('agencyDetails', JSON.stringify(agencyDetails));
+                    alert('Login successful');
+                    
+
+                    navigate('/jobSeekersDashboard');
+                }
+            } else {
+                alert('Login failed, no token received');
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -64,8 +63,6 @@ const Login: React.FC = () => {
             }
         }
     };
-
-
 
     return (
         <div className="container mt-5">
@@ -91,18 +88,17 @@ const Login: React.FC = () => {
                             </div>
 
                             <div className='d-flex justify-content-between mt-4'>
-                           <button type='submit' className='btn btn-primary'>
-                              Login
-                             </button>
-                              <button 
-                             type='button' 
-                             className='btn btn-secondary'
-                               onClick={() => navigate('/register')}
-                                   >
-                               Create a New Account
-                                  </button>
-                                  </div>
-
+                                <button type='submit' className='btn btn-primary'>
+                                    Login
+                                </button>
+                                <button 
+                                    type='button' 
+                                    className='btn btn-secondary'
+                                    onClick={() => navigate('/register')}
+                                >
+                                    Create a New Account
+                                </button>
+                            </div>
                         </Form>
                     )}
                 </Formik>

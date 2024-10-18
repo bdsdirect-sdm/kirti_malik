@@ -22,7 +22,7 @@ interface UserData {
 }
 
 const addUser = async (newUser: FormData): Promise<UserData> => {
-  const response = await axios.post<UserData>('http://localhost:8000/app/register', newUser);
+  const response = await axios.post<UserData>('http://localhost:8080/app/register', newUser);
   return response.data;
 };
 
@@ -61,20 +61,20 @@ const Register: React.FC = () => {
     email: Yup.string().email('Invalid email format').required('Email is required'),
     gender: Yup.string().required('Gender is required'),
     hobbies: Yup.array().min(1, 'At least one hobby is required').of(Yup.string()),
-    profileImage: Yup.mixed().test(
-      "file type","unsupported file format",
-      (value)=>{
-        if(value)
-        {
-          const file=value as File;
-          return(
-            file.type==='image.png' || file.type==='image.jpg' || file.type==='image.jpeg'
-          );
-        }else{
-          return true;
-        }
-      }
-    ).required('Profile Image is required'),
+    // profileImage: Yup.mixed().test(
+    //   "file type","unsupported file format",
+    //   (value)=>{
+    //     if(value)
+    //     {
+    //       const file=value as File;
+    //       return(
+    //         file.type==='image.png' || file.type==='image.jpg' || file.type==='image.jpeg'
+    //       );
+    //     }else{
+    //       return true;
+    //     }
+    //   }
+    // ).required('Profile Image is required'),
     agency: userType === 'job seeker' ? Yup.string().required('Agency is required') : Yup.string().notRequired(),
     resume: userType === 'job seeker' ? Yup.mixed()
     .test(

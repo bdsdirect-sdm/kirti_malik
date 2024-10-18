@@ -58,47 +58,57 @@ export const registerUser = async (req: any, res: any) => {
 
 
 
-  export const loginUser = async (req: Request, res: any) => {
-    try {
-        console.log('hello')
-        const { email, password } = req.body ;
-      
 
-        const user = await User.findOne({ where: { email } })
-        if (!user || !(await bcrypt.compare(password,user.password))) {
+export const loginUser = async (req: any, res: any) => {
+    try {
+        console.log('User login initiated');
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ where: { email } });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-       
-        const token = jwt.sign({ userId: user.id ,email: user.email}, 'kirti', {
-            expiresIn: '1h', 
+
+        const token = jwt.sign({ userId: user.id, email: user.email }, 'kirti', {
+            expiresIn: '1h',
         });
-          
-        let associatedJobSeekers=null;
-        let agencyDetails=null;
 
-        if(user.userType==='job agency'){
-            associatedJobSeekers=await User.findAll({
-                where:{
-                    agencyId:user.id,
-                    userType:'job seeker',
+        // Determine user type and fetch associated data
+        let associatedJobSeekers = null;
+        let agencyDetails = null;
+        let userId=user.id;
+
+        if (user.userType === 'job agency') {
+            associatedJobSeekers = await User.findAll({
+                where: {
+                    agencyId: user.id,
+                    userType: 'job seeker',
                 },
-
             });
-        }else if(user.userType==='job seeker'){
-            agencyDetails=await User.findOne({
-                where:{id:user.agencyId},
+        } else if (user.userType === 'job seeker') {
+            agencyDetails = await User.findOne({
+                where: { id: user.agencyId },
             });
-
         }
-        res.status(200).json({token, associatedJobSeekers,agencyDetails});
 
-        
+
+        const response = {
+            token,
+            associatedJobSeekers,
+            agencyDetails,
+            firstName: user.firstName,  
+            status: user.status ,
+            userId,         
+        };
+
+        res.status(200).json(response);
+
     } catch (error) {
-        console.error('error during login',error);
+        console.error('Error during login:', error);
         return res.status(500).json({ message: 'Server error' });
     }
-
 };
+
 
    
 export const getAgencies = async (req: Request, res:any) => {
@@ -111,6 +121,27 @@ export const getAgencies = async (req: Request, res:any) => {
     } catch (error) {
         console.error('Error fetching agencies:', error);
         return res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+export const updateJobSeekerStatus = async (req: Request, res: any) => {
+    
+console.log('initiaed controller ')
+    try {
+        const { userId, status } = req.body;
+
+        
+        if (!['pending', 'confirmed', 'declined'].includes(status)) {
+            return res.status(400).json({ message: 'Invalid status' });
+        }
+
+        await User.update({ status }, { where: { id: userId } });
+
+        res.status(200).json({ message: 'Status updated successfully' });
+    } catch (error) {
+        console.error('Error updating job seeker status', error);
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
