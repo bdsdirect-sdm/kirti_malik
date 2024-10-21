@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AgencyDashboard: React.FC = () => {
     const navigate = useNavigate();
     const [jobSeekers, setJobSeekers] = useState<any[]>([]);
-    const [agencyDetails, setAgencyDetails] = useState<any>(null);
+    const [agencyName, setAgencyName] = useState<any>(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const associatedJobSeekers = localStorage.getItem('associatedJobSeekers');
-        const agency = localStorage.getItem('agencyDetails');
+        const storedUser = localStorage.getItem('user');
+        console.log("stored User", storedUser);
 
-        if (!token) {
-            navigate('/login'); 
+        if (!token || !storedUser) {
+            navigate('/login');
+            return;
         }
 
-        if (associatedJobSeekers) {
-            setJobSeekers(JSON.parse(associatedJobSeekers)); 
-        }
-        
-        if (agency) {
-            setAgencyDetails(JSON.parse(agency));
-        }
+        const user = JSON.parse(storedUser);
+        setAgencyName(user.firstName);
+
+        axios.get(`http://localhost:8080/app/jobSeekers/${user.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then(response => setJobSeekers(response.data))
+            .catch(error => console.error('Error fetching job seekers:', error));
+            
     }, [navigate]);
 
     const updateStatus = async (userId: number, status: string) => {
@@ -51,12 +55,12 @@ const AgencyDashboard: React.FC = () => {
     };
 
     const handleChat = (userId: number, agencyId: number) => {
-        navigate(`/chat/${userId}/${agencyId}`); 
+        navigate(`/chat/${userId}/${agencyId}`);
     };
 
     return (
         <div className="container mt-5">
-            <h1 className="text-center">{agencyDetails ? `${agencyDetails.firstName} ${agencyDetails.lastName}` : 'Agency Dashboard'}</h1>
+            <h1 className="text-center"> {agencyName}</h1>
             <div className="card p-4 mt-3">
                 <h2>Associated Job Seekers</h2>
                 {jobSeekers.length === 0 ? (
@@ -74,7 +78,7 @@ const AgencyDashboard: React.FC = () => {
                                 <th>Profile Image</th>
                                 <th>Resume</th>
                                 <th>Status</th>
-                                <th>Actions</th> 
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,7 +89,9 @@ const AgencyDashboard: React.FC = () => {
                                     <td>{jobSeeker.email}</td>
                                     <td>{jobSeeker.phone}</td>
                                     <td>{jobSeeker.gender}</td>
-                                    <td>{jobSeeker.hobbies.join(', ')}</td>
+                                    <td>
+                                        {Array.isArray(jobSeeker.hobbies) ? jobSeeker.hobbies.join(', ') : 'No hobbies listed'}
+                                    </td>
                                     <td>
                                         <img 
                                             src={jobSeeker.profileImage} 

@@ -1,39 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Axios for API calls
 
 const JobSeekerDashboard: React.FC = () => {
     const navigate = useNavigate();
     const [agencyDetails, setAgencyDetails] = useState<any>(null);
     const [firstName, setFirstName] = useState<string | null>(null);
     const [status, setStatus] = useState<string>('pending');
+    const [userId, setUserId] = useState<string | null>(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const agency = localStorage.getItem('agencyDetails');
-        const storedFirstName = localStorage.getItem('firstName'); 
-        const storedStatus = localStorage.getItem('status');
+        const storedUser = localStorage.getItem('user'); // Assuming user info stored here
+        console.log("Stored user:", storedUser);
 
-        if (!token) {
-            navigate('/login'); 
-            return; 
+        if (!token || !storedUser) {
+            navigate('/login'); // Redirect if no token or user info
+            return;
         }
 
-        if (agency) {
-            const parsedAgency = JSON.parse(agency);
-            setAgencyDetails(parsedAgency);
-        }
+        const user = JSON.parse(storedUser); // Parse stored user data
+        setFirstName(user.firstName);
+        setUserId(user.id); // Store user ID for use in API
 
-        setFirstName(storedFirstName);
-        setStatus(storedStatus || 'pending'); 
+        // Fetch the agency details from the backend
+        const fetchAgencyDetails = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/app/jobAgency/${user.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Pass token for authentication
+                    },
+                });
+
+                if (response.data) {
+                    setAgencyDetails(response.data); // Set the agency details
+                    setStatus(user.status); // Set the status if needed
+                } else {
+                    setAgencyDetails(null); // No agency found
+                }
+            } catch (error) {
+                console.error('Error fetching agency details:', error);
+            }
+        };
+
+        fetchAgencyDetails();
     }, [navigate]);
 
     const handleChatClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault(); 
+        event.preventDefault();
         if (agencyDetails) {
-            const userId = localStorage.getItem('userId'); 
             const agencyId = agencyDetails.id;
             if (userId) {
-                navigate(`/chat/${userId}/${agencyId}`); 
+                navigate(`/chat/${userId}/${agencyId}`); // Navigate to chat with agency
             }
         }
     };
@@ -53,7 +71,7 @@ const JobSeekerDashboard: React.FC = () => {
                         <p><strong>Agency Name:</strong> {agencyDetails.firstName} {agencyDetails.lastName}</p>
                         <p><strong>Email:</strong> {agencyDetails.email}</p>
                         <p><strong>Phone:</strong> {agencyDetails.phone}</p>
-                        {status === 'confirmed' ? ( 
+                        {status === 'confirmed' ? (
                             <>
                                 <button onClick={handleChatClick} className="btn btn-primary mt-3">
                                     Start Chat

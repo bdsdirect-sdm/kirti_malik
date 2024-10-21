@@ -73,33 +73,12 @@ export const loginUser = async (req: any, res: any) => {
             expiresIn: '1h',
         });
 
-        // Determine user type and fetch associated data
-        let associatedJobSeekers = null;
-        let agencyDetails = null;
-        let userId=user.id;
-
-        if (user.userType === 'job agency') {
-            associatedJobSeekers = await User.findAll({
-                where: {
-                    agencyId: user.id,
-                    userType: 'job seeker',
-                },
-            });
-        } else if (user.userType === 'job seeker') {
-            agencyDetails = await User.findOne({
-                where: { id: user.agencyId },
-            });
-        }
-
-
         const response = {
             token,
-            associatedJobSeekers,
-            agencyDetails,
-            firstName: user.firstName,  
-            status: user.status ,
-            userId,         
+            user
         };
+
+        console.log('user==========',response)
 
         res.status(200).json(response);
 
@@ -110,7 +89,59 @@ export const loginUser = async (req: any, res: any) => {
 };
 
 
-   
+export const getJobSeekersForAgency = async (req: Request, res: Response) => {
+    try {
+        const { agencyId } = req.params;
+
+        const jobSeekers = await User.findAll({ where: { agencyId , userType:'job seeker'} });
+
+        res.status(200).json(jobSeekers);
+    } catch (error) {
+        console.error('Error fetching job seekers:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+export const getAgencyForJobseeker = async (req: any, res: any) => {
+    try {
+        const { id } = req.params;
+
+      
+        const jobSeeker = await User.findOne({
+            where: { id, userType: 'job seeker' }, 
+        });
+
+        console.log('job=========',jobSeeker)
+
+        if (!jobSeeker || !jobSeeker.agencyId) {
+            return res.status(404).json({ message: 'Job seeker or associated agency not found' });
+        }
+
+        const jobAgency = await User.findOne({
+            where: {
+                id: jobSeeker.agencyId,
+                userType: 'job agency',
+            },
+        });
+
+        if (!jobAgency) {
+           
+            return res.status(404).json({ message: 'Associated job agency not found' });
+        }
+
+       
+        res.status(200).json(jobAgency);
+    } catch (error) {
+        console.error('Error fetching job agency', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+
+
+
 export const getAgencies = async (req: Request, res:any) => {
     try {
         const agencies = await User.findAll({
@@ -123,6 +154,7 @@ export const getAgencies = async (req: Request, res:any) => {
         return res.status(500).json({ message: 'Server error', error });
     }
 };
+
 
 
 export const updateJobSeekerStatus = async (req: Request, res: any) => {

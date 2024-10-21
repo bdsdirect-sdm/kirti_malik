@@ -10,6 +10,7 @@ interface LoginData {
     password: string;
 }
 
+// Validation schema using Yup
 const validationSchema = Yup.object().shape({
     email: Yup.string()
         .email('Invalid email format')
@@ -20,7 +21,6 @@ const validationSchema = Yup.object().shape({
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    
 
     const initialValues: LoginData = {
         email: '',
@@ -29,28 +29,26 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (values: LoginData) => {
         try {
+            // Make an API request to login the user
             const response = await axios.post('http://localhost:8080/app/login', values);
             console.log(response.data);
 
-            const { token, associatedJobSeekers, agencyDetails, firstName, status ,userId} = response.data;
-           
+            const { token, user } = response.data;
+            
             if (token) {
+                console.log("Login successful:", user);
+
+               
                 localStorage.setItem('token', token);
-                localStorage.setItem('firstName', firstName);
-                localStorage.setItem('status', status);
-                localStorage.setItem('userId',userId)
-             
+                localStorage.setItem('user', JSON.stringify(user));
 
-                if (associatedJobSeekers) {
-                    localStorage.setItem('associatedJobSeekers', JSON.stringify(associatedJobSeekers));
-                    alert('Login successful');
-                    navigate('/agencyDashboard');
-                } else if (agencyDetails) {
-                    localStorage.setItem('agencyDetails', JSON.stringify(agencyDetails));
-                    alert('Login successful');
-                    
-
+     
+                if (user.userType === 'job seeker') {
                     navigate('/jobSeekersDashboard');
+                } else if (user.userType === 'job agency') {
+                    navigate('/agencyDashboard');
+                } else {
+                    alert('Invalid user type');
                 }
             } else {
                 alert('Login failed, no token received');
@@ -66,7 +64,7 @@ const Login: React.FC = () => {
 
     return (
         <div className="container mt-5">
-            <h1 className="text-center">Agency Login</h1>
+            <h1 className="text-center">Login</h1>
             <div className="card p-4 mt-3">
                 <Formik
                     initialValues={initialValues}

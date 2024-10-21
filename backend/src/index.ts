@@ -5,12 +5,14 @@ import cors from 'cors';
 import { apiDoc } from './swagger/swagger-doc';
 import http from 'http';
 import { Server } from 'socket.io';
+import path from 'path';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use('/app',router)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 apiDoc(router)
 const port=process.env.PORT;
 
