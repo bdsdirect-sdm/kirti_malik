@@ -5,12 +5,14 @@ import './chat.css';
 const socket = io('http://localhost:8080');
 
 const ChatForm: React.FC = () => {
+    const[name,setName]=useState<string>('')
     const [message, setMessage] = useState<string>('');
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<{ name: string; message: string }[]>([]);
+
 
     useEffect(() => {
-        socket.on('receiveMessage', (message: string) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
+        socket.on('receiveMessage', (data: {name:string,message:string}) => {
+            setMessages((messages) => [...messages, ]);
         });
 
         return () => {
@@ -35,15 +37,25 @@ const ChatForm: React.FC = () => {
                 </div>
                 <div className="card-body">
                     <div className="chat-window" style={{ height: '300px', overflowY: 'scroll', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', backgroundColor: '#f8f9fa' }}>
-                        {messages.map((msg, index) => (
-                            <div key={index} className="message mb-2">
-                                <div className="badge bg-primary text-white">{msg}</div>
-                            </div>
-                        ))}
+                        <ul>
+                            {messages.map((message,index)=>(
+                                <li key={index}>
+                                    {message.name}:{message.message}
+
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
                 <div className="card-footer">
                     <form onSubmit={handleSubmit} className="d-flex">
+                        <input
+                        type='text'
+                        className='form-control me-2'
+                        placeholder='enter your name'
+                        onChange={(e)=>setName(e.target.value)}>
+                            
+                        </input>
                         <input
                             type="text"
                             className="form-control me-2"
