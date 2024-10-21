@@ -56,6 +56,7 @@ const AgencyDashboard: React.FC = () => {
 
     const handleChat = (userId: number, agencyId: number) => {
         navigate(`/chat/${userId}/${agencyId}`);
+        
     };
 
     return (

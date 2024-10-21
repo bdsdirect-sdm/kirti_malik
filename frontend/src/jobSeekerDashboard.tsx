@@ -11,32 +11,32 @@ const JobSeekerDashboard: React.FC = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user'); // Assuming user info stored here
+        const storedUser = localStorage.getItem('user'); 
         console.log("Stored user:", storedUser);
 
         if (!token || !storedUser) {
-            navigate('/login'); // Redirect if no token or user info
+            navigate('/login'); 
             return;
         }
 
-        const user = JSON.parse(storedUser); // Parse stored user data
+        const user = JSON.parse(storedUser); 
         setFirstName(user.firstName);
-        setUserId(user.id); // Store user ID for use in API
+        setUserId(user.id); 
 
-        // Fetch the agency details from the backend
+       
         const fetchAgencyDetails = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/app/jobAgency/${user.id}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Pass token for authentication
+                        Authorization: `Bearer ${token}`,
                     },
                 });
 
                 if (response.data) {
-                    setAgencyDetails(response.data); // Set the agency details
-                    setStatus(user.status); // Set the status if needed
+                    setAgencyDetails(response.data); 
+                    setStatus(user.status); 
                 } else {
-                    setAgencyDetails(null); // No agency found
+                    setAgencyDetails(null); 
                 }
             } catch (error) {
                 console.error('Error fetching agency details:', error);

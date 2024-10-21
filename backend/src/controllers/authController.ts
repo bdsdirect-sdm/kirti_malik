@@ -159,7 +159,7 @@ export const getAgencies = async (req: Request, res:any) => {
 
 export const updateJobSeekerStatus = async (req: Request, res: any) => {
     
-console.log('initiaed controller ')
+
     try {
         const { userId, status } = req.body;
 

@@ -11,9 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/app',router)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-apiDoc(router)
+
 const port=process.env.PORT;
 
 
@@ -27,19 +25,22 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('send_message', (data) => {
-     io.to(data.room).emit('receive_message', data);
+
+  socket.on('sendMessage', (message) => {
+    console.log(`sending message :${message}`)
+     io.emit('receiveMessage', message);
   });
 
-  socket.on('join_room', (room) => {
-     socket.join(room);
-     console.log(`User joined room: ${room}`);
-  });
 
   socket.on('disconnect', () => {
      console.log('A user disconnected');
   });
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/app',router)
+apiDoc(router)
+
 const syncDatabase = async () => {
   try {
     
@@ -49,8 +50,9 @@ const syncDatabase = async () => {
     console.error('Failed to sync database:', error);
   }
 };
-
 syncDatabase();
+
+
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);

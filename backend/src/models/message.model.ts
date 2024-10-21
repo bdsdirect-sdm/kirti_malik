@@ -21,10 +21,6 @@ Message.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
-    recieverId: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
     messageContent:{
         type:DataTypes.TEXT,
         allowNull:false

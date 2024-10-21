@@ -4,13 +4,10 @@ import Register from './Register';
 import Login from './login'; 
 import AgencyDashboard from './AgencyDashboard';
 import JobSeekerDashboard from './jobSeekerDashboard';
-import ChatComponent from './chat';
+import ChatForm from './chat';
 
 const App: React.FC = () => {
- 
-  const userId = localStorage.getItem('userId') || 'defaultUserId'; 
-  const agencyId = localStorage.getItem('agencyId') || 'defaultAgencyId';
-  
+
 
   return (
     <Router>
@@ -21,7 +18,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/agencyDashboard" element={<AgencyDashboard />} />
           <Route path="/jobSeekersDashboard" element={<JobSeekerDashboard />} />
-          <Route path="/chat/:userId/:agencyId" element={<ChatComponent userId={userId} agencyId={agencyId} />} />
+          <Route path="/chat/:userId/:agencyId" element={<ChatForm />} />
         </Routes>
       </div>
     </Router>
