@@ -1,14 +1,18 @@
 import Message from "../models/message.model";
 import { Request,Response } from "express";
+import { Server } from "socket.io";
+
 
 export const getMessages=async(req:Request,res:Response)=>{
 
-    const{userId,agencyId}=req.params;
+    const{senderId,recieverId}=req.params;
+    console.log("seeeeeeeeeeee",senderId)
     try{
+        console.log("get messages              ======================")
         const message=await Message.findAll({
             where:{
-                senderId:[userId,agencyId],
-                recieverId:[userId,agencyId],
+                senderId,
+                recieverId
             },
             order:[['timestamp','ASC']]
         }) ;

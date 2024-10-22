@@ -13,7 +13,7 @@ router.get('/jobSeekers/:agencyId', getJobSeekersForAgency);
 router.get('/jobAgency/:id',getAgencyForJobseeker)
 router.get('/agencies', getAgencies);
 router.post('/updateJobSeekerStatus',updateJobSeekerStatus)
-router.get('/getMessage/:userId/:agencyId', getMessages);
+router.get('/getMessage/:senderId/:recieverId', getMessages);
 router.post('/sendMessage', sendMessage);
 
 

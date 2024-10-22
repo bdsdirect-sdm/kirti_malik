@@ -18,7 +18,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/agencyDashboard" element={<AgencyDashboard />} />
           <Route path="/jobSeekersDashboard" element={<JobSeekerDashboard />} />
-          <Route path="/chat/:userId/:agencyId" element={<ChatForm />} />
+          <Route path="/chat/:senderId/:recieverId" element={<ChatForm />} />
         </Routes>
       </div>
     </Router>
