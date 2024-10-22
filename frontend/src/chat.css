@@ -6,6 +6,26 @@
     margin-bottom: 10px; 
   }
   
+  .message-sent {
+    background-color: #d1e7dd;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 15px 15px 0 15px;
+    text-align: right;
+}
+
+
+
+.message-received {
+    background-color: #f8d7da;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 0 15px 15px 15px;
+}
+
+.sender {
+    font-weight: bold;
+}
   .message {
     margin-bottom: 10px; 
   }

@@ -30,11 +30,9 @@ const ChatForm: React.FC= () => {
                 {
                     setMessages(response.data)
                 }
-
-
             }
-            catch{
-
+            catch(error){
+                console.log("error fetching messages")
             }
          }
 
@@ -88,8 +86,9 @@ const ChatForm: React.FC= () => {
                     <div className="chat-window" style={{ height: '300px', overflowY: 'scroll', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', backgroundColor: '#f8f9fa' }}>
                         <ul>
                             {messages.map((msg, index) => (
-                                <li key={index}>
-                                    {msg.senderId}: {msg.messageContent}
+                                <li key={index} className={msg.senderId===senderId?'message-sent':'message-recieved'}>
+                                  <span className='sender'>{msg.senderId}</span>{msg.messageContent}
+                                  
                                 </li>
                             ))}
                         </ul>
