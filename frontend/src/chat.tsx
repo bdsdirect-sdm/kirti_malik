@@ -22,9 +22,42 @@ const ChatForm: React.FC= () => {
     const{recieverId}=useParams()
     const [messageContent, setMessageContent] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]); 
+    const[jobSeekers,setJobSeekers]=useState<any[]>([])
    
 
     useEffect(() => {
+
+        const getJobSeekers=async()=>{
+
+            const token =localStorage.getItem('token');
+            const storedUser=localStorage.getItem('user');
+             
+          
+            
+            if(storedUser){
+                try{
+                     const user=JSON.parse(storedUser)
+                    const response=await axios.get(`http://localhost:8080/app/jobSeekers/${user.id}`,{
+                        headers:{Authorization: `Bearer ${token}`}
+                        
+                    })
+                    console.log("usererrr",user.id)
+                    console.log("==========response",response.data)
+                    setJobSeekers(response.data) 
+
+                }
+                catch(error){
+                    console.error('error fetching user data',error)
+                }
+                   
+            }
+           
+            
+
+
+
+
+        }
 
          const getMessages=async()=>{
             try{
@@ -38,7 +71,7 @@ const ChatForm: React.FC= () => {
                 console.log("error fetching messages")
             }
          }
-
+          getJobSeekers();
           getMessages();
 
         socket.on('receiveMessage', (data) => {
@@ -79,11 +112,14 @@ const ChatForm: React.FC= () => {
             }
         }
     };
+    const handleChat=(userId:number)=>{
+        
+    }
 
     return (
         <div className='d-flex'> 
     
-        <ChatSideBar />
+        <ChatSideBar jobSeekers={jobSeekers} onChatSelect={handleChat}/>
         
            
              <div className="container mt-5">
