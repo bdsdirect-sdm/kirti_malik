@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './chat.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ChatSideBar from './sidebarChat';
+
 
 const socket = io('http://localhost:8080');
 
@@ -20,6 +22,7 @@ const ChatForm: React.FC= () => {
     const{recieverId}=useParams()
     const [messageContent, setMessageContent] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]); 
+   
 
     useEffect(() => {
 
@@ -52,6 +55,7 @@ const ChatForm: React.FC= () => {
         event.preventDefault();
        
         if (messageContent.trim()) {
+          
         
             socket.emit('sendMessage', {
                 senderId,
@@ -77,7 +81,12 @@ const ChatForm: React.FC= () => {
     };
 
     return (
-        <div className="container mt-5">
+        <div className='d-flex'> 
+    
+        <ChatSideBar />
+        
+           
+             <div className="container mt-5">
             <div className="card">
                 <div className="card-header">
                     <h4>Chat Room</h4>
@@ -108,6 +117,9 @@ const ChatForm: React.FC= () => {
                 </div>
             </div>
         </div>
+
+        </div>
+        
     );
 };
 
