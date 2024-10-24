@@ -8,7 +8,7 @@ export const getMessages=async(req:Request,res:Response)=>{
     const{senderId,recieverId}=req.params;
     console.log("seeeeeeeeeeee",senderId)
     try{
-        console.log("get messages              ======================")
+       
         const message=await Message.findAll({
             where:{
                 senderId,

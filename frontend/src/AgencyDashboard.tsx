@@ -9,24 +9,41 @@ const AgencyDashboard: React.FC = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
-        console.log("stored User", storedUser);
+        const agencyInfo = localStorage.getItem('agencyInfo');
+        console.log("agencyInfo", agencyInfo);
 
-        if (!token || !storedUser) {
+        if (!token || !agencyInfo) {
             navigate('/login');
             return;
         }
 
-        const user = JSON.parse(storedUser);
+        const user = JSON.parse(agencyInfo);
         setAgencyName(user.firstName);
+        
+       //getting all the job seekers associated with that particular agency
 
-        axios.get(`http://localhost:8080/app/jobSeekers/${user.id}`, {
+       const fetchJobSeekers=async()=>{
+        try{
+            const response= await axios.get(`http://localhost:8080/app/jobSeekers/${user.id}`, {
             headers: { Authorization: `Bearer ${token}` },
-        })
-            .then(response => setJobSeekers(response.data))
-            .catch(error => console.error('Error fetching job seekers:', error));
             
+        })
+        
+        localStorage.setItem('jobSeekersList',JSON.stringify(response.data))
+
+        setJobSeekers(response.data)
+
+        }
+        catch(error){
+            console.log("error fetching",error)
+
+        }
+       }
+       
+         
+            fetchJobSeekers();
     }, [navigate]);
+    
 
     const updateStatus = async (userId: number, status: string) => {
         const token = localStorage.getItem('token');
@@ -55,8 +72,7 @@ const AgencyDashboard: React.FC = () => {
     };
 
     const handleChat = (userId: number, agencyId: number) => {
-        navigate(`/chat/${userId}/${agencyId}`);
-        
+        navigate(`/chat/${userId}/${agencyId}`);      
     };
 
     return (
@@ -70,13 +86,14 @@ const AgencyDashboard: React.FC = () => {
                     <table className="table table-striped">
                         <thead>
                             <tr>
+                                <th>Profile Image</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Gender</th>
                                 <th>Hobbies</th>
-                                <th>Profile Image</th>
+                                
                                 <th>Resume</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -85,6 +102,13 @@ const AgencyDashboard: React.FC = () => {
                         <tbody>
                             {jobSeekers.map((jobSeeker) => (
                                 <tr key={jobSeeker.id}>
+                                      <td>
+                                        <img 
+                                            src="avatar.jpg"
+                                            alt={`${jobSeeker.firstName}'s Profile`} 
+                                            style={{ width: '50px', height: '50px', borderRadius: '50%' }} 
+                                        />
+                                    </td>
                                     <td>{jobSeeker.firstName}</td>
                                     <td>{jobSeeker.lastName}</td>
                                     <td>{jobSeeker.email}</td>
@@ -93,13 +117,7 @@ const AgencyDashboard: React.FC = () => {
                                     <td>
                                         {Array.isArray(jobSeeker.hobbies) ? jobSeeker.hobbies.join(', ') : 'No hobbies listed'}
                                     </td>
-                                    <td>
-                                        <img 
-                                            src={jobSeeker.profileImage} 
-                                            alt={`${jobSeeker.firstName}'s Profile`} 
-                                            style={{ width: '50px', height: '50px', borderRadius: '50%' }} 
-                                        />
-                                    </td>
+                                  
                                     <td>
                                         {jobSeeker.resume ? (
                                             <a href={jobSeeker.resume} target="_blank" rel="noopener noreferrer">View Resume</a>

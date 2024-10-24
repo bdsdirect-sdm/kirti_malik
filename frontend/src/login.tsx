@@ -10,7 +10,6 @@ interface LoginData {
     password: string;
 }
 
-// Validation schema using Yup
 const validationSchema = Yup.object().shape({
     email: Yup.string()
         .email('Invalid email format')
@@ -29,23 +28,23 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (values: LoginData) => {
         try {
-            // Make an API request to login the user
+           
             const response = await axios.post('http://localhost:8080/app/login', values);
             console.log(response.data);
 
             const { token, user } = response.data;
+            localStorage.setItem('user',JSON.stringify(user))
             
             if (token) {
-                console.log("Login successful:", user);
+                console.log("Login successful:");
 
                
                 localStorage.setItem('token', token);
-                localStorage.setItem('user', JSON.stringify(user));
-
-     
                 if (user.userType === 'job seeker') {
-                    navigate('/jobSeekersDashboard');
+                    localStorage.setItem('jobSeekerInfo', JSON.stringify(user));
+                    navigate('/jobSeekersDashboard'); 
                 } else if (user.userType === 'job agency') {
+                      localStorage.setItem('agencyInfo', JSON.stringify(user));
                     navigate('/agencyDashboard');
                 } else {
                     alert('Invalid user type');

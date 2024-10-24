@@ -9,9 +9,10 @@ const JobSeekerDashboard: React.FC = () => {
     const [status, setStatus] = useState<string>('pending');
     const [userId, setUserId] = useState<string | null>(null);
 
+  
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user'); 
+        const storedUser = localStorage.getItem('jobSeekerInfo'); 
         console.log("Stored user:", storedUser);
 
         if (!token || !storedUser) {
