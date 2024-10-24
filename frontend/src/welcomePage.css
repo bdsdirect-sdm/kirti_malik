@@ -1,0 +1,42 @@
+/* src/components/WelcomePage.css */
+.welcome-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.box-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.box {
+    width: 300px;
+    height: 200px;
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.box:hover {
+    transform: scale(1.1);
+}
+
+.retailer-box {
+    background-color: #f0ad4e;
+    /* Orange color for retailer */
+}
+
+.customer-box {
+    background-color: #5bc0de;
+    /* Blue color for customer */
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}

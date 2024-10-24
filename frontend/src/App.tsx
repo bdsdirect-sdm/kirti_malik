@@ -1,27 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Register from './Register'; 
+import WelcomePage from './welcomePage';
 import Login from './login'; 
-import AgencyDashboard from './AgencyDashboard';
-import JobSeekerDashboard from './jobSeekerDashboard';
-import ChatComponent from './chat';
+import RetailerRegister from './retailerRegister';
+
 
 const App: React.FC = () => {
- 
-  const userId = localStorage.getItem('userId') || 'defaultUserId'; 
-  const agencyId = localStorage.getItem('agencyId') || 'defaultAgencyId';
+
   
 
   return (
     <Router>
       <div>
         <Routes>
-          <Route path="/" element={<Navigate to="/register" replace />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/agencyDashboard" element={<AgencyDashboard />} />
-          <Route path="/jobSeekersDashboard" element={<JobSeekerDashboard />} />
-          <Route path="/chat/:userId/:agencyId" element={<ChatComponent userId={userId} agencyId={agencyId} />} />
+          <Route path="/" element={<Navigate to="/welcomePage" replace />} />
+          <Route path="/WelcomePage" element={<WelcomePage />} />
+             <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RetailerRegister/>} />
+         
         </Routes>
       </div>
     </Router>

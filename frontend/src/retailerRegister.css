@@ -1,0 +1,80 @@
+body{
+   background: url('bg.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.register-container {
+    margin-top: 50px;
+    margin-left: 50px;
+    max-width: 600px;
+    /* margin: 0 auto; */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+   
+}
+
+.header-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-field {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-field:last-child {
+    margin-right: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: hwb(236 58% 0%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: hwb(238 21% 12%);
+}
+
+.error {
+    color: red;
+    font-size: 0.8em;
+}
+.header{
+    background-color: hwb(236 58% 0%);
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px;
+}
