@@ -23,19 +23,29 @@ const fileFilter = (req:any, file:any, cb:any) => {
   if (file.fieldname === 'profileImage') {
    
     
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
       cb(null, true);
     } else {
       cb(new Error('Profile image must be in JPEG or JPG format'), false);
     }
-  } else if (file.fieldname === 'resume') {
+  } else if (file.fieldname === 'companyLogo') {
     
-    if (file.mimetype === 'application/pdf' || file.mimetype === 'application/msword' || file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
       cb(null, true);
     } else {
-      cb(new Error('Resume must be in PDF or DOC format'), false);
+      cb(new Error('company logo must be in jpeg or png format'), false);
     }
-  } else {
+  } 
+  else if(file.fieldname==='image'){
+
+   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+      cb(null, true);
+    } else {
+      cb(new Error('product must be in jpeg or png format'), false);
+    }
+
+  }
+  else {
     cb(new Error('Invalid file field'), false);
   }
 };
@@ -43,6 +53,7 @@ const fileFilter = (req:any, file:any, cb:any) => {
 const upload = multer({ storage, fileFilter });
 export const uploadMiddleware = upload.fields([
     { name: 'profileImage', maxCount: 1 },
-    { name: 'resume', maxCount: 1 },
+    { name: 'companyLogo', maxCount: 1 },
+    { name: 'image', maxCount: 1 }
   ]);
   

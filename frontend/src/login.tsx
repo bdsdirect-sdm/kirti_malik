@@ -33,22 +33,15 @@ const Login: React.FC = () => {
             console.log(response.data);
 
             const { token, user } = response.data;
+            const userId=response.data.user.id;
+            localStorage.setItem('retailerId',userId)
+            console.log(userId)
             localStorage.setItem('user',JSON.stringify(user))
             
             if (token) {
                 console.log("Login successful:");
-
-               
-                localStorage.setItem('token', token);
-                if (user.userType === 'job seeker') {
-                    localStorage.setItem('jobSeekerInfo', JSON.stringify(user));
-                    navigate('/jobSeekersDashboard'); 
-                } else if (user.userType === 'job agency') {
-                      localStorage.setItem('agencyInfo', JSON.stringify(user));
-                    navigate('/agencyDashboard');
-                } else {
-                    alert('Invalid user type');
-                }
+                navigate(`/dashboard/${userId}`)
+   
             } else {
                 alert('Login failed, no token received');
             }

@@ -11,7 +11,16 @@ export const RegisterValidator=[
     .isString()
     .isLength({min:3}).withMessage('last name must be 3 characters long'),
 
-    body('phone')
+     body('companyName')
+    .notEmpty().withMessage('company name is required')
+    .isString()
+    .isLength({min:3}).withMessage('company name must be 3 characters long'),
+
+     body('email')
+     .notEmpty().withMessage('email is required')
+     .isEmail().withMessage('provide valid email'),
+
+    body('phoneNumber')
     .notEmpty().withMessage('phone number is required')
     .isString().withMessage('phone number must be string')
      .custom((value)=>{
@@ -23,33 +32,19 @@ export const RegisterValidator=[
           }
      }),
 
-     body('email')
-     .notEmpty().withMessage('email is required')
-     .isEmail().withMessage('provide valid email'),
+       body('address')
+    .notEmpty().withMessage('address name is required')
+    .isString()
+    .isLength({min:3}).withMessage('address name is required'),
+    
 
-     body('gender')
-     .isIn(['male','female','other'])
-     .withMessage('gender must be male, female or other'),
-
-    body('userType')
-    .notEmpty().withMessage('user type must be selected')
-    .isIn(['job seeker', 'job agency'])
-    .withMessage('user type must be either job seeker or job agency'),
-
-    body('agency')
-    .optional(),
-
-    body('hobbies')
-   .notEmpty(),
-
-    body('resume')
+    body('companyLogo')
         .custom((value) => {
             if (value && !(value instanceof File)) {
-                throw new Error('Resume must be a file.');
+                throw new Error('companyLogo must be a file.');
             }
             return true;
         }),
-
     body('profileImage')
         .custom((value) => {
             if (value && !(value instanceof File)) {

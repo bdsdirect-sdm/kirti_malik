@@ -10,10 +10,6 @@ import { setupSocketEvents } from './sockets/setupsocketEvents';
 
 const app = express();
 
-//to setup socket
-const server=http.createServer(app);
-const io=setupSocket(server);
-setupSocketEvents(io);
 
 
 app.use(cors());
@@ -26,7 +22,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/app',router)
 apiDoc(router)
 
-//to sync the database
+
 const syncDatabase = async () => {
   try {
     
@@ -40,6 +36,6 @@ syncDatabase();
 
 
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

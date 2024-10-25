@@ -1,26 +1,23 @@
 import { DataTypes, Model } from "sequelize"; 
 import sequelize from "../config/db";
 
-class User extends Model {
+class Retailer extends Model {
   public id!: number; 
   public firstName!: string;
   public lastName!: string;
+  public companyName!: string;
   public email!: string; 
   public phone!: string;
-  public gender!: string;
-  public userType!: string;
+  public address!: string;
+  public companyLogo!: string;
   public profileImage!: string;
-  public resume?: string;
   public password!: string;
-  public agencyId?: number;
-  public hobbies?: string[]; 
-  public status!: 'pending' | 'confirmed' | 'declined';
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-User.init(
+Retailer.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -35,6 +32,11 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+     companyName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -44,45 +46,30 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    gender: {
+    address: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userType: {
+     companyLogo: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
     profileImage: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    resume: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    agencyId: {
-      type: DataTypes.STRING,
-      allowNull: true,
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    hobbies: { 
-      type: DataTypes.JSON, 
-      allowNull: false,
-    },
-    status:{
-      type:DataTypes.ENUM('pending','confirmed','declined'),
-      defaultValue:'pending',
-      allowNull: false,
-    },
+     
   },
   {
     sequelize,
-    modelName: 'User',
+    modelName: 'Retailer',
   }
 );
 
-export default User;
+export default Retailer;
 
