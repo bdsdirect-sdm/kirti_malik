@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import WelcomePage from './welcomePage';
 import Login from './login'; 
 import RetailerRegister from './retailerRegister';
+<<<<<<< HEAD
 import Dashboard from './retailerDasboard';
 import AddProduct from './addProduct';
 import ViewProduct from './viewProduct';
+=======
+>>>>>>> origin/eCommerceWebsite
 
 
 const App: React.FC = () => {
@@ -20,9 +23,12 @@ const App: React.FC = () => {
           <Route path="/WelcomePage" element={<WelcomePage />} />
              <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RetailerRegister/>} />
+<<<<<<< HEAD
            <Route path="/dashboard/:userId" element={<Dashboard/>} />
             <Route path="/addproduct/:retailerId" element={<AddProduct/>} />
              <Route path="/viewProduct/:productId" element={<ViewProduct/>} />
+=======
+>>>>>>> origin/eCommerceWebsite
          
         </Routes>
       </div>

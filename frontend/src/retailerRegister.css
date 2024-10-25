@@ -1,5 +1,9 @@
 body{
+<<<<<<< HEAD
    /* background: url('bg.jpeg'); */
+=======
+   background: url('bg.jpeg');
+>>>>>>> origin/eCommerceWebsite
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -8,6 +12,10 @@ body{
     margin-top: 50px;
     margin-left: 50px;
     max-width: 600px;
+<<<<<<< HEAD
+=======
+    /* margin: 0 auto; */
+>>>>>>> origin/eCommerceWebsite
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
@@ -76,10 +84,13 @@ button:hover {
     text-align: center;
     border-radius: 10px;
     padding: 5px;
+<<<<<<< HEAD
 }
 .button{
     margin-right: 20px;
 }
 .login-button {
   margin-top: 10px; /* Adjust the space as needed */
+=======
+>>>>>>> origin/eCommerceWebsite
 }
