@@ -99,26 +99,8 @@ export const addProduct = async (req: any, res: any) => {
     const retailerId = req.params.retailerId;
 
     
-<<<<<<< HEAD
     if (!retailerId) {
       return res.status(400).json({ message: "Retailer ID is required." });
-=======
-
-    try {
-        const { userId, status } = req.body;
-
-        
-        if (!['pending', 'confirmed', 'declined'].includes(status)) {
-            return res.status(400).json({ message: 'Invalid status' });
-        }
-
-        await User.update({ status }, { where: { id: userId } });
-
-        res.status(200).json({ message: 'Status updated successfully' });
-    } catch (error) {
-        console.error('Error updating job seeker status', error);
-        return res.status(500).json({ message: 'Server error' });
->>>>>>> origin/eCommerceWebsite
     }
 
    
