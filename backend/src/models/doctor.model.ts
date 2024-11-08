@@ -8,6 +8,9 @@ class Doctor extends Model{
     public userType!:'OD' | 'MD';
     public email!:string;
     public password!:string;
+    public isVerified!:Boolean;
+    public otp!:string | null;
+    public otpExpiration!:Date;
 
 }
 
@@ -37,9 +40,21 @@ Doctor.init(
         password:{
             type:DataTypes.STRING,
             allowNull:false
-        }
+        },
+        isVerified:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false
+        },
+        otp:{
+            type:DataTypes.STRING,
+            allowNull:true
+        },
+        otpExpiration:{
+            type:DataTypes.DATE,
+            allowNull:true
+        }}
 
-    },{
+    ,{
         sequelize, tableName:'doctors'
     }
 )

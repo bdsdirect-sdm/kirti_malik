@@ -1,11 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import sequelize from './config/db';
+import router from './routers/authRoutes';
 
 const app=express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/app',router);
 
 
 const port=process.env.PORT 
@@ -13,7 +16,7 @@ const port=process.env.PORT
 const syncDatabase=async()=>{
     try{
 
-        await sequelize.sync({force:true});
+        await sequelize.sync({force:false});
         console.log("database synced successfully")
 
     }
