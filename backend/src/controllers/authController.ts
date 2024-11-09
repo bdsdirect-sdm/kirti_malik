@@ -1,5 +1,6 @@
 import { Request,Response } from "express";
 import Doctor from "../models/doctor.model";
+import ReferralPatient from "../models/referralPatient.model"
 import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
@@ -109,6 +110,24 @@ export const verifyOtp=async(req:any,res:any)=>{
     catch(error){
 
         res.status(500).json({message:"otp verification failed",error})
+
+    }
+}
+
+//to add patient on OD dashboard
+
+export const addPatient=async(req:any,res:any)=>{
+    const{dob,email,phoneNumber,firstName,lastName,gender,diseaseName,laterality,returnPatient,MDdoctor}=req.body
+
+    try{
+        const newPatient=await ReferralPatient.create({
+            dob,email,phoneNumber,firstName,lastName,gender,diseaseName,laterality,returnPatient,MDdoctor
+        })
+        res.status(201).json({message:'patient added successfully',newPatient})
+
+    }catch(error){
+
+        res.status(500).json({message:'add patient failed',error})
 
     }
 }
