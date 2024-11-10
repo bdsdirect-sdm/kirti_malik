@@ -20,7 +20,7 @@ const ODdashboard = () => {
   }, []);
 
   const fetchDashboardData = async () => {
-    const response = await axios.get('/api/dashboard/od-dashboard');
+    const response = await axios.get('http://localhost:8080/app/oDdashboardData');
     setDashboardData(response.data);
   };
 

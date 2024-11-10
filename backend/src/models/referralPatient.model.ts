@@ -15,6 +15,7 @@ class ReferralPatient extends Model{
     public returnPatient!:string;
     public MDdoctor!:string;
     public MedicalDocuments!:string;
+    public status!:string;
 
 }
 
@@ -68,6 +69,10 @@ ReferralPatient.init(
         MedicalDocuments:{
             type:DataTypes.STRING,
             allowNull:false
+        },
+        status:{
+            type:DataTypes.STRING,
+            defaultValue:'placed'
         }
 
     },{

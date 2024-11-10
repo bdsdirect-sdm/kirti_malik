@@ -131,3 +131,19 @@ export const addPatient=async(req:any,res:any)=>{
 
     }
 }
+
+//to get the data on dashboard 
+
+export const getODDashboardData = async (req: Request, res: Response) => {
+  try {
+ 
+    const referralsPlaced = await ReferralPatient.count({ where: { status: 'placed' } });
+    const referralsCompleted = await ReferralPatient.count({ where: { status: 'completed' } });
+    const mdCount = await Doctor.count({ where: { userType: 'MD' } });
+
+    res.status(200).json({ referralsPlaced, referralsCompleted, mdCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve dashboard data' });
+  }
+};
