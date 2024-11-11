@@ -5,7 +5,7 @@
     justify-content: space-between;
 }
 
-/* Left section with icon */
+
 .left-section {
     width: 50%;
     display: flex;
@@ -19,7 +19,7 @@
     height: 400px;
 }
 
-/* Right section with form */
+
 .right-section {
     width: 50%;
     padding: 20px;
@@ -86,10 +86,9 @@ select {
     margin: 0;
 }
 
-/* Styling for the entire layout */
 .layout-container {
     padding-top: 60px;
-    /* To make room for the fixed navbar */
+   
 }
 
 .layout-navbar {
@@ -99,7 +98,6 @@ select {
 .sidebar {
     position: fixed;
     top: 60px;
-    /* Matches the navbar height */
     bottom: 0;
     left: 0;
     padding-top: 20px;
@@ -129,7 +127,6 @@ select {
 
 .content-area {
     margin-left: 25%;
-    /* Offset to make room for the sidebar */
     padding: 20px;
 }
 
@@ -140,7 +137,7 @@ h1 {
 .text-end {
     text-align: right;
 }
-/* Card styling */
+
 .card {
     border: none;
     border-radius: 8px;
@@ -158,7 +155,7 @@ h1 {
     color: #333;
 }
 
-/* Add Referral Button */
+
 .btn-primary {
     background-color: #4CAF50;
     border: none;
@@ -172,10 +169,9 @@ h1 {
     background-color: #45a049;
 }
 
-/* Form container for Add Patient */
 form {
     width: 100%;
-    max-width: 500px;
+    max-width: 1000px;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -221,7 +217,7 @@ form {
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    overflow-x: auto;
 }
 
 .table thead {

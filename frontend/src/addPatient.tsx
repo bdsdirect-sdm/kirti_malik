@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootstrap';
+import axios from 'axios';
 
-// Validation schema
+
 const validationSchema = Yup.object({
   dob: Yup.date().required('Date of birth is required'),
   email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -15,10 +16,10 @@ const validationSchema = Yup.object({
   laterality: Yup.string().required('Laterality is required'),
   returnPatient: Yup.string().required('Return patient status is required'),
   MDdoctor: Yup.string().required('MD doctor is required'),
-  MedicalDocuments: Yup.string().required('Medical documents are required'),
+  MedicalDocuments: Yup.mixed().required('Medical documents are required'),
 });
 
-// Initial values
+
 const initialValues = {
   dob: '',
   email: '',
@@ -30,28 +31,70 @@ const initialValues = {
   laterality: '',
   returnPatient: '',
   MDdoctor: '',
-  MedicalDocuments: '',
+  MedicalDocuments: null as File | null,
 };
 
 const AddPatient: React.FC = () => {
-  // Handle form submission
+  const [MDdoctors, setMDdoctors] = useState<any[]>([]);
+
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/app/getmddoctor');
+        setMDdoctors(response.data);
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
   const handleSubmit = async (values: typeof initialValues) => {
+    const formData = new FormData();
+    formData.append('dob', values.dob);
+    formData.append('email', values.email);
+    formData.append('phoneNumber', values.phoneNumber);
+    formData.append('firstName', values.firstName);
+    formData.append('lastName', values.lastName);
+    formData.append('gender', values.gender);
+    formData.append('diseaseName', values.diseaseName);
+    formData.append('laterality', values.laterality);
+    formData.append('returnPatient', values.returnPatient);
+    formData.append('MDdoctor', values.MDdoctor);
+
+    if (values.MedicalDocuments) {
+      formData.append('MedicalDocuments', values.MedicalDocuments);
+    }
+    console.log(";;;;;;;;;;",values.MedicalDocuments)
+
     try {
-      const response = await fetch('/api/patients', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:8080/app/addPatient', formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
-        body: JSON.stringify(values),
       });
-      const result = await response.json();
-      console.log(result);
+      console.log("response",response)
+
+      if (response.status === 201) {
+        console.log('Patient added successfully');
+      } else {
+        throw new Error('Failed to add patient');
+      }
     } catch (error) {
-      console.error('Error adding patient:', error);
+      console.error('Error adding patient:',error);
     }
   };
 
-  return (
+    const handleFileChange = (event: any, setFieldValue: any) => {
+    const file = event.currentTarget.files[0];
+    if (file) {
+      // Update Formik's field value with the file object
+      setFieldValue(event.currentTarget.name, file);
+    }
+  };
+
+  return (    
     <Container>
       <h2 className="text-center my-4">Add Patient</h2>
       <Formik
@@ -59,8 +102,8 @@ const AddPatient: React.FC = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
-          <Form as={BootstrapForm}>
+        {({ isSubmitting, setFieldValue}) => (
+          <Form>
             <Row>
               <Col md={6}>
                 <BootstrapForm.Group className="mb-3">
@@ -94,6 +137,7 @@ const AddPatient: React.FC = () => {
                 </BootstrapForm.Group>
               </Col>
 
+     
               <Col md={6}>
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>Gender</BootstrapForm.Label>
@@ -108,31 +152,61 @@ const AddPatient: React.FC = () => {
 
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>Disease Name</BootstrapForm.Label>
-                  <Field type="text" name="diseaseName" className="form-control" />
+                  <Field as="select" name="diseaseName" className="form-control">
+                    <option value="">Select Disease</option>
+                    <option value="Glaucoma">Glaucoma</option>
+                    <option value="Cataract">Cataract</option>
+                    <option value="Macular Degeneration">Macular Degeneration</option>
+                  </Field>
                   <ErrorMessage name="diseaseName" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>Laterality</BootstrapForm.Label>
-                  <Field type="text" name="laterality" className="form-control" />
+                  <Field as="select" name="laterality" className="form-control">
+                    <option value="">Select</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="both">Both</option>
+                  </Field>
                   <ErrorMessage name="laterality" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>Return Patient</BootstrapForm.Label>
-                  <Field type="text" name="returnPatient" className="form-control" />
+                  <Field as="select" name="returnPatient" className="form-control">
+                    <option value="">Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </Field>
                   <ErrorMessage name="returnPatient" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>MD Doctor</BootstrapForm.Label>
-                  <Field type="text" name="MDdoctor" className="form-control" />
+                  <Field as="select" name="MDdoctor" className="form-control">
+                    <option value="">Select MD Doctor</option>
+                    {MDdoctors.length > 0 ? (
+                      MDdoctors.map((doctor) => (
+                        <option key={doctor.id} value={doctor.id}>
+                          {doctor.firstName} {doctor.lastName}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">Loading doctors...</option>
+                    )}
+                  </Field>
                   <ErrorMessage name="MDdoctor" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>Medical Documents</BootstrapForm.Label>
-                  <Field type="file" name="MedicalDocuments" className="form-control" />
+                  <input
+                    type="file"
+                    name="MedicalDocuments"
+                    onChange={(e)=>handleFileChange(e,setFieldValue)}
+                    className="form-control"
+                  />
                   <ErrorMessage name="MedicalDocuments" component="div" className="text-danger" />
                 </BootstrapForm.Group>
               </Col>

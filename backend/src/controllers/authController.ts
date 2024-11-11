@@ -116,21 +116,39 @@ export const verifyOtp=async(req:any,res:any)=>{
 
 //to add patient on OD dashboard
 
-export const addPatient=async(req:any,res:any)=>{
-    const{dob,email,phoneNumber,firstName,lastName,gender,diseaseName,laterality,returnPatient,MDdoctor}=req.body
 
-    try{
-        const newPatient=await ReferralPatient.create({
-            dob,email,phoneNumber,firstName,lastName,gender,diseaseName,laterality,returnPatient,MDdoctor
-        })
-        res.status(201).json({message:'patient added successfully',newPatient})
+export const addPatient = async (req:any, res:any) => {
+    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor } = req.body;
 
-    }catch(error){
-
-        res.status(500).json({message:'add patient failed',error})
-
+    
+    if (!req.file) {
+        return res.status(400).json({ message: 'Medical documents are required' });
     }
-}
+
+    const MedicalDocuments = req.file.path; 
+
+    try {
+        const newPatient = await ReferralPatient.create({
+            dob,
+            email,
+            phoneNumber,
+            firstName,
+            lastName,
+            gender,
+            diseaseName,
+            laterality,
+            returnPatient,
+            MDdoctor,
+            MedicalDocuments,
+            status: 'placed'
+        });
+
+        res.status(201).json({ message: 'Patient added successfully', newPatient });
+    } catch (error) {
+        res.status(500).json({ message: 'Add patient failed', error});
+    }
+};
+
 
 //to get the data on dashboard 
 
@@ -147,3 +165,19 @@ export const getODDashboardData = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Failed to retrieve dashboard data' });
   }
 };
+
+//to get the names of MD doctor on form
+
+export const getMDdoctor=async(req:any,res:any)=>{
+    try{
+        const doctor=await Doctor.findAll({
+            where:{userType:'MD'}
+        })
+        return res.status(200).json(doctor)
+
+    }
+    catch(error){
+        return res.status(500).json({message:'server error',error})
+
+    }
+}

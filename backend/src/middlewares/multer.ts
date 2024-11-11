@@ -17,8 +17,5 @@ const storage=multer.diskStorage({
     }
 })
 
-const upload=multer({storage});
+export const upload=multer({storage});
 
-export const uploadFile=upload.fields([
-    {name:'MedicalDocuments',maxCount:1}
-])

@@ -78,15 +78,21 @@ const handleAddPatient=async()=>{
            
           </Button>
 
-        
-
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Reason</th>
+                <th>Patient name</th>
+                <th>dob</th>
+                <th>Referred on</th>
+                <th>Referred to</th>
+                <th>Consultation date</th>
+                <th>Surgery date</th>
                 <th>Status</th>
+                <th>Return to Referrer</th>
+                <th>Consult note</th>
+                <th>Direct Message</th>
+                <th>Actions</th>
+
               </tr>
             </thead>
             <tbody>
