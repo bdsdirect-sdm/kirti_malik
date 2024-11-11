@@ -7,11 +7,7 @@ const ODdashboard = () => {
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState({ referralsPlaced: 0, referralsCompleted: 0, mdCount: 0 });
   const [mdList, setMdList] = useState([]);
-  const [referredPatients, setReferredPatients] = useState([]);
-  const [showAddPatient, setShowAddPatient] = useState(false);
-  const [patientName, setPatientName] = useState('');
-  const [patientAge, setPatientAge] = useState('');
-  const [reason, setReason] = useState('');
+  const[referredPatients,setReferredPatients]=useState<any[]>([]);
 
   useEffect(() => {
     fetchDashboardData();

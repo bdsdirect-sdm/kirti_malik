@@ -181,3 +181,17 @@ export const getMDdoctor=async(req:any,res:any)=>{
 
     }
 }
+
+//to fetch the list of referred patients on dashboard
+
+export const referralPatientList=async(req:Request,res:Response)=>{
+    try{
+        const patient=await ReferralPatient.findAll();
+        return res.status(201).json(patient)
+
+    }
+    catch(error)
+    {
+        return res.status(400).json({message:'server errorr',error})
+    }
+}
