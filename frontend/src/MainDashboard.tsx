@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import ODdashboard from './ODdashboard'
+import MDdashboard from './MDdashboard'
 
 const MainDashboard = () => {
     const[type,setType]=useState<any>('null')
@@ -18,7 +20,7 @@ const MainDashboard = () => {
     },[])
   return (
   
-    <div>MainDashboard</div>
+    <div>{type==='OD'?(<ODdashboard/>):(<MDdashboard/>)}</div>
   )
 }
 
