@@ -9,14 +9,17 @@
 .left-section {
     width: 50%;
     display: flex;
+    color: white;
     justify-content: center;
     align-items: center;
-    background-color:#34aadc
+    background-color:color-mix(in srgb,  #43D79E 30%, #35C0E4 40%)
+
 }
 
 .logo {
-    width: 600px;
-    height: 400px;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
 }
 
 
@@ -35,13 +38,23 @@
     max-width: 400px;
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 }
 
 .form-group {
     margin-bottom: 15px;
     width: 100%;
 }
+.login-signup-link{
+    padding-top: 15px;
+    text-align: center;
+}
 
+.forgot-password{
+    color: #2a9ac6;
+    text-align: right;
+    padding-top: 2px;
+}
 label {
     font-size: 16px;
     margin-bottom: 5px;
@@ -139,9 +152,10 @@ select {
 }
 
 .content-area {
-    margin-left: 25%;
+    margin-left: 15%;
     padding: 20px;
     background-color: #34aadc;
+  
   
 }
 
@@ -259,28 +273,19 @@ form {
 }
 
 .dashboard {
-   
-    /* padding: 20px; */
     padding-top: 60px;
-    
     border-radius: 10px;
-    
    
 }
 
 .dashboard .card {
     background-color: #fff;
-   
 }
-.pt-5{
-    background-color:#45a049;
-   
-}
+
 .content-area{
     background-color: #ECF1F3;
-    margin-right: 20px;
-     margin-right: 10px;
-     height: 120vh;
+   
+    
 }
 .custom-button{
     background-color: #ccc;

@@ -11,7 +11,6 @@ const Layout = () => {
    const fetchDoctorName=async()=>{
     try{
       const doctor=localStorage.getItem('doctorName');
-      console.log('doctor=====',doctor)
       setName(doctor);
 
     }
@@ -30,20 +29,23 @@ const Layout = () => {
         <Container className='navbar1'>
           <Row className="w-100">
             <Col md={6}>
-              <Navbar.Brand className='eye-text'>Eye Refer</Navbar.Brand>
+            
+              <Navbar.Brand className='eye-text'>
+                <img src='logo.png' alt='image' height='50' width='50'/> Eye Refer</Navbar.Brand>
             </Col>
             <Col md={6} className="text-end">
             
               <Navbar.Text>
                 <Dropdown align="end" >
                   <Dropdown.Toggle className='custom-button'>
+                    
                   Hi {name} <br/>
                    Welcome Back!
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item>Profile</Dropdown.Item>
                     <Dropdown.Item>Change Password</Dropdown.Item>
-                    <Dropdown.Item>Log out</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/login">Log out</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 </Navbar.Text>
@@ -53,7 +55,7 @@ const Layout = () => {
       </Navbar>
 
      
-      <Row className="pt-6">
+      <Row className="pt-8">
         
         <Col md={2} className="sidebar">
           <div className="sidebar-content">

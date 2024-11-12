@@ -16,7 +16,7 @@ interface ILoginInput {
   password: string;
 }
 
-const DoctorLogin = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (values: ILoginInput) => {
@@ -26,9 +26,6 @@ const DoctorLogin = () => {
      
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('doctorName',response.data.doctor.firstName)
-     
-      localStorage.setItem('userType',response.data.doctor.userType);
-     
       navigate('/dashboard'); 
     } catch (error) {
       console.error(error);
@@ -40,13 +37,13 @@ const DoctorLogin = () => {
     <div className="register-container">
      
       <div className="left-section">
-        <img src="logo.png"  alt="Your Icon" className="logo" />
+        <img src="logo.png" alt="Your Icon" className="logo" />
         <h1>EYE REFER</h1>
       </div>
 
     
       <div className="right-section">
-        <h2>LOGIN</h2>
+        <h2>Forgot Password</h2>
        <Formik
   initialValues={{
     email: '',
@@ -63,25 +60,15 @@ const DoctorLogin = () => {
         <ErrorMessage name="email" component="div" className="error-message" />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <Field id="password" name="password" type="password" />
-        <ErrorMessage name="password" component="div" className="error-message" />
-      </div>
       <div className='forgot-password'>
-         <p onClick={()=>navigate('/forgotPassword')}>forgot password?</p>
+         <p onClick={()=>navigate('/login')}>back to login</p>
 
       </div>
      
 
-      <button type="submit" className="submit-btn">Login</button>
+      <button type="submit" className="submit-btn">submit</button>
 
-      <p className="login-signup-link">
-        Don’t have an account?{" "}
-        <button onClick={() => navigate('/register')} className="link-btn">
-          Sign up
-        </button>
-      </p>
+     
     </Form>
   )}
 </Formik>
@@ -91,4 +78,4 @@ const DoctorLogin = () => {
   );
 };
 
-export default DoctorLogin;
+export default ForgotPassword;
