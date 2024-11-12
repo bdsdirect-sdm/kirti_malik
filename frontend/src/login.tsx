@@ -4,8 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './doctorRegister.css'; // Reuse the CSS for styling consistency
-
+import './style.css'; 
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email format').required('Email is required'),
@@ -24,8 +23,9 @@ const DoctorLogin = () => {
     try {
       const response = await axios.post('http://localhost:8080/app/login', values);
       alert('Login successful!');
-      
+     
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('doctorName',response.data.doctor.firstName)
       navigate('/dashboard'); 
     } catch (error) {
       console.error(error);
@@ -37,7 +37,7 @@ const DoctorLogin = () => {
     <div className="register-container">
      
       <div className="left-section">
-        <img src="eye.jpg" alt="Your Icon" className="logo" />
+        <img src="" alt="Your Icon" className="logo" />
       </div>
 
     

@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import './doctorRegister.css'; 
+import './style.css'; 
 import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object({
@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
 
 interface IFormInput {
   firstName: string;
-  lastName: string;
+  lastName: string; 
   email: string;
   userType: 'OD' | 'MD';
   password: string;

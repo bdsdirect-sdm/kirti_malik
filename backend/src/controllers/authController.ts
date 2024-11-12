@@ -184,7 +184,7 @@ export const getMDdoctor=async(req:any,res:any)=>{
 
 //to fetch the list of referred patients on dashboard
 
-export const referralPatientList=async(req:Request,res:Response)=>{
+export const referralPatientList=async(req:any,res:any)=>{
     try{
         const patient=await ReferralPatient.findAll();
         return res.status(201).json(patient)

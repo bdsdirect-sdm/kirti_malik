@@ -1,17 +1,16 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Container, Row, Col, Card, Table, Form } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Table,  } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import './style.css';
 
 const ODdashboard = () => {
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState({ referralsPlaced: 0, referralsCompleted: 0, mdCount: 0 });
-  const [mdList, setMdList] = useState([]);
   const[referredPatients,setReferredPatients]=useState<any[]>([]);
 
   useEffect(() => {
     fetchDashboardData();
-    fetchMDList();
     fetchReferredPatients();
   }, []);
 
@@ -20,13 +19,9 @@ const ODdashboard = () => {
     setDashboardData(response.data);
   };
 
-  const fetchMDList = async () => {
-    const response = await axios.get('/api/dashboard/md-list');
-    setMdList(response.data);
-  };
-
   const fetchReferredPatients = async () => {
-    const response = await axios.get('/api/dashboard/referred-patients');
+ 
+    const response = await axios.get('http://localhost:8080/app/referralpatientlist');
     setReferredPatients(response.data);
   };
 
@@ -38,9 +33,7 @@ const handleAddPatient=async()=>{
 
   return (
     <Container className='dashboard'>
-     
-     
-       
+
           <Row className="mb-4">
             <Col>
               <Card>
@@ -68,7 +61,7 @@ const handleAddPatient=async()=>{
             </Col>
           </Row>
 
-          <Button onClick={handleAddPatient} variant="primary" >
+          <Button onClick={handleAddPatient} variant="secondary" >
 
             add patient
            
@@ -94,10 +87,17 @@ const handleAddPatient=async()=>{
             <tbody>
               {referredPatients.map((patient, index) => (
                 <tr key={index}>
-                  {/* <td>{patient.name}</td>
-                  <td>{patient.age}</td>
-                  <td>{patient.reason}</td>
-                  <td>{patient.status}</td> */}
+                  <td>{patient.firstName} {patient.lastName}</td>
+                  <td>{patient.dob}</td>
+                  <td>{patient.createdAt}</td>
+                   <td>{patient.MDdoctor}</td>
+                    <td></td> 
+                    <td></td> 
+                  <td>{patient.status}</td>
+                  <td>{patient.returnPatient}</td>
+                  <td></td> 
+                  <td></td> 
+                  <td></td> 
                 </tr>
               ))}
             </tbody>

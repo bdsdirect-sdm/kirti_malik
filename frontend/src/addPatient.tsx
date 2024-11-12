@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const validationSchema = Yup.object({
@@ -36,6 +37,8 @@ const initialValues = {
 
 const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
+
+  const navigate=useNavigate();
 
 
   useEffect(() => {
@@ -78,6 +81,8 @@ const AddPatient: React.FC = () => {
 
       if (response.status === 201) {
         console.log('Patient added successfully');
+        navigate('/dashboard')
+       
       } else {
         throw new Error('Failed to add patient');
       }
@@ -188,7 +193,7 @@ const AddPatient: React.FC = () => {
                     <option value="">Select MD Doctor</option>
                     {MDdoctors.length > 0 ? (
                       MDdoctors.map((doctor) => (
-                        <option key={doctor.id} value={doctor.id}>
+                        <option key={doctor.id} value={doctor.firstName} >
                           {doctor.firstName} {doctor.lastName}
                         </option>
                       ))

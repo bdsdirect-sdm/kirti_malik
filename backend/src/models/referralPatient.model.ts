@@ -1,10 +1,10 @@
-import { DataTypes,Model } from "sequelize";
+import { DataTypes,DateOnlyDataType,Model } from "sequelize";
 import sequelize from "../config/db";
 
 
 class ReferralPatient extends Model{
     public id!:number;
-    public dob!:Date;
+    public dob!:DateOnlyDataType;
     public email!:string;
     public phoneNumber!:string;
     public firstName!:string;
@@ -17,6 +17,7 @@ class ReferralPatient extends Model{
     public MedicalDocuments!:string;
     public status!:string;
 
+
 }
 
 ReferralPatient.init(
@@ -27,7 +28,7 @@ ReferralPatient.init(
             primaryKey:true
         },
         dob:{
-            type:DataTypes.DATE,
+            type:DataTypes.DATEONLY,
             allowNull:false
         },
         email:{
@@ -73,7 +74,8 @@ ReferralPatient.init(
         status:{
             type:DataTypes.STRING,
             defaultValue:'placed'
-        }
+        },
+        
 
     },{
         sequelize, tableName:'referralpatients'

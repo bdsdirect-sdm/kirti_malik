@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:#35c0e4
+    background-color:#34aadc
 }
 
 .logo {
@@ -30,7 +30,6 @@
     background-color: #ffffff;
 }
 
-/* Form and form elements styling */
 .register-form {
     width: 100%;
     max-width: 400px;
@@ -73,35 +72,49 @@ select {
 }
 
 .submit-btn:hover {
-    background-color: #45a049;
+    background-color:#34aadc;
 }
 
-/* Main container for dashboard */
-.container-fluid {
+/*dashboard css*/
+
+/* .container-fluid {
     font-family: Arial, sans-serif;
     color: #333;
     background-color: #f8f9fa;
     height: 100vh;
     padding: 0;
     margin: 0;
-}
+    border: 2px solid black;
+} */
 
 .layout-container {
     padding-top: 60px;
-   
+    max-width: 100%;
+    /* margin-right: 0%; */  
 }
 
 .layout-navbar {
-    height: 60px;
+    height: 100px;
+    position: fixed;
+    background-color: #fff;
+    border-bottom: 1px solid  #ECF1F3;
+
 }
+.navbar1{
+
+    margin-top: 35px;
+    margin-bottom: 0%;
+    align-items: center;
+}
+
 
 .sidebar {
     position: fixed;
-    top: 60px;
+    top: 80px;
     bottom: 0;
     left: 0;
     padding-top: 20px;
-    background-color: #f8f9fa;
+  
     height: 100%;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
@@ -128,6 +141,8 @@ select {
 .content-area {
     margin-left: 25%;
     padding: 20px;
+    background-color: #34aadc;
+  
 }
 
 h1 {
@@ -245,13 +260,29 @@ form {
 
 .dashboard {
    
-    padding: 20px;
+    /* padding: 20px; */
+    padding-top: 60px;
+    
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Optional shadow for depth */
+    
+   
 }
 
 .dashboard .card {
     background-color: #fff;
    
+}
+.pt-5{
+    background-color:#45a049;
+   
+}
+.content-area{
+    background-color: #ECF1F3;
+    margin-right: 20px;
+     margin-right: 10px;
+     height: 120vh;
+}
+.custom-button{
+    background-color: #ccc;
+    border: 2px solid black;
 }

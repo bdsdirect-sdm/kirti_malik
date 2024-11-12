@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DoctorLogin from './login';
-import DoctorRegister from './doctorRegister';
-import VerifyOtp from './verifyOtp';
+import DoctorRegister from './Register';
+import VerifyOtp from './VerifyOtp';
 import ODdashboard from './ODdashboard';
 import AddPatient from './addPatient';
-import Layout from './layout';
+import Layout from './Layout';
 
 
 const App = () => {
