@@ -235,3 +235,14 @@ export const getPatientbyDoctor=async(req:any,res:any)=>{
         return res.status(500).json({message:"server error",error})
     }
    }
+
+export const addAppointment=async(req:any,res:any)=>
+{
+    try{
+
+    }
+    catch(error)
+    {
+
+    }
+}

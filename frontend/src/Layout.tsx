@@ -10,6 +10,7 @@ const Layout = () => {
 
  const[name,setName]=useState<any>('null')
  const DoctorId=localStorage.getItem('DoctorId')
+ const userType=localStorage.getItem('userType')
  useEffect(()=>{
    const fetchDoctorName=async()=>{
     try{
@@ -65,6 +66,11 @@ const Layout = () => {
             <ul className="list-unstyled">
               <li><Link to={`/dashboard/${DoctorId}`} className="sidebar-link">Dashboard</Link></li>
               <li><Link to="/patients" className="sidebar-link">Patient</Link></li>
+               {userType!=='OD' && (
+                  <li><Link to="/appointments" className="sidebar-link">Appointments</Link></li>
+               )} 
+                
+              
               <li><Link to="/doctors" className="sidebar-link">Doctors</Link></li>
               <li><Link to="/chat" className="sidebar-link">Chat</Link></li>
               <li><Link to="/staff" className="sidebar-link">Staff</Link></li>

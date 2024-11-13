@@ -10,6 +10,7 @@ import ForgotPassword from './ForgotPassword';
 import Patient from './Patient';
 import MDdoctors from './MDdoctors';
 import MainDashboard from './MainDashboard';
+import AddAppointment from './AddAppointment';
 
 
 
@@ -29,6 +30,8 @@ const App = () => {
           <Route path='add-patient/:DoctorId' element={<AddPatient/>}/>
           <Route path='patients' element={<Patient/>}/>
           <Route path='doctors' element={<MDdoctors/>}/>
+           <Route path='addAppointment' element={<AddAppointment/>}/>
+
        </Route>
     </Routes>
   );

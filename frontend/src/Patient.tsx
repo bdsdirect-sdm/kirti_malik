@@ -5,6 +5,7 @@ import { Table } from 'react-bootstrap';
 const Patient = () => {
 
   const[referredPatients,setReferredPatients]=useState<any[]>([]);
+  const[search,setSearch]=useState('')
   const DoctorId=localStorage.getItem('DoctorId')
 
    const fetchReferredPatients = async () => {
@@ -17,13 +18,24 @@ const Patient = () => {
   fetchReferredPatients();
 },[DoctorId])
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    // setCurrentPage(1);
+  };
  
+  
   return (
     <div>
       <div className='table-heading'>
-        Referred Patients
-
+        <h2>Referred Patients</h2>
       </div>
+
+       <input
+        type="text"
+        placeholder="Search by product name"
+        value={search}
+        onChange={handleSearch}
+      />
       <Table >
             <thead>
               <tr>

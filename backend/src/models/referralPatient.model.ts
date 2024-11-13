@@ -17,8 +17,9 @@ class ReferralPatient extends Model{
     public MedicalDocuments!:string;
     public status!:string;
     public patientId!:number;
-
-
+    public ReferredOn!:DateOnlyDataType;
+    public ReferredTo!:string;
+    public ReferredBy!:string;
 }
 
 ReferralPatient.init(
@@ -76,6 +77,7 @@ ReferralPatient.init(
             type:DataTypes.STRING,
             defaultValue:'placed'
         },
+     
         DoctorId:{
             type:DataTypes.INTEGER.UNSIGNED,
             allowNull:false,
