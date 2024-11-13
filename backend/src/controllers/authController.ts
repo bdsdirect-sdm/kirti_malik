@@ -236,10 +236,12 @@ export const getPatientbyDoctor=async(req:any,res:any)=>{
     }
    }
 
+   //to create an appointment for the patient
 export const addAppointment=async(req:any,res:any)=>
 {
+    
     try{
-
+          const appointment=await ReferralPatient.create
     }
     catch(error)
     {
