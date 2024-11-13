@@ -1,12 +1,15 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, {  useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Container, Row, Col, Navbar,Dropdown } from 'react-bootstrap';
 import './style.css';
+// import logo from "../public/"
 
 
 const Layout = () => {
 
  const[name,setName]=useState<any>('null')
+ const DoctorId=localStorage.getItem('DoctorId')
  useEffect(()=>{
    const fetchDoctorName=async()=>{
     try{
@@ -16,7 +19,7 @@ const Layout = () => {
     }
     catch(error)
     {
-     console.log('error fetchind doctor',error)
+     console.log('error fetching doctor',error)
     }
    }
    fetchDoctorName();
@@ -31,7 +34,7 @@ const Layout = () => {
             <Col md={6}>
             
               <Navbar.Brand className='eye-text'>
-                <img src='logo.png' alt='image' height='50' width='50'/> Eye Refer</Navbar.Brand>
+                <img src='/logo.png' alt='image' height='50' width='50'/> Eye Refer</Navbar.Brand>
             </Col>
             <Col md={6} className="text-end">
             
@@ -57,10 +60,10 @@ const Layout = () => {
      
       <Row className="pt-8">
         
-        <Col md={2} className="sidebar">
+        <Col sm={2} className="sidebar">
           <div className="sidebar-content">
             <ul className="list-unstyled">
-              <li><Link to="/dashboard" className="sidebar-link">Dashboard</Link></li>
+              <li><Link to={`/dashboard/${DoctorId}`} className="sidebar-link">Dashboard</Link></li>
               <li><Link to="/patients" className="sidebar-link">Patient</Link></li>
               <li><Link to="/doctors" className="sidebar-link">Doctors</Link></li>
               <li><Link to="/chat" className="sidebar-link">Chat</Link></li>
@@ -70,7 +73,7 @@ const Layout = () => {
         </Col>
 
         
-        <Col md={10} className="content-area">
+        <Col sm={10} className="content-area">
           <Outlet />
         </Col>
       </Row>

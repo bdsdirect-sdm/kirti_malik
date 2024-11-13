@@ -26,10 +26,13 @@ const DoctorLogin = () => {
      
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('doctorName',response.data.doctor.firstName)
+      const DoctorId=response.data.doctor.id
+      localStorage.setItem('DoctorId',DoctorId)
      
-      localStorage.setItem('userType',response.data.doctor.userType);
+      const type=response.data.doctor.userType;
+      localStorage.setItem('userType',type);
      
-      navigate('/dashboard'); 
+      navigate(`/dashboard/${DoctorId}`); 
     } catch (error) {
       console.error(error);
       alert('Login failed!');

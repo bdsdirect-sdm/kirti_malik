@@ -1,6 +1,6 @@
 import { DataTypes,DateOnlyDataType,Model } from "sequelize";
 import sequelize from "../config/db";
-
+import Doctor from "./doctor.model";
 
 class ReferralPatient extends Model{
     public id!:number;
@@ -16,6 +16,7 @@ class ReferralPatient extends Model{
     public MDdoctor!:string;
     public MedicalDocuments!:string;
     public status!:string;
+    public patientId!:number;
 
 
 }
@@ -75,11 +76,20 @@ ReferralPatient.init(
             type:DataTypes.STRING,
             defaultValue:'placed'
         },
-        
-
+        DoctorId:{
+            type:DataTypes.INTEGER.UNSIGNED,
+            allowNull:false,
+            references:{
+                model: Doctor,
+                key:'id'
+            }
+        }
     },{
         sequelize, tableName:'referralpatients'
     }
 )
+
+
+
 
 export default ReferralPatient;

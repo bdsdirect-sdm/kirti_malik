@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const validationSchema = Yup.object({
@@ -37,6 +37,7 @@ const initialValues = {
 
 const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
+  const{DoctorId}=useParams();
 
   const navigate=useNavigate();
 
@@ -72,16 +73,16 @@ const AddPatient: React.FC = () => {
     console.log(";;;;;;;;;;",values.MedicalDocuments)
 
     try {
-      const response = await axios.post('http://localhost:8080/app/addPatient', formData, {
+      const response = await axios.post(`http://localhost:8080/app/addPatient/${DoctorId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("response",response)
+     
 
       if (response.status === 201) {
         console.log('Patient added successfully');
-        navigate('/dashboard')
+        navigate(`/dashboard/${DoctorId}`)
        
       } else {
         throw new Error('Failed to add patient');
@@ -94,7 +95,7 @@ const AddPatient: React.FC = () => {
     const handleFileChange = (event: any, setFieldValue: any) => {
     const file = event.currentTarget.files[0];
     if (file) {
-      // Update Formik's field value with the file object
+     
       setFieldValue(event.currentTarget.name, file);
     }
   };
@@ -193,7 +194,7 @@ const AddPatient: React.FC = () => {
                     <option value="">Select MD Doctor</option>
                     {MDdoctors.length > 0 ? (
                       MDdoctors.map((doctor) => (
-                        <option key={doctor.id} value={doctor.firstName} >
+                        <option key={doctor.id} value={doctor.firstName + " " + doctor.lastName} >
                           {doctor.firstName} {doctor.lastName}
                         </option>
                       ))

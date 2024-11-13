@@ -8,6 +8,7 @@ const ODdashboard = () => {
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState({ referralsPlaced: 0, referralsCompleted: 0, mdCount: 0 });
   const[referredPatients,setReferredPatients]=useState<any[]>([]);
+  const DoctorId=localStorage.getItem('DoctorId')
 
   useEffect(() => {
     fetchDashboardData();
@@ -28,7 +29,7 @@ const ODdashboard = () => {
  
 
 const handleAddPatient=async()=>{
-  navigate('/add-patient')
+  navigate(`/add-patient/${DoctorId}`)
 }
 
   return (
@@ -97,7 +98,11 @@ const handleAddPatient=async()=>{
                   <td>{patient.returnPatient}</td>
                   <td></td> 
                   <td></td> 
-                  <td></td> 
+                   <td className="actions">
+                {/* <button onClick={() => navigate(`/editProduct/${product.id}`)}>Edit</button> */}
+                {/* <button onClick={() => handleDelete(product.id)}>Delete</button>
+                <button onClick={() => navigate(`/viewProduct/${product.id}`)}>View</button> */}
+              </td>
                 </tr>
               ))}
             </tbody>

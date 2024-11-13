@@ -25,8 +25,8 @@ const App = () => {
       
          { /*routes for the dashboard page */}
        <Route path='/' element={<Layout/>}>
-          <Route path='dashboard' element={<MainDashboard/>}/>
-          <Route path='add-patient' element={<AddPatient/>}/>
+          <Route path='dashboard/:DoctorId' element={<MainDashboard/>}/>
+          <Route path='add-patient/:DoctorId' element={<AddPatient/>}/>
           <Route path='patients' element={<Patient/>}/>
           <Route path='doctors' element={<MDdoctors/>}/>
        </Route>

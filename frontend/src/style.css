@@ -152,10 +152,10 @@ select {
 }
 
 .content-area {
-    margin-left: 15%;
-    padding: 20px;
-    background-color: #34aadc;
-  
+    margin-left: 17%;
+    margin-top: 50%;
+    padding: 100px;
+   
   
 }
 
@@ -243,10 +243,12 @@ form {
 
 /* Table styling */
 .table {
+    padding-top: 10px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     overflow-x: auto;
+    border: 2px solid black;
 }
 
 .table thead {
@@ -254,7 +256,11 @@ form {
     color: white;
     font-size: 16px;
 }
-
+.table-heading{
+    display: flex;
+    font-size: large;
+    margin-bottom: 60px;
+}
 .table th,
 .table td {
     padding: 12px;
@@ -273,7 +279,7 @@ form {
 }
 
 .dashboard {
-    padding-top: 60px;
+    padding-top: 40px;
     border-radius: 10px;
    
 }

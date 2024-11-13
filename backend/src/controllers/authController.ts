@@ -53,6 +53,7 @@ export const loginDoctor=async(req:any, res:any)=>{
         const{email,password}=req.body;
 
     const doctor=await Doctor.findOne({where:{email}})
+    
 
     if(!doctor || !(await bcrypt.compare(password,doctor.password)))
     {
@@ -118,7 +119,7 @@ export const verifyOtp=async(req:any,res:any)=>{
 
 
 export const addPatient = async (req:any, res:any) => {
-    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor } = req.body;
+    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor,DoctorId } = req.body;
 
     
     if (!req.file) {
@@ -126,6 +127,7 @@ export const addPatient = async (req:any, res:any) => {
     }
 
     const MedicalDocuments = req.file.path; 
+    
 
     try {
         const newPatient = await ReferralPatient.create({
@@ -140,7 +142,8 @@ export const addPatient = async (req:any, res:any) => {
             returnPatient,
             MDdoctor,
             MedicalDocuments,
-            status: 'placed'
+            status: 'placed',
+            DoctorId
         });
 
         res.status(201).json({ message: 'Patient added successfully', newPatient });
@@ -166,6 +169,27 @@ export const getODDashboardData = async (req: Request, res: Response) => {
   }
 };
 
+//to get the MD dashboard data
+
+export const getMDdashboard=async(req:Request,res:Response)=>{
+    try{
+       
+        
+            const referralsRecieved=await ReferralPatient.count({where:{status:'placed'}});
+           const referralsCompleted=await ReferralPatient.count({where:{status:'completed'}});
+            const totalDoctor=await Doctor.count();
+
+            res.status(500).json({referralsRecieved,referralsCompleted,totalDoctor})
+
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({message:'failed to recieve dashboard data'})
+    }
+
+
+}
+
 //to get the names of MD doctor on form
 
 export const getMDdoctor=async(req:any,res:any)=>{
@@ -187,7 +211,9 @@ export const getMDdoctor=async(req:any,res:any)=>{
 export const referralPatientList=async(req:any,res:any)=>{
     try{
         const patient=await ReferralPatient.findAll();
+        console.log("list====",patient)
         return res.status(201).json(patient)
+        
 
     }
     catch(error)
@@ -195,3 +221,17 @@ export const referralPatientList=async(req:any,res:any)=>{
         return res.status(400).json({message:'server errorr',error})
     }
 }
+
+//to fetch the patient according to the doctor selected
+
+export const getPatientbyDoctor=async(req:any,res:any)=>{
+    try{
+        
+        const patients=await ReferralPatient.findAll({where:{DoctorId:req.params.DoctorId}});
+        return res.status(200).json(patients);
+
+    }catch(error)
+    {
+        return res.status(500).json({message:"server error",error})
+    }
+   }

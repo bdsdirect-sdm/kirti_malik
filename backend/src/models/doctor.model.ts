@@ -1,5 +1,6 @@
 import { DataTypes,Model } from "sequelize";
 import sequelize from "../config/db";
+import ReferralPatient from "./referralPatient.model";
 
 class Doctor extends Model{
     public id!:number;
@@ -17,7 +18,7 @@ class Doctor extends Model{
 Doctor.init(
     {
         id:{
-           type:DataTypes.INTEGER,
+           type:DataTypes.INTEGER.UNSIGNED,
            autoIncrement:true,
            primaryKey:true
         },
@@ -58,5 +59,8 @@ Doctor.init(
         sequelize, tableName:'doctors'
     }
 )
+
+
+Doctor.hasMany(ReferralPatient, { foreignKey: 'DoctorId' });
 
 export default Doctor;
