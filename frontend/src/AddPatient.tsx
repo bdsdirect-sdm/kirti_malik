@@ -78,7 +78,7 @@ const AddPatient: React.FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-     
+     console.log("reeeeee",response.data)
 
       if (response.status === 201) {
         console.log('Patient added successfully');
@@ -194,7 +194,7 @@ const AddPatient: React.FC = () => {
                     <option value="">Select MD Doctor</option>
                     {MDdoctors.length > 0 ? (
                       MDdoctors.map((doctor) => (
-                        <option key={doctor.id} value={doctor.firstName + " " + doctor.lastName} >
+                        <option key={doctor.id} value={doctor.id} >
                           {doctor.firstName} {doctor.lastName}
                         </option>
                       ))

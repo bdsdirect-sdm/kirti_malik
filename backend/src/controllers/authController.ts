@@ -4,6 +4,7 @@ import ReferralPatient from "../models/referralPatient.model"
 import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
+import Appointments from "../models/appointment.model";
 
 
 //to regsiter the doctor as OD or MD
@@ -119,8 +120,10 @@ export const verifyOtp=async(req:any,res:any)=>{
 
 
 export const addPatient = async (req:any, res:any) => {
-    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor,DoctorId } = req.body;
-
+    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor } = req.body;
+    const ReferredTo=MDdoctor;
+    const ReferredBy=req.params.DoctorId;
+   
     
     if (!req.file) {
         return res.status(400).json({ message: 'Medical documents are required' });
@@ -143,7 +146,8 @@ export const addPatient = async (req:any, res:any) => {
             MDdoctor,
             MedicalDocuments,
             status: 'placed',
-            DoctorId
+            ReferredTo,
+            ReferredBy,
         });
 
         res.status(201).json({ message: 'Patient added successfully', newPatient });
@@ -227,7 +231,7 @@ export const referralPatientList=async(req:any,res:any)=>{
 export const getPatientbyDoctor=async(req:any,res:any)=>{
     try{
         
-        const patients=await ReferralPatient.findAll({where:{DoctorId:req.params.DoctorId}});
+        const patients=await ReferralPatient.findAll({where:{ReferredTo:req.params.DoctorId}});
         return res.status(200).json(patients);
 
     }catch(error)
@@ -239,12 +243,31 @@ export const getPatientbyDoctor=async(req:any,res:any)=>{
    //to create an appointment for the patient
 export const addAppointment=async(req:any,res:any)=>
 {
+    const{patientName,appointmentDate,appointmentType}=req.body;
     
+    const patient=await ReferralPatient.findOne({ 
+        where:{firstName:patientName},
+       
+    })
+    if (!patient) {
+            return res.status(404).json({
+                message: "Patient not found with the given name."
+            });
+        }
+
+        const patientId = patient.id; 
+    
+   
+    console.log("join tables=",patient)
+
     try{
-          const appointment=await ReferralPatient.create
+          const appointment=await Appointments.create({
+            patientName,appointmentDate,appointmentType,patientId
+          })
+          res.status(201).json({message:'appointment added successfully ',appointment})
     }
     catch(error)
     {
-
-    }
+         res.status(404).json({message:'error adding patient',error})
+    } 
 }

@@ -13,7 +13,7 @@ const MDdashboard = () => {
   console.log('eeeeeeee',DoctorId)
 
 const handleAddAppointment=async()=>{
-  navigate('/addAppointment')
+  navigate(`/addAppointment/${DoctorId}`)
 
 }
 useEffect(()=>{

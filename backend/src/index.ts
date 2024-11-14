@@ -16,7 +16,7 @@ const port=process.env.PORT
 const syncDatabase=async()=>{
     try{
 
-        await sequelize.sync({force:false});
+        await sequelize.sync({alter:true});
         console.log("database synced successfully")
 
     }

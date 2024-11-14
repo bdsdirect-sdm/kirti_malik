@@ -61,6 +61,4 @@ Doctor.init(
 )
 
 
-Doctor.hasMany(ReferralPatient, { foreignKey: 'DoctorId' });
-
 export default Doctor;
