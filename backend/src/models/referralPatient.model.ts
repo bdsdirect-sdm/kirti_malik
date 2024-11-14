@@ -20,6 +20,8 @@ class ReferralPatient extends Model{
     public ReferredOn!:DateOnlyDataType;
     public ReferredTo!:string;
     public ReferredBy!:string;
+    public consultationDate!:DateOnlyDataType;
+    public surgeryDate!:DateOnlyDataType;
 }
 
 ReferralPatient.init(
