@@ -37,6 +37,7 @@ const initialValues = {
 
 const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
+  const[doctorId,setDoctorId]=useState('')
   const{DoctorId}=useParams();
 
   const navigate=useNavigate();
@@ -47,6 +48,8 @@ const AddPatient: React.FC = () => {
       try {
         const response = await axios.get('http://localhost:8080/app/getmddoctor');
         setMDdoctors(response.data);
+        setDoctorId(response.data.id)
+
       } catch (error) {
         console.error('Error fetching doctors:', error);
       }
@@ -70,10 +73,10 @@ const AddPatient: React.FC = () => {
     if (values.MedicalDocuments) {
       formData.append('MedicalDocuments', values.MedicalDocuments);
     }
-    console.log(";;;;;;;;;;",values.MedicalDocuments)
+   
 
     try {
-      const response = await axios.post(`http://localhost:8080/app/addPatient/${DoctorId}`, formData, {
+      const response = await axios.post('http://localhost:8080/app/addPatient', {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

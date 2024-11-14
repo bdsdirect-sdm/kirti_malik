@@ -47,7 +47,8 @@ const DoctorRegister = () => {
     <div className="register-container">
     
       <div className="left-section">
-        <img src="eye.jpg" alt="Your Icon" className="logo" />
+        <img src="/logo.png" alt="Your Icon" className="logo" />
+        <h1>EYE REFER</h1>
       </div>
 
       <div className="right-section">

@@ -119,8 +119,9 @@ export const verifyOtp=async(req:any,res:any)=>{
 
 
 export const addPatient = async (req:any, res:any) => {
-    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor,DoctorId } = req.body;
-
+    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor } = req.body;
+    const referredTo=await Doctor.findOne({where:{name:MDdoctor}});
+   
     
     if (!req.file) {
         return res.status(400).json({ message: 'Medical documents are required' });
@@ -143,7 +144,8 @@ export const addPatient = async (req:any, res:any) => {
             MDdoctor,
             MedicalDocuments,
             status: 'placed',
-            DoctorId
+            ReferredTo:referredTo.id,
+            ReferredBy,
         });
 
         res.status(201).json({ message: 'Patient added successfully', newPatient });
