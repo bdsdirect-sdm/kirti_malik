@@ -91,7 +91,7 @@ const handleAddPatient=async()=>{
                   <td>{patient.firstName} {patient.lastName}</td>
                   <td>{patient.dob}</td>
                   <td>{patient.createdAt}</td>
-                   <td>{patient.MDdoctor}</td>
+                   <td>{patient.Doctor?.firstName}{patient.Doctor?.lastName}</td>
                     <td></td> 
                     <td></td> 
                   <td>{patient.status}</td>
