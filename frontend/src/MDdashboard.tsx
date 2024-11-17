@@ -5,12 +5,23 @@ import axios from 'axios';
 import { useNavigate,  } from 'react-router-dom';
 
 
+type DashboardData = {
+    referralsRecieved: number;
+    referralsCompleted: number;
+    totalDoctor:number
+};
 const MDdashboard = () => {
 
   const navigate=useNavigate();
   const[referredPatientsList,setReferredPatients]=useState<any[]>([]);
+  const [dashboardData, setDashboardData] = useState<DashboardData>({
+        referralsRecieved: 0,
+        referralsCompleted: 0,
+        totalDoctor: 0,
+       
+    });
   const DoctorId=localStorage.getItem('DoctorId')
-  console.log('eeeeeeee',DoctorId)
+ 
 
 const handleAddAppointment=async()=>{
   navigate(`/addAppointment/${DoctorId}`)
@@ -18,6 +29,7 @@ const handleAddAppointment=async()=>{
 }
 useEffect(()=>{
   fetchReferredPatients();
+  fetchDashboardData();
 },[])
 
   const fetchReferredPatients = async () => {
@@ -26,14 +38,20 @@ useEffect(()=>{
     setReferredPatients(response.data);
   };
 
+  const fetchDashboardData=async()=>{
+    const response=await axios.get(`http://localhost:8080/app/MDdashboardData/${DoctorId}`)
+    console.log("!!!!!!!",response.data)
+    setDashboardData(response.data);
+  }
+
   return (
     <div>
       <Row className="mb-4">
             <Col>
               <Card>
                 <Card.Body>
-                  <Card.Title>Referrals Placed</Card.Title>
-                  {/* <Card.Text>{dashboardData.referralsPlaced}</Card.Text> */}
+                  <Card.Title>Referrals Recieved</Card.Title>
+                  <Card.Text>{dashboardData.referralsRecieved}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -41,7 +59,7 @@ useEffect(()=>{
               <Card>
                 <Card.Body>
                   <Card.Title>Referrals Completed</Card.Title>
-                  {/* <Card.Text>{dashboardData.referralsCompleted}</Card.Text> */}
+                  <Card.Text>{dashboardData.referralsCompleted}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -49,7 +67,7 @@ useEffect(()=>{
               <Card>
                 <Card.Body>
                   <Card.Title>MD Count</Card.Title>
-                  {/* <Card.Text>{dashboardData.mdCount}</Card.Text> */}
+                  <Card.Text>{dashboardData.totalDoctor}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -82,9 +100,9 @@ useEffect(()=>{
                   <td>{patient.firstName} {patient.lastName}</td>
                   <td>{patient.dob}</td>
                   <td>{patient.createdAt}</td>
-                   <td>{patient.MDdoctor}</td>
-                    <td></td> 
-                    <td></td> 
+                   <td> {patient.Doctor?.firstName} {patient.Doctor?.lastName}</td>
+                    <td>{patient.consultationDate || '-'}</td> 
+                    <td>{patient.SurgeryDate || '-'}</td> 
                   <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
                   <td></td> 

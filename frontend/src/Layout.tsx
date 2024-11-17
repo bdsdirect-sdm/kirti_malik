@@ -67,7 +67,7 @@ const Layout = () => {
               <li><Link to={`/dashboard/${DoctorId}`} className="sidebar-link">Dashboard</Link></li>
               <li><Link to="/patients" className="sidebar-link">Patient</Link></li>
                {userType!=='OD' && (
-                  <li><Link to="/appointments" className="sidebar-link">Appointments</Link></li>
+                  <li><Link to={`/appointment/${DoctorId}`} className="sidebar-link">Appointments</Link></li>
                )} 
                 
               

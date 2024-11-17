@@ -15,9 +15,9 @@ class ReferralPatient extends Model {
   public returnPatient!: string;
   public MDdoctor!: string;
   public MedicalDocuments!: string;
-  public status!: string;
-  public ReferredTo!: number;
-  public ReferredBy!: number;
+  public status!: "pending"| "scheduled"| "completed"| "cancelled";
+  public referredTo!: number;
+  public referredBy!: number;
 }
 
 ReferralPatient.init(
@@ -63,20 +63,18 @@ ReferralPatient.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    MDdoctor: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     MedicalDocuments: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     status: {
-      type: DataTypes.STRING,
-      defaultValue: "placed",
+     type: DataTypes.ENUM("pending", "scheduled", "completed", "cancelled"),
+  allowNull: false,
+  defaultValue: "pending",
+     
     },
  
-    ReferredTo: {
+    referredTo: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
@@ -84,13 +82,10 @@ ReferralPatient.init(
         key: "id",
       },
     },
-    ReferredBy: {
+    referredBy: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
-      references: {
-        model: Doctor,
-        key: "id",
-      },
+    
     },
   },
   {
@@ -99,7 +94,7 @@ ReferralPatient.init(
   }
 );
  
-Doctor.hasMany(ReferralPatient, { foreignKey: "ReferredTo"});
-ReferralPatient.belongsTo(Doctor, { foreignKey: "ReferredTo" });
+Doctor.hasMany(ReferralPatient, { foreignKey: "referredTo"});
+ReferralPatient.belongsTo(Doctor, { foreignKey: "referredTo" });
 
 export default ReferralPatient;

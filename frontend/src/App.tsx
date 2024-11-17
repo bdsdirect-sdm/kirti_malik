@@ -11,6 +11,7 @@ import Patient from './Patient';
 import MDdoctors from './MDdoctors';
 import MainDashboard from './MainDashboard';
 import AddAppointment from './AddAppointment';
+import AppointmentPage from './AppointmentPage';
 
 
 
@@ -30,7 +31,7 @@ const App = () => {
           <Route path='add-patient/:DoctorId' element={<AddPatient/>}/>
           <Route path='patients' element={<Patient/>}/>
           <Route path='doctors' element={<MDdoctors/>}/>
-           <Route path='addAppointment/:DoctorId' element={<AddAppointment/>}/>
+           <Route path='addAppointment' element={<AddAppointment/>}/>
 
        </Route>
     </Routes>
