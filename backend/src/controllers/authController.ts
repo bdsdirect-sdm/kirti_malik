@@ -259,26 +259,7 @@ export const addAppointment=async(req:any,res:any)=>
 {
     const{patientId,appointmentDate,type,consultNote}=req.body;
     
-    const patient=await ReferralPatient.findOne({ 
-        where:{firstName:patientName},
-       
-    })
-    if (!patient) {
-            return res.status(404).json({
-                message: "Patient not found with the given name."
-            });
-        }
-
-        const patientId = patient.id; 
-    
-   
-    console.log("join tables=",patient)
-
-    try{
-          const patient = await ReferralPatient.findByPk(patientId);
-    if (!patient) {
-      return res.status(404).json({ message: "Patient not found" });
-    }
+  
 
    
     const appointment = await Appointment.create({
