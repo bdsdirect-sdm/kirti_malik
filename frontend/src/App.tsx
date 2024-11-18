@@ -12,6 +12,8 @@ import MDdoctors from './MDdoctors';
 import MainDashboard from './MainDashboard';
 import AddAppointment from './AddAppointment';
 import AppointmentPage from './AppointmentPage';
+import ViewPatientAppointments from './ViewAppointment';
+import Chat from './Chat';
 
 
 
@@ -30,8 +32,10 @@ const App = () => {
           <Route path='add-patient/:DoctorId' element={<AddPatient/>}/>
           <Route path='patients' element={<Patient/>}/>
           <Route path='doctors' element={<MDdoctors/>}/>
-           <Route path='addAppointment' element={<AddAppointment/>}/>
-           <Route path='appointment' element={<AppointmentPage/>}/>
+           <Route path='addAppointment/:DoctorId' element={<AddAppointment/>}/>
+           <Route path='appointment/:DoctorId' element={<AppointmentPage/>}/>
+           <Route path='viewAppointment' element={<ViewPatientAppointments/>}/>
+           <Route path='chat' element={<Chat/>}/>
 
        </Route>
     </Routes>

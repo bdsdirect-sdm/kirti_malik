@@ -26,8 +26,6 @@ const ODdashboard = () => {
     setReferredPatients(response.data);
   };
 
- 
-
 const handleAddPatient=async()=>{
   navigate(`/add-patient/${DoctorId}`)
 }

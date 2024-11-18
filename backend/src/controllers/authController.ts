@@ -4,7 +4,7 @@ import ReferralPatient from "../models/referralPatient.model"
 import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
-import Appointment from "../models/appointment.model";
+import Appointments from "../models/appointment.model";
 
 
 //to regsiter the doctor as OD or MD
@@ -120,10 +120,10 @@ export const verifyOtp=async(req:any,res:any)=>{
 
 
 export const addPatient = async (req:any, res:any) => {
-    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, referredTo } = req.body;
+    const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor } = req.body;
+    const ReferredTo=MDdoctor;
+    const ReferredBy=req.params.DoctorId;
    
-    const referredBy=req.params.DoctorId;
-    console.log("==========",Doctor);
     
     if (!req.file) {
         return res.status(400).json({ message: 'Medical documents are required' });
@@ -144,9 +144,9 @@ export const addPatient = async (req:any, res:any) => {
             laterality,
             returnPatient,
             MedicalDocuments,
-            status: 'pending',
-            referredTo,
-            referredBy,
+            status: 'placed',
+            ReferredTo,
+            ReferredBy,
         });
 
         console.log("======",req.body)
@@ -234,84 +234,112 @@ export const referralPatientList = async (req: any, res: any) => {
 
 //to fetch the patient according to the doctor selected
 
-export const getPatientByDoctor = async (req: any, res: any) => {
-    try {
-        const DoctorId = req.params.DoctorId;
+export const getPatientbyDoctor=async(req:any,res:any)=>{
+    try{
+        
+        const patients=await ReferralPatient.findAll({where:{ReferredTo:req.params.DoctorId}});
+        return res.status(200).json(patients);
 
-        const patients = await ReferralPatient.findAll({
-            where: { referredTo: DoctorId },
-            include: [
-                {
-                    model: Doctor,
-                    attributes: ['id', 'firstName', 'lastName'],
-                },
-            ],
-        });
-
-        res.status(200).json(patients);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+    }catch(error)
+    {
+        return res.status(500).json({message:"server error",error})
     }
 };
 
    //to create an appointment for the patient
-export const addAppointment=async(req:any,res:any)=>
-{
-    try{
-    const{patientId,appointmentDate,type,consultNote}=req.body;
-    
-  
 
-   
-    const appointment = await Appointment.create({
-      patientId,
-      appointmentDate,
-      type,
-      consultNote, 
+
+export const addAppointment = async (req: any, res: any) => {
+  
+  const { patientId, appointmentDate, appointmentType, } = req.body;
+
+  try {
+  
+    const patient = await ReferralPatient.findByPk(patientId);
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found." });
+    }
+
+  const doctor=req.params.DoctorId;
+    const appointment = await Appointments.create({
+      patientId, 
+      appointmentDate, 
+      appointmentType, 
+      doctor
+      
     });
 
     
-    res.status(201).json({
+    return res.status(201).json({
       message: "Appointment added successfully",
       appointment,
     });
-    }
-    catch(error)
-    {
-          console.error("Error adding appointment:", error);
-    res.status(500).json({ message: "Server error", error });
-    }
-}
+
+  } catch (error) {
+    console.error("Error adding appointment:", error);
+    return res.status(500).json({
+      message: "Error adding appointment",
+      error,
+    });
+  }
+};
 
 //to get all appointments on appointment page
 
-export const getAppointments = async (req: any, res: any) => {
-  const DoctorId = req.params.DoctorId;
+
+
+export const getAllAppointments = async (req: any, res: any) => {
   try {
-    const appointments = await Appointment.findAll({
-      where: { "$ReferralPatient.referredTo$": DoctorId },
-      attributes: ["id", "patientId", "appointmentDate", "type", "consultNote", "createdAt", "updatedAt"],
-      include: [
-        {
-          model: ReferralPatient,
-          as: "ReferralPatient",
-          attributes: ["firstName", "lastName", "dob", "status"],
-        },
-      ],
+   
+    const appointments = await Appointments.findAll({
+        where:{doctor:req.params.DoctorId},
+      include: {
+        model: ReferralPatient, 
+        attributes: ['firstName', 'lastName', 'email','status' ], 
+      },
     });
+    if (appointments.length === 0) {
+      return res.status(404).json({ message: 'No appointments found.' });
+    }
+
+    
+    return res.status(200).json({ appointments });
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+    return res.status(500).json({
+      message: 'Error fetching appointments',
+      error,
+    });
+  }
+};
+
+// to view the appointment of particular patient
+
+
+export const getAppointmentsByPatient = async (req: any, res: any) => {
+  try {
+    const patientId  = req.params.PatientId;
 
    
-    const formattedAppointments = appointments.map((appointment: any) => ({
-      id: appointment.id,
-      patientName: `${appointment.ReferralPatient?.firstName || ""} ${appointment.ReferralPatient?.lastName || ""}`,
-      dob: appointment.ReferralPatient?.dob || "N/A",
-      type: appointment.type,
-      status: appointment.ReferralPatient?.status || "N/A",
-    }));
+    const appointments = await Appointments.findAll({
+      where: { patientId },
+      include: {
+        model: ReferralPatient,
+        attributes: ['firstName', 'lastName', 'email'],
+      },
+    });
 
-    res.status(200).json(formattedAppointments);
+    if (appointments.length === 0) {
+      return res.status(404).json({ message: 'No appointments found for this patient.' });
+    }
+
+    return res.status(200).json({ appointments });
   } catch (error) {
-    console.error("Error fetching appointments:", error);
-    res.status(500).json({ message: "Failed to fetch appointments" });
+    console.error('Error fetching appointments for patient:', error);
+    return res.status(500).json({
+      message: 'Error fetching appointments for patient',
+      error,
+    });
   }
 };

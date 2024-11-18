@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+
 import sequelize from "../config/db";
 import Doctor from "./doctor.model";
 
@@ -15,9 +16,9 @@ class ReferralPatient extends Model {
   public returnPatient!: string;
   public MDdoctor!: string;
   public MedicalDocuments!: string;
-  public status!: "pending"| "scheduled"| "completed"| "cancelled";
-  public referredTo!: number;
-  public referredBy!: number;
+  public status!: string;
+  public ReferredTo!: number;
+  public ReferredBy!: number;
 }
 
 ReferralPatient.init(
@@ -63,18 +64,20 @@ ReferralPatient.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    MDdoctor: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     MedicalDocuments: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     status: {
-     type: DataTypes.ENUM("pending", "scheduled", "completed", "cancelled"),
-  allowNull: false,
-  defaultValue: "pending",
-     
+      type: DataTypes.STRING,
+      defaultValue: "placed",
     },
  
-    referredTo: {
+    ReferredTo: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
@@ -82,10 +85,13 @@ ReferralPatient.init(
         key: "id",
       },
     },
-    referredBy: {
+    ReferredBy: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
-    
+      references: {
+        model: Doctor,
+        key: "id",
+      },
     },
   },
   {
@@ -94,7 +100,7 @@ ReferralPatient.init(
   }
 );
  
-Doctor.hasMany(ReferralPatient, { foreignKey: "referredTo"});
-ReferralPatient.belongsTo(Doctor, { foreignKey: "referredTo" });
+Doctor.hasMany(ReferralPatient, { foreignKey: "ReferredTo"});
+ReferralPatient.belongsTo(Doctor, { foreignKey: "ReferredTo" });
 
 export default ReferralPatient;

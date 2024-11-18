@@ -3,12 +3,20 @@ import { Table, Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+
+type ReferralPatient={
+  firstName:string,
+  lastName:string,
+  email:string,
+  status:string,
+}
 type Appointment = {
   id: number;
-  patientName: string;
-  dob: string;
+  appointmentDate:string;
+  appointmentType:string;
   type: string;
   status: string;
+  ReferralPatient:ReferralPatient
 };
 
 const AppointmentPage: React.FC = () => {
@@ -25,8 +33,11 @@ const AppointmentPage: React.FC = () => {
       const response = await axios.get(
         `http://localhost:8080/app/getAppointments/${DoctorId}`
       );
-      console.log("hiuhuuh",response.data)
-      setAppointments(response.data);
+      console.log("hiuhuuh",response.data.appointments)
+      setAppointments(response.data.appointments);
+      // const appointmentId=response.data.appointments[0].id;
+      // localStorage.setItem('appointmentId',appointmentId)
+      // console.log("idddddd",appointmentId)
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
@@ -51,7 +62,7 @@ const AppointmentPage: React.FC = () => {
   };
 
   const handleView = (patientId: number) => {
-    navigate(`/viewPatient/${patientId}`); 
+    navigate('/viewAppointment'); 
   };
 
   const handleEdit = (patientId: number) => {
@@ -65,7 +76,7 @@ const AppointmentPage: React.FC = () => {
         <thead>
           <tr>
             <th>Patient Name</th>
-            <th>Date of Birth</th>
+            <th>Date </th>
             <th>Type</th>
             <th>Status</th>
             <th>Complete Appointment</th>
@@ -76,10 +87,10 @@ const AppointmentPage: React.FC = () => {
         <tbody>
           {appointments.map((appointment) => (
             <tr key={appointment.id}>
-              <td>{appointment.patientName}</td>
-              <td>{appointment.dob}</td>
-              <td>{appointment.type}</td>
-              <td>{appointment.status}</td>
+              <td>{appointment.ReferralPatient.firstName}{appointment.ReferralPatient.lastName}</td>
+              <td>{appointment.appointmentDate}</td>
+              <td>{appointment.appointmentType}</td>
+              <td>{appointment.ReferralPatient.status}</td>
               <td>
                 {appointment.status !== "completed" && (
                   <Button
