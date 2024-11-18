@@ -61,6 +61,4 @@ Doctor.init(
 );
 
 
-
-
 export default Doctor;

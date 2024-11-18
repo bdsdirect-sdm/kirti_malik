@@ -1,55 +1,56 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes,DateOnlyDataType,HasMany,Model } from "sequelize";
 import sequelize from "../config/db";
 import ReferralPatient from "./referralPatient.model";
+import Doctor from "./doctor.model";
 
-class Appointment extends Model {
-  public id!: number;
-  public patientId!: number;
-  public appointmentDate!: Date;
-  public type!: string;
-  public consultNote!:string;
-
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+class Appointments extends Model{
+    public id!:number;
+    public appointmentDate!:Date;
+    public appointmentType!:'consultation' | 'surgery';
+    public patientId!:number
+    public doctor!:number
 }
-
-Appointment.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    patientId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-      references: {
-        model: ReferralPatient,
-        key: "id",
+Appointments.init(
+    {
+        id:{
+           type:DataTypes.INTEGER.UNSIGNED,
+           autoIncrement:true,
+           primaryKey:true
+        },
+      appointmentDate:{
+        type:DataTypes.DATEONLY,
+        allowNull:true
       },
-    },
-    appointmentDate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-    consultNote:{
-      type:DataTypes.STRING,
-      allowNull:true,
-    },
-    type: {
-      type: DataTypes.ENUM("consultation", "surgery"),
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    tableName: "appointments",
-  }
-);
+        appointmentType:{
+            type:DataTypes.ENUM('consultation','surgery'),
+            allowNull:false
+        },
+        patientId:{
+            type:DataTypes.INTEGER.UNSIGNED,
+            allowNull:false,
+            references:{
+                model:ReferralPatient,
+                key:'id'
+            },
+        },
+        doctor:{
+          type:DataTypes.INTEGER.UNSIGNED,
+          allowNull:false,
+          references:{
+            model:Doctor,
+            key:'id'
+          }
+        }
+    }
+    ,{
+        sequelize, tableName:'appointments'
+    }
+)
 
+Doctor.hasMany(Appointments,{foreignKey:"doctor"})
+Appointments.belongsTo(Doctor,{foreignKey:"doctor"})
 
-ReferralPatient.hasMany(Appointment, { foreignKey: "patientId" });
-Appointment.belongsTo(ReferralPatient, { foreignKey: "patientId" });
+Appointments.belongsTo(ReferralPatient,{foreignKey:"patientId"})
+ReferralPatient.hasMany(Appointments,{foreignKey:"patientId"})
 
-export default Appointment;
+export default Appointments;

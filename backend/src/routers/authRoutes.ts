@@ -2,9 +2,11 @@ import express from 'express'
 import { addPatient,getODDashboardData,
 loginDoctor, registerDoctor, verifyOtp ,getMDdoctor,
 referralPatientList,getMDdashboard,
-getPatientByDoctor,
+getPatientbyDoctor,
 addAppointment,
-getAppointments} from '../controllers/authController';
+getAllAppointments,
+getAppointmentsByPatient,
+sendMessage} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -17,8 +19,10 @@ router.get('/oDdashboardData',getODDashboardData)
 router.get('/MDdashboardData/:DoctorId',getMDdashboard);
 router.get('/getmddoctor',getMDdoctor)
 router.get('/referralpatientlist',referralPatientList)
-router.get('/patient/:DoctorId',getPatientByDoctor)
-router.post('/addAppointment',addAppointment)
-router.get('/getAppointments/:DoctorId',getAppointments)
+router.get('/patient/:DoctorId',getPatientbyDoctor)
+router.post('/addAppointment/:DoctorId',addAppointment)
+router.get('/getAppointments/:DoctorId',getAllAppointments)
+router.get('/getAppointmentByPatient/:PatientId',getAppointmentsByPatient)
+router.post('/sendMessage',sendMessage)
 
 export default router;

@@ -12,6 +12,8 @@ import MDdoctors from './MDdoctors';
 import MainDashboard from './MainDashboard';
 import AddAppointment from './AddAppointment';
 import AppointmentPage from './AppointmentPage';
+import ViewPatientAppointments from './ViewAppointment';
+import Chat from './Chat';
 
 
 
@@ -25,7 +27,6 @@ const App = () => {
       <Route path='/verifyotp' element={<VerifyOtp/>}/>
       <Route path='forgotPassword' element={<ForgotPassword/>}/>
       
-         { /*routes for the dashboard page */}
        <Route path='/' element={<Layout/>}>
           <Route path='dashboard/:DoctorId' element={<MainDashboard/>}/>
           <Route path='add-patient/:DoctorId' element={<AddPatient/>}/>
@@ -33,6 +34,8 @@ const App = () => {
           <Route path='doctors' element={<MDdoctors/>}/>
            <Route path='addAppointment/:DoctorId' element={<AddAppointment/>}/>
            <Route path='appointment/:DoctorId' element={<AppointmentPage/>}/>
+           <Route path='viewAppointment' element={<ViewPatientAppointments/>}/>
+           <Route path='chat' element={<Chat/>}/>
 
        </Route>
     </Routes>

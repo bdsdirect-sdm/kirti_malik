@@ -1,13 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
+
+type Appointment={
+  appointmentDate:string
+}
 
 const Patient = () => {
 
   const[referredPatients,setReferredPatients]=useState<any[]>([]);
   const[search,setSearch]=useState('')
   const DoctorId=localStorage.getItem('DoctorId')
-
+  
    const fetchReferredPatients = async () => {
    const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
    console.log("datataaaaa",response.data)
@@ -65,7 +71,7 @@ const Patient = () => {
                   <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
                   <td></td> 
-                  <td></td> 
+                  <td><Link to="/chat">link</Link></td> 
                    <td className="actions">
                 {/* <button onClick={() => navigate(`/editProduct/${product.id}`)}>Edit</button> */}
                 {/* <button onClick={() => handleDelete(product.id)}>Delete</button>
