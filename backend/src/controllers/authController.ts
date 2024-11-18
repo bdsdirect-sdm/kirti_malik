@@ -257,6 +257,7 @@ export const getPatientByDoctor = async (req: any, res: any) => {
    //to create an appointment for the patient
 export const addAppointment=async(req:any,res:any)=>
 {
+    try{
     const{patientId,appointmentDate,type,consultNote}=req.body;
     
   
