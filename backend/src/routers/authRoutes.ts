@@ -5,7 +5,8 @@ referralPatientList,getMDdashboard,
 getPatientbyDoctor,
 addAppointment,
 getAllAppointments,
-getAppointmentsByPatient} from '../controllers/authController';
+getAppointmentsByPatient,
+sendMessage} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -13,7 +14,6 @@ const router=express.Router();
 router.post('/register',registerDoctor)
 router.post('/login',loginDoctor)
 router.post('/verifyOtp',verifyOtp)
-router.post('/addPatient/:DoctorId',upload.single('MedicalDocuments'),addPatient)
 router.post('/addPatient/:DoctorId',upload.single('MedicalDocuments'),addPatient)
 router.get('/oDdashboardData',getODDashboardData)
 router.get('/MDdashboardData/:DoctorId',getMDdashboard);
@@ -23,5 +23,6 @@ router.get('/patient/:DoctorId',getPatientbyDoctor)
 router.post('/addAppointment/:DoctorId',addAppointment)
 router.get('/getAppointments/:DoctorId',getAllAppointments)
 router.get('/getAppointmentByPatient/:PatientId',getAppointmentsByPatient)
+router.post('/sendMessage',sendMessage)
 
 export default router;

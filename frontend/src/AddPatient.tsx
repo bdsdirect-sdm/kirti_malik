@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import MDdoctors from './MDdoctors';
 
 
 const validationSchema = Yup.object({
@@ -32,12 +33,15 @@ const initialValues = {
   laterality: '',
   returnPatient: '',
   referredTo: '',
+
+  
   MedicalDocuments: null as File | null,
 };
 
 const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
   const{DoctorId}=useParams();
+  //console.log("doctorrrrrrr",DoctorId)
 
   const navigate=useNavigate();
 
@@ -66,13 +70,13 @@ const AddPatient: React.FC = () => {
     formData.append('laterality', values.laterality);
     formData.append('returnPatient', values.returnPatient);
     formData.append('referredTo', values.referredTo);
+    
 
     if (values.MedicalDocuments) {
       formData.append('MedicalDocuments', values.MedicalDocuments);
     }
-    console.log(";;;;;;;;;;",values.MedicalDocuments)
-    console.log(";;;;;;;;;;",values.MedicalDocuments)
-
+   
+   
     try {
       const response = await axios.post(`http://localhost:8080/app/addPatient/${DoctorId}`, formData, {
         headers: {
@@ -191,7 +195,7 @@ const AddPatient: React.FC = () => {
 
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>MD Doctor</BootstrapForm.Label>
-                  <Field as="select" name="referredTo" className="form-control">
+                  <Field as="select" name="ReferredTo" className="form-control">
                     <option value="">Select MD Doctor</option>
                     {MDdoctors.length > 0 ? (
                       MDdoctors.map((doctor) => (

@@ -1,7 +1,7 @@
 import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Container, Row, Col, Card, Table,  } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
 
 const ODdashboard = () => {
@@ -92,14 +92,12 @@ const handleAddPatient=async()=>{
                    <td>{patient.Doctor?.firstName}{patient.Doctor?.lastName}</td>
                     <td></td> 
                     <td></td> 
-                  <td>{patient.status}</td>
+                  <td>{patient.status}</td>   
                   <td>{patient.returnPatient}</td>
                   <td></td> 
-                  <td></td> 
+                  <td><Link to="/chat">link</Link></td> 
                    <td className="actions">
-                {/* <button onClick={() => navigate(`/editProduct/${product.id}`)}>Edit</button> */}
-                {/* <button onClick={() => handleDelete(product.id)}>Delete</button>
-                <button onClick={() => navigate(`/viewProduct/${product.id}`)}>View</button> */}
+            
               </td>
                 </tr>
               ))}

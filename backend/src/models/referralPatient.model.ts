@@ -16,7 +16,7 @@ class ReferralPatient extends Model {
   public returnPatient!: string;
   public MDdoctor!: string;
   public MedicalDocuments!: string;
-  public status!: string;
+  public status!: 'pending' |'scheduled' | 'completed ' | 'cancelled';
   public ReferredTo!: number;
   public ReferredBy!: number;
 }
@@ -73,8 +73,8 @@ ReferralPatient.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.STRING,
-      defaultValue: "placed",
+      type: DataTypes.ENUM('pending','scheduled','completed', 'cancelled'),
+      defaultValue: "pending",
     },
  
     ReferredTo: {

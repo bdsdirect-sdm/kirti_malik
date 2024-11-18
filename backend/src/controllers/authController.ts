@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
 import Appointments from "../models/appointment.model";
+import { Op } from "sequelize";
 
 
 //to regsiter the doctor as OD or MD
@@ -147,6 +148,7 @@ export const addPatient = async (req:any, res:any) => {
             status: 'placed',
             ReferredTo,
             ReferredBy,
+            MDdoctor
         });
 
         console.log("======",req.body)
@@ -236,8 +238,16 @@ export const referralPatientList = async (req: any, res: any) => {
 
 export const getPatientbyDoctor=async(req:any,res:any)=>{
     try{
-        
-        const patients=await ReferralPatient.findAll({where:{ReferredTo:req.params.DoctorId}});
+        const patients=await ReferralPatient.findAll({
+          where:{[Op.or]:[
+            {ReferredTo:req.params.DoctorId},{ReferredBy:req.params.DoctorId}
+             ] },
+            include:[
+              {
+                model:Appointments,
+                attributes:['appointmentDate']
+              }
+            ]});
         return res.status(200).json(patients);
 
     }catch(error)
@@ -343,3 +353,7 @@ export const getAppointmentsByPatient = async (req: any, res: any) => {
     });
   }
 };
+
+export const sendMessage=async(req:any,res:any)=>{
+
+}

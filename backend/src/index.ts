@@ -1,33 +1,51 @@
 import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import sequelize from './config/db';
 import router from './routers/authRoutes';
 
-const app=express();
+const app = express();
+const server = http.createServer(app); 
+const io = new Server(server); 
+
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/app',router);
+
+app.use('/app', router);
 
 
-const port=process.env.PORT 
+io.on('connection', (socket) => {
+  console.log('A new client connected:', socket.id);
 
-const syncDatabase=async()=>{
-    try{
+  
+  socket.on('message', (message) => {
+    console.log('Message received:', message);
 
-        await sequelize.sync({alter:true});
-        console.log("database synced successfully")
+    io.emit('receive_message', message); 
+  });
 
-    }
-    catch(error){
-        console.error('failed to sync database ',error)
+  
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
+  });
+});
 
-    }
+const port = process.env.PORT || 8080;
 
-}
+const syncDatabase = async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log("Database synced successfully");
+  } catch (error) {
+    console.error('Failed to sync database:', error);
+  }
+};
+
 syncDatabase();
 
-app.listen(port,()=>{
-    console.log(`server is running on port ${port}`)
-})
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
