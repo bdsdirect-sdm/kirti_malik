@@ -122,17 +122,18 @@ select {
 }
 
 .sidebar-link {
-    display: block;
+    display: flex;
     padding: 10px 15px;
+    gap: 10px;
     color: #333;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
 .sidebar-link:hover {
-    background-color: #007bff;
+    background-color: hsl(157, 61%, 78%);
     color: white;
-    text-decoration: none;
+    text-decoration: none;  
 }
 
 .content-area {
@@ -294,33 +295,29 @@ form {
     background-color: #2a9ac6;
 }
 
-/* Table styling */
-.table {
-    padding-top: 10px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    overflow-x: auto;
-    border: 2px solid black;
+
+
+
+.table th, .table td {
+  white-space: nowrap;  
+  text-overflow: ellipsis; 
+  overflow-x: auto; 
+  padding: 8px; 
+  font-size: 14px;
+  
 }
 
-.table thead {
-    background-color: #35c0e4;
-    color: white;
-    font-size: 16px;
+.table th {
+  background-color: #f8f9fa; 
+  font-weight: 500;
+ 
 }
-.table-heading{
-    display: flex;
-    font-size: large;
-    margin-bottom: 60px;
-}
-.table th,
+
 .table td {
-    padding: 12px;
-    text-align: center;
-    font-size: 14px;
-    color: #333;
+  text-align: center;
+  font-weight: 350;
 }
+
 
 .table tbody tr:hover {
     background-color: #f1f1f1;
@@ -349,4 +346,6 @@ form {
 .btn-color{
     background-color: #35C0E4 !important;
     border: none !important;
+    height: 8vh;
+    width: 40vh;
 }

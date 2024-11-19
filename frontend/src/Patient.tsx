@@ -4,9 +4,7 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-type Appointment={
-  appointmentDate:string
-}
+
 
 const Patient = () => {
 

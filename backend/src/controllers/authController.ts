@@ -224,6 +224,11 @@ export const referralPatientList = async (req: any, res: any) => {
           model: Doctor,
           attributes: ['firstName', 'lastName'], 
         },
+        {
+          model:Appointments,
+          attributes:['appointmentDate','appointmentType']
+        }
+     
       ],
     });
 

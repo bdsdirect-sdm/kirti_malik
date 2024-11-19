@@ -33,24 +33,29 @@ const Layout = () => {
 
    
   <Dropdown align="end">
-    <Dropdown.Toggle className="custom-dropdown-toggle d-flex">
-      <img
-         src="/user.jpg" 
-         alt="User Icon"
-        className="me-2 user-avatar"
-        style={{ width: '50px', height: '50px' }} 
-      />
-   <span className="bold-text dropdown-text">Hi {name}!</span> <br/>
-    <span className="dropdown-text">Welcome Back!</span>
-    </Dropdown.Toggle>
-    <Dropdown.Menu>
-      <Dropdown.Item>Profile</Dropdown.Item>
-      <Dropdown.Item>Change Password</Dropdown.Item>
-      <Dropdown.Item as={Link} to="/login">
-        Log out
-      </Dropdown.Item>
-    </Dropdown.Menu>
-  </Dropdown>
+  <Dropdown.Toggle className="custom-dropdown-toggle d-flex align-items-center">
+    <img
+      src="/user.jpg"
+      alt="User Icon"
+      className="me-2 user-avatar"
+      style={{ width: '50px', height: '50px' }}
+    />
+    <div className="ms-2">
+      <span className="bold-text dropdown-text d-block">Hi {name}!</span>
+      <span className="dropdown-text d-block" style={{ fontSize: '0.875rem' }}>Welcome Back!</span>
+
+    </div>
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+    <Dropdown.Item>Profile</Dropdown.Item>
+    <Dropdown.Item>Change Password</Dropdown.Item>
+    <Dropdown.Item as={Link} to="/login">
+      Log out
+    </Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
+
 
 
       </Navbar>
@@ -61,39 +66,46 @@ const Layout = () => {
         <Col sm={2} className="sidebar  vh-100 position-fixed">
           <div className="sidebar-content py-4">
             <ul className="list-unstyled">
-              <li>
-                <Link to={`/dashboard/${DoctorId}`} className="sidebar-link">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/patients" className="sidebar-link">
-                  Patients
-                </Link>
-              </li>
-              {userType !== 'OD' && (
-                <li>
-                  <Link to={`/appointment/${DoctorId}`} className="sidebar-link">
-                    Appointments
-                  </Link>
-                </li>
-              )}
-              <li>
-                <Link to="/doctors" className="sidebar-link">
-                  Doctors
-                </Link>
-              </li>
-              <li>
-                <Link to="/chat" className="sidebar-link">
-                  Chat
-                </Link>
-              </li>
-              <li>
-                <Link to="/staff" className="sidebar-link">
-                  Staff
-                </Link>
-              </li>
-            </ul>
+  <li>
+    <Link to={`/dashboard/${DoctorId}`} className="sidebar-link ">
+      <img src="/home(1).png" alt="Dashboard" className="sidebar-icon" />
+      Dashboard
+    </Link>
+  </li>
+  <li>
+    <Link to="/patients" className="sidebar-link">
+      <img src="/patientIcon.png" alt="Patients" className="sidebar-icon" />
+      Patients
+    </Link>
+  </li>
+  {userType !== 'OD' && (
+    <li>
+      <Link to={`/appointment/${DoctorId}`} className="sidebar-link">
+        <img src="/path-to-appointments-icon.png" alt="Appointments" className="sidebar-icon" />
+        Appointments
+      </Link>
+    </li>
+  )}
+  <li>
+    <Link to="/doctors" className="sidebar-link">
+      <img src="/DoctorIcon.png" alt="Doctors" className="sidebar-icon" />
+      Doctors
+    </Link>
+  </li>
+  <li>
+    <Link to="/chat" className="sidebar-link">
+      <img src="/chatIcon.png" alt="Chat" className="sidebar-icon" />
+      Chat
+    </Link>
+  </li>
+  {/* <li>
+    <Link to="/staff" className="sidebar-link">
+      <img src="/path-to-staff-icon.png" alt="Staff" className="sidebar-icon" />
+      Staff
+    </Link>
+  </li> */}
+</ul>
+
           </div>
         </Col>
 
