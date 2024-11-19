@@ -1,16 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
-
-
+import { Link ,useNavigate} from 'react-router-dom';
+import './style.css'
 
 const Patient = () => {
 
   const[referredPatients,setReferredPatients]=useState<any[]>([]);
   const[search,setSearch]=useState('')
   const DoctorId=localStorage.getItem('DoctorId')
+  const navigate=useNavigate()
   
    const fetchReferredPatients = async () => {
    const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
@@ -24,27 +23,44 @@ const Patient = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-    // setCurrentPage(1);
+   
   };
  
+  const handleDelete = (patientId:any) => {
+ 
+  if (window.confirm('Are you sure you want to delete this patient?')) {
+  
+    console.log(`Deleted patient with ID: ${patientId}`); 
+    const updatedPatients = referredPatients.filter(patient => patient.id !== patientId);
+    setReferredPatients(updatedPatients); 
+  }
+};
+
   
   return (
     <div>
       <div className='table-heading'>
-        <h2>Referred Patients</h2>
+       <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
       </div>
 
-       <input
-        type="text"
-        placeholder="Search by product name"
-        value={search}
-        onChange={handleSearch}
-      />
-      <Table >
+   <div className='search-box d-flex'>
+  <input
+    type="text"
+    placeholder="Search "
+    value={search}
+    onChange={handleSearch}
+    className='me-2 flex-grow-1 w-10'
+  />
+  <button className="custom-btn">Search</button> 
+</div>
+
+      
+      <div className=" mt-4"style={{ overflowX: 'auto' }}>
+             <Table >
             <thead>
               <tr>
                 <th>Patient name</th>
-                <th>dob</th>
+                <th>DOB</th>
                 <th>Referred on</th>
                 <th>Referred to</th>
                 <th>Consultation date</th>
@@ -62,23 +78,34 @@ const Patient = () => {
                 <tr key={index}>
                   <td>{patient.firstName} {patient.lastName}</td>
                   <td>{patient.dob}</td>
-                  <td>{patient.createdAt}</td>
-                   <td>{patient.MDdoctor}</td>
-                    <td></td> 
-                    <td></td> 
+                  <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>
+                   <td>{patient.Doctor.firstName} {patient.Doctor.lastName}</td>
+                    <td>
+             {patient.Appointments[0]?.appointmentType === 'consultation' ? (
+               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+               ):'-'}
+             </td>
+
+          <td>
+             {patient.Appointments[0]?.appointmentType === 'surgery' ? (
+               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+               ):'-'}
+             </td>
                   <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
                   <td></td> 
                   <td><Link to="/chat">link</Link></td> 
                    <td className="actions">
-                {/* <button onClick={() => navigate(`/editProduct/${product.id}`)}>Edit</button> */}
-                {/* <button onClick={() => handleDelete(product.id)}>Delete</button>
-                <button onClick={() => navigate(`/viewProduct/${product.id}`)}>View</button> */}
+                <button onClick={() => navigate(`/editProduct/${patient.id}`)}>Edit</button>
+                 <button onClick={() => handleDelete(patient.id)}>Delete</button>
+                <button onClick={() => navigate(`/viewPatient/${patient.id}`)}>View</button> 
               </td>
                 </tr>
               ))}
             </tbody>
           </Table>
+      </div>
+     
         </div>
   )
 }

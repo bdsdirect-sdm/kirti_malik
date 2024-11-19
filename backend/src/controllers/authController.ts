@@ -6,6 +6,7 @@ import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
 import Appointments from "../models/appointment.model";
 import { Op } from "sequelize";
+import { Where } from "sequelize/types/utils";
 
 
 //to regsiter the doctor as OD or MD
@@ -250,7 +251,11 @@ export const getPatientbyDoctor=async(req:any,res:any)=>{
             include:[
               {
                 model:Appointments,
-                attributes:['appointmentDate']
+                attributes:['appointmentDate','appointmentType']
+              },
+              {
+                model:Doctor,
+                attributes:['firstName','lastName']
               }
             ]});
         return res.status(200).json(patients);
@@ -359,6 +364,31 @@ export const getAppointmentsByPatient = async (req: any, res: any) => {
   }
 };
 
+//to view the info of particular patient
+
+export const viewPatient=async(req:any,res:any)=>{
+  try{
+    const patientId=req.params.patientId
+
+    const patientInfo= await ReferralPatient.findOne(
+      {
+        where:{id:patientId},
+        include:[
+          {
+            model:Doctor
+          },
+          {
+            model:Appointments
+          }
+        ]
+      }
+    )
+       return res.status(200).json({ patientInfo });
+  }
+  catch{
+       return res.status(500).json({message:'error viewing the patient'})
+  }
+}
 export const sendMessage=async(req:any,res:any)=>{
 
 }

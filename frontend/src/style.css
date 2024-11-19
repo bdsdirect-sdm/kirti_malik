@@ -349,3 +349,25 @@ form {
     height: 8vh;
     width: 40vh;
 }
+.custom-btn{
+    background-color: #35C0E4 !important;
+    width: 20vh;
+    border: none !important;
+    color: white;
+    border-radius: 2px;
+}
+.add-form {
+  max-height: 600px; 
+  overflow-y: auto; 
+  padding-bottom: 20px; 
+}
+
+.cancel-btn .custom-btn{
+    border: 1px solid #43D79E !important;
+    color: #43D79E;
+    font-weight: bold;
+    background-color: white !important;
+}
+.search-box{
+    width: 500px;
+}

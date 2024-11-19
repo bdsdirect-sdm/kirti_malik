@@ -148,11 +148,19 @@ const handleAddPatient=async()=>{
         <tr key={index}>
           <td>{patient.firstName} {patient.lastName}</td>
           <td>{patient.dob}</td>
-          <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>
-          
-          <td>{patient.Doctor?.firstName} {patient.Doctor?.lastName}</td>
-          <td></td>
-          <td>-</td>
+          <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>          
+          <td>{patient.Doctor?.firstName} {patient.Doctor?.lastName}</td>       
+         <td>
+             {patient.Appointments[0]?.appointmentType === 'consultation' ? (
+               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+               ):'-'}
+             </td>
+
+          <td>
+             {patient.Appointments[0]?.appointmentType === 'surgery' ? (
+               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+               ):'-'}
+             </td>
           <td>{patient.status}</td>
           <td>{patient.returnPatient}</td>
           <td></td>

@@ -19,6 +19,7 @@ class ReferralPatient extends Model {
   public status!: 'pending' |'scheduled' | 'completed ' | 'cancelled';
   public ReferredTo!: number;
   public ReferredBy!: number;
+  public note!:string;
 }
 
 ReferralPatient.init(
@@ -90,6 +91,10 @@ ReferralPatient.init(
       allowNull: false,
      
     },
+    note:{
+      type:DataTypes.STRING,
+      allowNull:true
+    }
   },
   {
     sequelize,

@@ -4,7 +4,8 @@ import * as Yup from 'yup';
 import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import MDdoctors from './MDdoctors';
+import './style.css';
+// import MDdoctors from './MDdoctors';
 
 
 const validationSchema = Yup.object({
@@ -109,135 +110,165 @@ const AddPatient: React.FC = () => {
   };
 
   return (    
-    <Container>
-      <h2 className="text-center my-4">Add Patient</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting, setFieldValue}) => (
-          <Form>
-            <Row>
-              <Col md={6}>
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Date of Birth</BootstrapForm.Label>
-                  <Field type="date" name="dob" className="form-control" />
-                  <ErrorMessage name="dob" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+  <Container className="add-form">
+  <h5 className="pt-4 pb-4">Add Referral Patient</h5>
+  <Formik
+    initialValues={initialValues}
+    validationSchema={validationSchema}
+    onSubmit={handleSubmit}
+  >
+    {({ isSubmitting, setFieldValue }) => (
+      <Form>
+        <h5 className="pt-2 pb-2">Basic Information</h5>
+        <Row>
+          <Col md={4}>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>DOB</BootstrapForm.Label>
+              <Field type="date" name="dob" className="form-control" placeholder="YYYY-MM-DD" />
+              <ErrorMessage name="dob" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>First Name</BootstrapForm.Label>
-                  <Field type="text" name="firstName" className="form-control" />
-                  <ErrorMessage name="firstName" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>First Name</BootstrapForm.Label>
+              <Field type="text" name="firstName" className="form-control" placeholder="Enter first name" />
+              <ErrorMessage name="firstName" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Last Name</BootstrapForm.Label>
-                  <Field type="text" name="lastName" className="form-control" />
-                  <ErrorMessage name="lastName" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Disease Name</BootstrapForm.Label>
+              <Field as="select" name="diseaseName" className="form-control">
+                <option value="">Select Disease</option>
+                <option value="Glaucoma">Glaucoma</option>
+                <option value="Cataract">Cataract</option>
+                <option value="Macular Degeneration">Macular Degeneration</option>
+              </Field>
+              <ErrorMessage name="diseaseName" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Email</BootstrapForm.Label>
-                  <Field type="email" name="email" className="form-control" />
-                  <ErrorMessage name="email" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>MD Doctor</BootstrapForm.Label>
+              <Field as="select" name="ReferredTo" className="form-control">
+                <option value="">Select MD Doctor</option>
+                {MDdoctors.length > 0 ? (
+                  MDdoctors.map((doctor) => (
+                    <option key={doctor.id} value={doctor.id}>
+                      {doctor.firstName} {doctor.lastName}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">Loading doctors...</option>
+                )}
+              </Field>
+              <ErrorMessage name="referredTo" component="div" className="text-danger" />
+            </BootstrapForm.Group>
+          </Col>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Phone Number</BootstrapForm.Label>
-                  <Field type="text" name="phoneNumber" className="form-control" />
-                  <ErrorMessage name="phoneNumber" component="div" className="text-danger" />
-                </BootstrapForm.Group>
-              </Col>
+          <Col md={4}>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Email</BootstrapForm.Label>
+              <Field type="email" name="email" className="form-control" />
+              <ErrorMessage name="email" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
-     
-              <Col md={6}>
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Gender</BootstrapForm.Label>
-                  <Field as="select" name="gender" className="form-control">
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </Field>
-                  <ErrorMessage name="gender" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Last Name</BootstrapForm.Label>
+              <Field type="text" name="lastName" className="form-control" />
+              <ErrorMessage name="lastName" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Disease Name</BootstrapForm.Label>
-                  <Field as="select" name="diseaseName" className="form-control">
-                    <option value="">Select Disease</option>
-                    <option value="Glaucoma">Glaucoma</option>
-                    <option value="Cataract">Cataract</option>
-                    <option value="Macular Degeneration">Macular Degeneration</option>
-                  </Field>
-                  <ErrorMessage name="diseaseName" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Laterality</BootstrapForm.Label>
+              <Field as="select" name="laterality" className="form-control">
+                <option value="">Select</option>
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+                <option value="both">Both</option>
+              </Field>
+              <ErrorMessage name="laterality" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Laterality</BootstrapForm.Label>
-                  <Field as="select" name="laterality" className="form-control">
-                    <option value="">Select</option>
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
-                    <option value="both">Both</option>
-                  </Field>
-                  <ErrorMessage name="laterality" component="div" className="text-danger" />
-                </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Return Patient</BootstrapForm.Label>
-                  <Field as="select" name="returnPatient" className="form-control">
-                    <option value="">Select</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </Field>
-                  <ErrorMessage name="returnPatient" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Medical Documents</BootstrapForm.Label>
+              <input
+                type="file"
+                name="MedicalDocuments"
+                onChange={(e) => handleFileChange(e, setFieldValue)}
+                className="form-control"
+              />
+              <ErrorMessage name="MedicalDocuments" component="div" className="text-danger" />
+            </BootstrapForm.Group>
+          </Col>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>MD Doctor</BootstrapForm.Label>
-                  <Field as="select" name="ReferredTo" className="form-control">
-                    <option value="">Select MD Doctor</option>
-                    {MDdoctors.length > 0 ? (
-                      MDdoctors.map((doctor) => (
-                        <option key={doctor.id} value={doctor.id} >
-                          {doctor.firstName} {doctor.lastName}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="">Loading doctors...</option>
-                    )}
-                  </Field>
-                  <ErrorMessage name="referredTo" component="div" className="text-danger" />
-                </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label>Medical Documents</BootstrapForm.Label>
-                  <input
-                    type="file"
-                    name="MedicalDocuments"
-                    onChange={(e)=>handleFileChange(e,setFieldValue)}
-                    className="form-control"
-                  />
-                  <ErrorMessage name="MedicalDocuments" component="div" className="text-danger" />
-                </BootstrapForm.Group>
-              </Col>
-            </Row>
+          <Col md={4}>
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Phone Number</BootstrapForm.Label>
+              <Field type="text" name="phoneNumber" className="form-control" />
+              <ErrorMessage name="phoneNumber" component="div" className="text-danger" />
+            </BootstrapForm.Group>
 
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Gender</BootstrapForm.Label>
+              <Field as="select" name="gender" className="form-control">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </Field>
+              <ErrorMessage name="gender" component="div" className="text-danger" />
+            </BootstrapForm.Group>
+
+            <BootstrapForm.Group className="mb-3">
+              <BootstrapForm.Label>Return Patient</BootstrapForm.Label>
+              <Field as="select" name="returnPatient" className="form-control">
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Field>
+              <ErrorMessage name="returnPatient" component="div" className="text-danger" />
+            </BootstrapForm.Group>
+
+          </Col>
+        </Row>
+
+        <Row className="mt-3">
+          <Col md={6} className="d-flex justify-content-start cancel-btn">
+          <Button
+              type="button"
+              className="me-3 custom-btn"
+               //onClick={handleCancel}
+            >
+              Cancel
+            </Button>
             <Button
-              variant="primary"
+              type="button"
+              className="custom-btn"
+              // onClick={handleSaveAsDraft}
+            >
+              Save as Draft
+            </Button>
+            
+          </Col>
+          <Col md={6} className="d-flex justify-content-end">
+            <Button
               type="submit"
-              className="w-100 mt-3"
+              className="w-50 custom-btn"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Submitting...' : 'Add Patient'}
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
-          </Form>
-        )}
-      </Formik>
-    </Container>
+          </Col>
+        </Row>
+        <Row>
+          
+        </Row>
+      </Form>
+    )}
+  </Formik>
+</Container>
+
+
   );
 };
 
