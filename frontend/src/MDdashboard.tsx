@@ -124,6 +124,19 @@ useEffect(()=>{
 
 </Row>
 
+ <div className="d-flex justify-content-between w-100">
+  <div>
+    
+    <h2 style={{ fontSize: '24px' }}>Referrals placed</h2>
+  </div>
+  <div>
+    <Button onClick={handleAddAppointment} className='btn-color'>
+     <img src='/add.png' alt='button'/>
+    </Button>
+  </div>
+</div>
+
+
 
           <Table className='table'>
             <thead>
