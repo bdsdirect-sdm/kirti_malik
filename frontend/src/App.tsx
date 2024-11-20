@@ -15,6 +15,7 @@ import AppointmentPage from './AppointmentPage';
 import ViewPatientAppointments from './ViewAppointment';
 import Chat from './Chat';
 import ViewPatient from './ViewPatient';
+import EditPatient from './EditPatient';
 
 
 
@@ -37,7 +38,8 @@ const App = () => {
            <Route path='appointment/:DoctorId' element={<AppointmentPage/>}/>
            <Route path='viewAppointment' element={<ViewPatientAppointments/>}/>
            <Route path='chat' element={<Chat/>}/>
-           <Route path='viewPatient/:PatientId' element={<ViewPatient/>}/>
+           <Route path='viewPatient/:patientId' element={<ViewPatient/>}/>
+           <Route path='editPatient/:patientId' element={<EditPatient/>}/>
 
        </Route>
     </Routes>

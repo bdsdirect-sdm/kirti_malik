@@ -389,6 +389,61 @@ export const viewPatient=async(req:any,res:any)=>{
        return res.status(500).json({message:'error viewing the patient'})
   }
 }
+
+//to edit the Patient
+
+export const editPatient = async (req: any, res: any) => {
+  
+  try {
+    const patientId = req.params.patientId;
+    const {
+      dob,
+      email,
+      phoneNumber,
+      firstName,
+      lastName,
+      gender,
+      diseaseName,
+      laterality,
+      returnPatient,
+      referredTo,
+    } = req.body;
+
+   
+
+    const patient = await ReferralPatient.findByPk(patientId);
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+   
+    patient.dob = dob;
+    patient.email = email;
+    patient.phoneNumber = phoneNumber;
+    patient.firstName = firstName;
+    patient.lastName = lastName;
+    patient.gender = gender;
+    patient.diseaseName = diseaseName;
+    patient.laterality = laterality;
+    patient.returnPatient = returnPatient;
+    patient.ReferredTo = referredTo;
+
+   
+    if (req.file) {
+      patient.MedicalDocuments = req.file.path; 
+    }
+
+   
+    await patient.save();
+
+    res.status(200).json({ message: 'Patient updated successfully', patient });
+  } catch (error) {
+    console.error('Error updating patient:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
+
+
 export const sendMessage=async(req:any,res:any)=>{
 
 }

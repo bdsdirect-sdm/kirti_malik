@@ -7,7 +7,8 @@ addAppointment,
 getAllAppointments,
 getAppointmentsByPatient,
 sendMessage,
-viewPatient} from '../controllers/authController';
+viewPatient,
+editPatient} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -26,5 +27,6 @@ router.get('/getAppointments/:DoctorId',getAllAppointments)
 router.get('/getAppointmentByPatient/:PatientId',getAppointmentsByPatient)
 router.post('/sendMessage',sendMessage)
 router.get('/viewPatient/:patientId',viewPatient)
+router.put('/editPatient/:patientId',upload.single('MedicalDocuments'),editPatient)
 
 export default router;

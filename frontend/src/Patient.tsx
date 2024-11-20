@@ -13,7 +13,7 @@ const Patient = () => {
   
    const fetchReferredPatients = async () => {
    const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
-   console.log("datataaaaa",response.data)
+   //console.log("datataaaaa",response.data)
     setReferredPatients(response.data);
   };
 
@@ -81,22 +81,22 @@ const Patient = () => {
                   <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>
                    <td>{patient.Doctor.firstName} {patient.Doctor.lastName}</td>
                     <td>
-             {patient.Appointments[0]?.appointmentType === 'consultation' ? (
-               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
-               ):'-'}
-             </td>
+                       {patient.Appointments[0]?.appointmentType === 'consultation' ? (
+                       new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+                          ):'-'}
+                       </td>
 
-          <td>
-             {patient.Appointments[0]?.appointmentType === 'surgery' ? (
-               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
-               ):'-'}
-             </td>
-                  <td>{patient.status}</td>
+                      <td>
+                      {patient.Appointments[0]?.appointmentType === 'surgery' ? (
+                        new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+                         ):'-'}
+                     </td>
+                   <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
                   <td></td> 
                   <td><Link to="/chat">link</Link></td> 
                    <td className="actions">
-                <button onClick={() => navigate(`/editProduct/${patient.id}`)}>Edit</button>
+                <button onClick={() => navigate(`/editPatient/${patient.id}`)}>Edit</button>
                  <button onClick={() => handleDelete(patient.id)}>Delete</button>
                 <button onClick={() => navigate(`/viewPatient/${patient.id}`)}>View</button> 
               </td>
@@ -104,7 +104,7 @@ const Patient = () => {
               ))}
             </tbody>
           </Table>
-      </div>
+         </div>
      
         </div>
   )
