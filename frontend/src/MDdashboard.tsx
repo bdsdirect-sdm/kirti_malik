@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Row, Col, Card, Table,  } from 'react-bootstrap';
+import { Button,  Row, Col, Card, Table, Container,  } from 'react-bootstrap';
 import './style.css'
 import axios from 'axios';
 import { useNavigate,  } from 'react-router-dom';
@@ -45,37 +45,85 @@ useEffect(()=>{
   }
 
   return (
-    <div>
-      <Row className="mb-4">
-            <Col>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Referrals Recieved</Card.Title>
-                  <Card.Text>{dashboardData.referralsRecieved}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Referrals Completed</Card.Title>
-                  <Card.Text>{dashboardData.referralsCompleted}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <Card.Title>MD Count</Card.Title>
-                  <Card.Text>{dashboardData.totalDoctor}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+     <Container className='dashboard'>
+     
+<Row className="mb-4 pt-0">
+  <h5>Dashboard</h5>
 
-          <Button onClick={handleAddAppointment} variant="secondary" >
-            Add Appointment        
-          </Button>
+  <Col xs={12} sm={4} md={4}>
+    <Card className="custom-card">
+      <Card.Body className="d-flex">
+        <div className="d-flex flex-column me-3">
+          <div>
+            <img
+              src="/diversity_2.png"
+              alt="Referral Icon"
+              className="img-fluid"
+              style={{ width: '50px', height: '50px' }}
+            />
+          </div>
+          <Card.Title className="mt-2 small font">Referrals Placed</Card.Title>
+        </div>
+
+        <div className="d-flex flex-column justify-content-between">
+          <Card.Text className="text-end">{dashboardData.referralsCompleted}</Card.Text>
+          <hr />
+          <small className="text-muted">Last Updated: {}</small>
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
+
+  <Col xs={12} sm={4} md={4}>
+    <Card className="custom-card">
+      <Card.Body className="d-flex">
+        <div className="d-flex flex-column me-3">
+          <div>
+            <img
+              src="/personal_injury.png"
+              alt="Referral Icon"
+              className="img-fluid"
+              style={{ width: '50px', height: '50px' }}
+            />
+          </div>
+          <Card.Title className="mt-2 small font">Referrals Completed</Card.Title>
+        </div>
+
+        <div className="d-flex flex-column justify-content-between">
+          <Card.Text className="text-end">{dashboardData.referralsCompleted}</Card.Text>
+          <hr />
+          <small className="text-muted">Last Updated: Aug 20</small>
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
+
+  <Col xs={12} sm={4} md={4}>
+    <Card className="custom-card">
+      <Card.Body className="d-flex">
+        <div className="d-flex flex-column me-3">
+          <div>
+            <img
+              src="/stethoscope.png"
+              alt="Referral Icon"
+              className="img-fluid"
+              style={{ width: '50px', height: '50px' }}
+            />
+          </div>
+          <Card.Title className="mt-2 small font">MD Count</Card.Title>
+        </div>
+
+        <div className="d-flex flex-column justify-content-between">
+          <Card.Text className="text-end">{dashboardData.totalDoctor}</Card.Text>
+          <hr />
+          <small className="text-muted">Last Updated: {}</small>
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
+
+</Row>
+
 
           <Table className='table'>
             <thead>
@@ -101,8 +149,17 @@ useEffect(()=>{
                   <td>{patient.dob}</td>
                   <td>{patient.createdAt}</td>
                    <td> {patient.Doctor?.firstName} {patient.Doctor?.lastName}</td>
-                    <td>{patient.consultationDate || '-'}</td> 
-                    <td>{patient.SurgeryDate || '-'}</td> 
+                     <td>
+             {patient.Appointments[0]?.appointmentType === 'consultation' ? (
+               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+               ):'-'}
+             </td>
+
+          <td>
+             {patient.Appointments[0]?.appointmentType === 'surgery' ? (
+               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+               ):'-'}
+             </td>
                   <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
                   <td></td> 
@@ -112,7 +169,7 @@ useEffect(()=>{
               ))}
             </tbody>
           </Table>
-        </div>
+        </Container>
   )
 }
 

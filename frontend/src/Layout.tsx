@@ -48,7 +48,7 @@ const Layout = () => {
   </Dropdown.Toggle>
 
   <Dropdown.Menu>
-    <Dropdown.Item>Profile</Dropdown.Item>
+    <Dropdown.Item as={Link} to="">Profile</Dropdown.Item>
     <Dropdown.Item>Change Password</Dropdown.Item>
     <Dropdown.Item as={Link} to="/login">
       Log out
@@ -81,7 +81,7 @@ const Layout = () => {
   {userType !== 'OD' && (
     <li>
       <Link to={`/appointment/${DoctorId}`} className="sidebar-link">
-        <img src="/path-to-appointments-icon.png" alt="Appointments" className="sidebar-icon" />
+        <img src="/date_range.png" alt="Appointments" className="sidebar-icon" />
         Appointments
       </Link>
     </li>
