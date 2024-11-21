@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
   diseaseName: Yup.string().required('Disease name is required'),
   laterality: Yup.string().required('Laterality is required'),
   returnPatient: Yup.string().required('Return patient status is required'),
-  referredTo: Yup.string().required('MD doctor is required'),
+  MDdoctor: Yup.string().required('MD doctor is required'),
   MedicalDocuments: Yup.mixed().required('Medical documents are required'),
 });
 
@@ -33,7 +33,7 @@ const initialValues = {
   diseaseName: '',
   laterality: '',
   returnPatient: '',
-  referredTo: '',
+  MDdoctor: '',
 
   
   MedicalDocuments: null as File | null,
@@ -65,15 +65,17 @@ const AddPatient: React.FC = () => {
   const handleSubmit = async (values: typeof initialValues) => {
     const formData = new FormData();
     formData.append('dob', values.dob);
+    formData.append('firstName', values.firstName);
+    formData.append('diseaseName', values.diseaseName);
     formData.append('email', values.email);
     formData.append('phoneNumber', values.phoneNumber);
-    formData.append('firstName', values.firstName);
+    
     formData.append('lastName', values.lastName);
     formData.append('gender', values.gender);
-    formData.append('diseaseName', values.diseaseName);
+    
     formData.append('laterality', values.laterality);
     formData.append('returnPatient', values.returnPatient);
-    formData.append('referredTo', values.referredTo);
+    formData.append('MDdoctor', values.MDdoctor);
     
 
     if (values.MedicalDocuments) {
@@ -145,7 +147,7 @@ const AddPatient: React.FC = () => {
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>MD Doctor</BootstrapForm.Label>
-              <Field as="select" name="ReferredTo" className="form-control">
+              <Field as="select" name="MDdoctor" className="form-control">
                 <option value="">Select MD Doctor</option>
                 {MDdoctors.length > 0 ? (
                   MDdoctors.map((doctor) => (
@@ -157,7 +159,7 @@ const AddPatient: React.FC = () => {
                   <option value="">Loading doctors...</option>
                 )}
               </Field>
-              <ErrorMessage name="referredTo" component="div" className="text-danger" />
+              <ErrorMessage name="MDdoctor" component="div" className="text-danger" />
             </BootstrapForm.Group>
           </Col>
 

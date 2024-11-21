@@ -16,6 +16,8 @@ import ViewPatientAppointments from './ViewAppointment';
 import Chat from './Chat';
 import ViewPatient from './ViewPatient';
 import EditPatient from './EditPatient';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import DoctorProfile from './DoctorProfile';
 
 
 
@@ -32,14 +34,15 @@ const App = () => {
        <Route path='/' element={<Layout/>}>
           <Route path='dashboard/:DoctorId' element={<MainDashboard/>}/>
           <Route path='add-patient/:DoctorId' element={<AddPatient/>}/>
-          <Route path='patients' element={<Patient/>}/>
+          <Route path='patients/:DoctorId' element={<Patient/>}/>
           <Route path='doctors' element={<MDdoctors/>}/>
            <Route path='addAppointment/:DoctorId' element={<AddAppointment/>}/>
            <Route path='appointment/:DoctorId' element={<AppointmentPage/>}/>
-           <Route path='viewAppointment' element={<ViewPatientAppointments/>}/>
+           <Route path='viewAppointment/:patientId' element={<ViewPatientAppointments/>}/>
            <Route path='chat' element={<Chat/>}/>
            <Route path='viewPatient/:patientId' element={<ViewPatient/>}/>
            <Route path='editPatient/:patientId' element={<EditPatient/>}/>
+           <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
 
        </Route>
     </Routes>

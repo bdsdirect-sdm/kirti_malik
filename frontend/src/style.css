@@ -379,3 +379,15 @@ form {
 .patient-section{
     background-color: #F5F5F5;
 }
+.icon i{
+    color: white;
+}
+.icon{
+    font-size: 1rem;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+}
+.pagination{
+    width: 200px;
+}

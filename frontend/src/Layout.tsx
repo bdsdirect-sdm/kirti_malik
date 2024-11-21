@@ -48,7 +48,7 @@ const Layout = () => {
   </Dropdown.Toggle>
 
   <Dropdown.Menu>
-    <Dropdown.Item as={Link} to="">Profile</Dropdown.Item>
+    <Dropdown.Item as={Link} to={`doctorProfile/${DoctorId}`}>Profile</Dropdown.Item>
     <Dropdown.Item>Change Password</Dropdown.Item>
     <Dropdown.Item as={Link} to="/login">
       Log out
@@ -73,7 +73,7 @@ const Layout = () => {
     </Link>
   </li>
   <li>
-    <Link to="/patients" className="sidebar-link">
+    <Link to={`/patients/${DoctorId}`} className="sidebar-link">
       <img src="/patientIcon.png" alt="Patients" className="sidebar-icon" />
       Patients
     </Link>

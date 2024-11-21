@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
 import Appointments from "../models/appointment.model";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { Where } from "sequelize/types/utils";
 
 
@@ -146,7 +146,7 @@ export const addPatient = async (req:any, res:any) => {
             laterality,
             returnPatient,
             MedicalDocuments,
-            status: 'placed',
+            status: 'pending',
             ReferredTo,
             ReferredBy,
             MDdoctor
@@ -165,7 +165,7 @@ export const addPatient = async (req:any, res:any) => {
 export const getODDashboardData = async (req: Request, res: Response) => {
   try {
  
-    const referralsPlaced = await ReferralPatient.count({ where: { status: 'placed' } });
+    const referralsPlaced = await ReferralPatient.count({ where: { status: 'pending' } });
     const referralsCompleted = await ReferralPatient.count({ where: { status: 'completed' } });
     const mdCount = await Doctor.count({ where: { userType: 'MD' } });
 
@@ -240,31 +240,38 @@ export const referralPatientList = async (req: any, res: any) => {
 };
 
 
-//to fetch the patient according to the doctor selected
+//to get patient on MD dashboard
 
-export const getPatientbyDoctor=async(req:any,res:any)=>{
-    try{
-        const patients=await ReferralPatient.findAll({
-          where:{[Op.or]:[
-            {ReferredTo:req.params.DoctorId},{ReferredBy:req.params.DoctorId}
-             ] },
-            include:[
-              {
-                model:Appointments,
-                attributes:['appointmentDate','appointmentType']
-              },
-              {
-                model:Doctor,
-                attributes:['firstName','lastName']
-              }
-            ]});
+export const getPatientbyDoctor = async (req: any, res: any) => {
+    try {
+        const patients = await ReferralPatient.findAll({
+            where: {[Op.or]:[
+              {ReferredTo: req.params.DoctorId},
+              {ReferredBy:req.params.DoctorId}
+
+            ]  },
+            include: [
+                {
+                    model: Appointments,  
+                    where: { patientId: Sequelize.col('ReferralPatient.id') }, 
+                    attributes:['appointmentDate','appointmentType'],
+                    required: false, 
+                },
+                {
+                  model:Doctor,
+                  attributes:['firstName','lastName']
+                }
+            ]
+        });
+
+        console.log("======", patients);
         return res.status(200).json(patients);
-
-    }catch(error)
-    {
-        return res.status(500).json({message:"server error",error})
+    } catch (error) {
+        return res.status(500).json({ message: "server error", error });
     }
 };
+
+
 
    //to create an appointment for the patient
 
@@ -334,8 +341,7 @@ export const getAllAppointments = async (req: any, res: any) => {
   }
 };
 
-// to view the appointment of particular patient
-
+// to view the appointment of particular patient on md dashboard
 
 export const getAppointmentsByPatient = async (req: any, res: any) => {
   try {

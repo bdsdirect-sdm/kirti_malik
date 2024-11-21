@@ -14,6 +14,7 @@ const MDdashboard = () => {
 
   const navigate=useNavigate();
   const[referredPatientsList,setReferredPatients]=useState<any[]>([]);
+  const[isLoading,setIsLoading]=useState(false);
   const [dashboardData, setDashboardData] = useState<DashboardData>({
         referralsRecieved: 0,
         referralsCompleted: 0,
@@ -28,6 +29,7 @@ const handleAddAppointment=async()=>{
 
 }
 useEffect(()=>{
+  setIsLoading(true);
   fetchReferredPatients();
   fetchDashboardData();
 },[])
@@ -131,7 +133,7 @@ useEffect(()=>{
   </div>
   <div>
     <Button onClick={handleAddAppointment} className='btn-color'>
-     <img src='/add.png' alt='button'/>
+     <img src='/addAppointment.png' alt='button'/>
     </Button>
   </div>
 </div>
@@ -142,7 +144,7 @@ useEffect(()=>{
             <thead>
               <tr>
                 <th>Patient name</th>
-                <th>dob</th>
+                <th>DOB</th>
                 <th>Referred on</th>
                 <th>Referred by</th>
                 <th>Consultation date</th>
@@ -160,17 +162,17 @@ useEffect(()=>{
                 <tr key={index}>
                   <td>{patient.firstName} {patient.lastName}</td>
                   <td>{patient.dob}</td>
-                  <td>{patient.createdAt}</td>
-                   <td> {patient.Doctor?.firstName} {patient.Doctor?.lastName}</td>
+                  <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>
+                   <td> {patient.ReferredBy}</td>
                      <td>
-             {patient.Appointments[0]?.appointmentType === 'consultation' ? (
-               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+             {patient.Appointment?.appointmentType === 'consultation' ? (
+               new Date(patient.Appointment?.appointmentDate).toISOString().split('T')[0]
                ):'-'}
              </td>
 
           <td>
-             {patient.Appointments[0]?.appointmentType === 'surgery' ? (
-               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+             {patient.Appointment?.appointmentType === 'surgery' ? (
+               new Date(patient.Appointment?.appointmentDate).toISOString().split('T')[0]
                ):'-'}
              </td>
                   <td>{patient.status}</td>

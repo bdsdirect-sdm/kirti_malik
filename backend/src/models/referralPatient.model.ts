@@ -2,6 +2,7 @@ import { DataTypes, Model } from "sequelize";
 
 import sequelize from "../config/db";
 import Doctor from "./doctor.model";
+import Appointments from "./appointment.model";
 
 class ReferralPatient extends Model {
   public id!: number;
@@ -89,6 +90,10 @@ ReferralPatient.init(
     ReferredBy: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      references:{
+        model:Doctor,
+        key:"id",
+      }
      
     },
     note:{
@@ -104,5 +109,9 @@ ReferralPatient.init(
  
 Doctor.hasMany(ReferralPatient, { foreignKey: "ReferredTo"});
 ReferralPatient.belongsTo(Doctor, { foreignKey: "ReferredTo" });
+
+Doctor.hasMany(ReferralPatient,{foreignKey:"ReferredBy"});
+ReferralPatient.belongsTo(Doctor,{foreignKey:"ReferredTo"})
+
 
 export default ReferralPatient;

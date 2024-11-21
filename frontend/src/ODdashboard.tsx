@@ -19,13 +19,14 @@ const ODdashboard = () => {
   const fetchDashboardData = async () => {
     const response = await axios.get('http://localhost:8080/app/oDdashboardData');
     setDashboardData(response.data);
+       console.log("'''''",response.data)
   };
 
   const fetchReferredPatients = async () => {
  
     const response = await axios.get('http://localhost:8080/app/referralpatientlist');
     setReferredPatients(response.data);
-    //console.log("'''''",response.data)
+ 
     
   };
 
@@ -152,14 +153,14 @@ const handleAddPatient=async()=>{
           <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>          
           <td>{patient.Doctor?.firstName} {patient.Doctor?.lastName}</td>       
          <td>
-             {patient.Appointments[0]?.appointmentType === 'consultation' ? (
-               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+             {patient.Appointment?.appointmentType === 'consultation' ? (
+               new Date(patient.Appointment?.appointmentDate).toISOString().split('T')[0]
                ):'-'}
              </td>
 
           <td>
-             {patient.Appointments[0]?.appointmentType === 'surgery' ? (
-               new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
+             {patient.Appointment?.appointmentType === 'surgery' ? (
+               new Date(patient.Appointment?.appointmentDate).toISOString().split('T')[0]
                ):'-'}
              </td>
           <td>{patient.status}</td>

@@ -17,20 +17,21 @@ type Appointment = {
 };
 
 const ViewPatientAppointments: React.FC = () => {
-  const { patientId } = useParams(); // Get patientId from the URL
+  const {patientId}=useParams();
+  console.log("uuuuuu",patientId)
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetchPatientAppointments();
-  }, [patientId]); // Re-fetch when patientId changes
+  }, [patientId]); 
 
   const fetchPatientAppointments = async () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/app/getAppointmentsByPatient/${patientId}`
       );
-      setAppointments(response.data.appointments); // Assuming the response contains the appointments
+      setAppointments(response.data.appointments);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching patient appointments:", error);
@@ -40,7 +41,7 @@ const ViewPatientAppointments: React.FC = () => {
 
   return (
     <Container>
-      <h2 className="text-center my-4">Basic info {patientId}</h2>
+      <h2 className="text-center my-4">Basic info </h2>
       {loading ? (
         <div className="text-center">
           <Spinner animation="border" />

@@ -1,113 +1,192 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Table } from 'react-bootstrap';
-import { Link ,useNavigate} from 'react-router-dom';
-import './style.css'
+import React, { useEffect, useState } from 'react';
+import { Button, Table } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import './style.css';
 
 const Patient = () => {
+  const [referredPatients, setReferredPatients] = useState<any[]>([]);
+  const [search, setSearch] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
+  const [currentPage,setCurrentPage]=useState(1);
+  const itemsPerPage=3;
 
-  const[referredPatients,setReferredPatients]=useState<any[]>([]);
-  const[search,setSearch]=useState('')
-  const DoctorId=localStorage.getItem('DoctorId')
-  const navigate=useNavigate()
-  
-   const fetchReferredPatients = async () => {
-   const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
-   //console.log("datataaaaa",response.data)
+
+  const DoctorId = localStorage.getItem('DoctorId');
+  const navigate = useNavigate();
+
+  const fetchReferredPatients = async () => {
+    const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
+    console.log('Fetched Data:', response.data);
     setReferredPatients(response.data);
   };
 
-  useEffect(()=>{
-  fetchReferredPatients();
-},[DoctorId])
-
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-   
   };
- 
-  const handleDelete = (patientId:any) => {
- 
-  if (window.confirm('Are you sure you want to delete this patient?')) {
-  
-    console.log(`Deleted patient with ID: ${patientId}`); 
-    const updatedPatients = referredPatients.filter(patient => patient.id !== patientId);
-    setReferredPatients(updatedPatients); 
-  }
-};
 
-  
+//pagination function 
+
+  const indexOfLast=currentPage*itemsPerPage;
+  const indexOfFirst=indexOfLast-itemsPerPage;
+  const currentProducts=filteredUsers.slice(indexOfFirst,indexOfLast);
+
+  const totalPages=Math.ceil(filteredUsers.length/itemsPerPage)
+
+   const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+
+  useEffect(() => {
+
+    const filteredItems = referredPatients.filter((patient) => {
+      const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
+      return fullName.includes(search.toLowerCase()); 
+    });
+    setFilteredUsers(filteredItems);
+  }, [search, referredPatients]);
+
+  useEffect(() => {
+    fetchReferredPatients();
+  }, [DoctorId]);
+
+  const handleDelete = (patientId: any) => {
+    if (window.confirm('Are you sure you want to delete this patient?')) {
+      console.log(`Deleted patient with ID: ${patientId}`);
+      const updatedPatients = referredPatients.filter((patient) => patient.id !== patientId);
+      setReferredPatients(updatedPatients);
+    }
+  };
+
+  const handleAddPatient=async()=>{
+  navigate(`/add-patient/${DoctorId}`)
+}
+
   return (
     <div>
-      <div className='table-heading'>
-       <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
-      </div>
-
-   <div className='search-box d-flex'>
-  <input
-    type="text"
-    placeholder="Search "
-    value={search}
-    onChange={handleSearch}
-    className='me-2 flex-grow-1 w-10'
-  />
-  <button className="custom-btn">Search</button> 
+      <div className='table-heading d-flex justify-content-between align-items-center'>
+  <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
+  <Button onClick={handleAddPatient} className='btn-color pt-2 mt-4'>
+    <img src='/add.png' alt='button'/>
+  </Button>
 </div>
 
-      
-      <div className=" mt-4"style={{ overflowX: 'auto' }}>
-             <Table >
-            <thead>
-              <tr>
-                <th>Patient name</th>
-                <th>DOB</th>
-                <th>Referred on</th>
-                <th>Referred to</th>
-                <th>Consultation date</th>
-                <th>Surgery date</th>
-                <th>Status</th>
-                <th>Return to Referrer</th>
-                <th>Consult note</th>
-                <th>Direct Message</th>
-                <th>Actions</th>
 
-              </tr>
-            </thead>
-            <tbody>
-              {referredPatients.map((patient, index) => (
+      <div className='search-box d-flex'>
+        <input
+          type="text"
+          placeholder="Search by first name or last name"
+          value={search}
+          onChange={handleSearch}
+          className='me-2 flex-grow-1 w-10'
+        />
+        <button className="custom-btn">Search</button>
+      </div>
+
+      <div className="mt-4" style={{ overflowX: 'auto' }}>
+        <Table>
+          <thead>
+            <tr>
+              <th>Patient name</th>
+              <th>DOB</th>
+              <th>Referred on</th>
+              <th>Referred to</th>
+              <th>Consultation date</th>
+              <th>Surgery date</th>
+              <th>Status</th>
+              <th>Return to Referrer</th>
+              <th>Consult note</th>
+              <th>Direct Message</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentProducts.length > 0 ? (
+              currentProducts.map((patient, index) => (
                 <tr key={index}>
                   <td>{patient.firstName} {patient.lastName}</td>
                   <td>{patient.dob}</td>
                   <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>
-                   <td>{patient.Doctor.firstName} {patient.Doctor.lastName}</td>
-                    <td>
-                       {patient.Appointments[0]?.appointmentType === 'consultation' ? (
-                       new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
-                          ):'-'}
-                       </td>
-
-                      <td>
-                      {patient.Appointments[0]?.appointmentType === 'surgery' ? (
-                        new Date(patient.Appointments[0]?.appointmentDate).toISOString().split('T')[0]
-                         ):'-'}
-                     </td>
-                   <td>{patient.status}</td>
+                  <td>{patient.Doctor.firstName} {patient.Doctor.lastName}</td>
+                  <td>
+                    {patient.Appointments?.appointmentType === 'consultation' ? (
+                      new Date(patient.Appointments?.appointmentDate).toISOString().split('T')[0]
+                    ) : '-'}
+                  </td>
+                  <td>
+                    {patient.Appointments?.appointmentType === 'surgery' ? (
+                      new Date(patient.Appointments?.appointmentDate).toISOString().split('T')[0]
+                    ) : '-'}
+                  </td>
+                  <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
-                  <td></td> 
-                  <td><Link to="/chat">link</Link></td> 
-                   <td className="actions">
-                <button onClick={() => navigate(`/editPatient/${patient.id}`)}>Edit</button>
-                 <button onClick={() => handleDelete(patient.id)}>Delete</button>
-                <button onClick={() => navigate(`/viewPatient/${patient.id}`)}>View</button> 
-              </td>
+                  <td></td>
+                  <td><Link to="/chat">link</Link></td>
+                  <td className="actions d-flex">
+                    <div className='icon me-1 ' style={{background:'#43D79E'}}>
+                      <i className="bi bi-eye-fill"onClick={() => navigate(`/viewPatient/${patient.id}`)} ></i>
+                    </div>
+                     
+                    <div className='icon me-1' style={{background:'#5BE4EC'}}>   
+                       <i className=" bi bi-pencil-fill" onClick={() => navigate(`/editPatient/${patient.id}`)}></i>
+                    </div>
+                     
+                     <div className='icon me-1' style={{background:'red'}}>
+                         <i className='bi bi-trash-fill' onClick={() => handleDelete(patient.id)}></i>
+                     </div>
+
+                   
+                   
+                  </td>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-         </div>
-     
-        </div>
-  )
-}
+              ))
+            ) : (
+              <tr>
+                <td colSpan={10}>No patients found</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </div>
+
+
+  <div className="pagination d-flex align-items-center bg-white">
+   
+    <button 
+      onClick={handlePrevPage} 
+      disabled={currentPage === 1} 
+      className="btn btn-outline-primary" 
+      style={{ width: "40px" }}
+    >
+      <i className="bi bi-arrow-left-square-fill"></i>
+    </button>
+
+    <span className="page-info text-center" style={{ fontSize: "16px", fontWeight: "500" }}>
+      {currentPage} of {totalPages}
+    </span>
+
+    
+    <button 
+      onClick={handleNextPage} 
+      disabled={currentPage === totalPages} 
+      className="btn btn-outline-primary" 
+      style={{ width: "40px" }}
+    >
+     <i className="bi bi-arrow-right-square-fill"></i>
+    </button>
+  </div>
+</div>
+
+  );
+};
 
 export default Patient;

@@ -62,7 +62,7 @@ const AppointmentPage: React.FC = () => {
   };
 
   const handleView = (patientId: number) => {
-    navigate('/viewAppointment'); 
+    navigate(`/viewAppointment/${patientId}`); 
   };
 
   const handleEdit = (patientId: number) => {

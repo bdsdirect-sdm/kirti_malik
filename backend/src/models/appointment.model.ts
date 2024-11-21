@@ -50,7 +50,8 @@ Appointments.init(
 Doctor.hasMany(Appointments,{foreignKey:"doctor"})
 Appointments.belongsTo(Doctor,{foreignKey:"doctor"})
 
+
 Appointments.belongsTo(ReferralPatient,{foreignKey:"patientId"})
-ReferralPatient.hasMany(Appointments,{foreignKey:"patientId"})
+ReferralPatient.hasOne(Appointments,{foreignKey:"patientId"})
 
 export default Appointments;
