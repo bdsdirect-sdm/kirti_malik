@@ -389,5 +389,11 @@ form {
     border-radius: 2px;
 }
 .pagination{
-    width: 200px;
+    width: 140px;
+   position: absolute;
+    right: 0;
+    
+
+ 
+
 }

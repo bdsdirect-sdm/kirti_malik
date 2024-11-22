@@ -41,9 +41,9 @@ const initialValues = {
 
 const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
-  // const[doctorId,setDoctorId]=useState('')
+ 
   const{DoctorId}=useParams();
-  //console.log("doctorrrrrrr",DoctorId)
+
 
   const navigate=useNavigate();
 

@@ -24,41 +24,35 @@ const Layout = () => {
   return (
     <Container fluid className="layout-container">
      
-      <Navbar fixed="top" className="layout-navbar d-flex justify-content-between align-items-center px-3">
-       
-        <Navbar.Brand className="d-flex align-items-center navbar-brand">
-          <img src="/logo.png" alt="Eye Refer Logo" height="50" width="50" className="me-2" />
-          <span className='eye-text'>EYE REFER</span>
-        </Navbar.Brand>
+     <Navbar fixed="top" className="layout-navbar d-flex justify-content-between align-items-center px-3">
+  <Navbar.Brand className="d-flex align-items-center navbar-brand">
+    <img src="/logo.png" alt="Eye Refer Logo" height="50" width="50" className="me-2" />
+    <span className="eye-text">EYE REFER</span>
+  </Navbar.Brand>
 
-   
-  <Dropdown align="end">
-  <Dropdown.Toggle className="custom-dropdown-toggle d-flex align-items-center">
-    <img
-      src="/user.jpg"
-      alt="User Icon"
-      className="me-2 user-avatar"
-      style={{ width: '50px', height: '50px' }}
-    />
-    <div className="ms-2">
-      <span className="bold-text dropdown-text d-block">Hi {name}!</span>
-      <span className="dropdown-text d-block" style={{ fontSize: '0.875rem' }}>Welcome Back!</span>
+ 
+  <div className="d-flex align-items-center">
+  
+    <i className="bi bi-bell-fill me-3" style={{ fontSize: '1.5rem' }}></i>
 
-    </div>
-  </Dropdown.Toggle>
+    
+    <Dropdown align="end">
+      <Dropdown.Toggle className="custom-dropdown-toggle d-flex align-items-center">
+        <img
+          src="/user.jpg"
+          alt="User Icon"
+          className="me-2 user-avatar"
+          style={{ width: '50px', height: '50px' }}
+        />
+        <div className="ms-2">
+          <span className="bold-text dropdown-text d-block">Hi {name}!</span>
+          <span className="dropdown-text d-block" style={{ fontSize: '0.875rem' }}>Welcome Back!</span>
+        </div>
+      </Dropdown.Toggle>
+    </Dropdown>
+  </div>
+</Navbar>
 
-  <Dropdown.Menu>
-    <Dropdown.Item as={Link} to={`doctorProfile/${DoctorId}`}>Profile</Dropdown.Item>
-    <Dropdown.Item>Change Password</Dropdown.Item>
-    <Dropdown.Item as={Link} to="/login">
-      Log out
-    </Dropdown.Item>
-  </Dropdown.Menu>
-</Dropdown>
-
-
-
-      </Navbar>
 
      
       <Row className="custom-margin-top">
@@ -93,7 +87,7 @@ const Layout = () => {
     </Link>
   </li>
   <li>
-    <Link to="/chat" className="sidebar-link">
+             <Link to="/chat" className="sidebar-link">
       <img src="/chatIcon.png" alt="Chat" className="sidebar-icon" />
       Chat
     </Link>

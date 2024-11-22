@@ -118,13 +118,13 @@ const Patient = () => {
                   <td>{new Date(patient.createdAt).toISOString().split('T')[0]}</td>
                   <td>{patient.Doctor.firstName} {patient.Doctor.lastName}</td>
                   <td>
-                    {patient.Appointments?.appointmentType === 'consultation' ? (
-                      new Date(patient.Appointments?.appointmentDate).toISOString().split('T')[0]
+                    {patient.Appointment?.appointmentType === 'consultation' ? (
+                      new Date(patient.Appointment?.appointmentDate).toISOString().split('T')[0]
                     ) : '-'}
                   </td>
                   <td>
-                    {patient.Appointments?.appointmentType === 'surgery' ? (
-                      new Date(patient.Appointments?.appointmentDate).toISOString().split('T')[0]
+                    {patient.Appointment?.appointmentType === 'surgery' ? (
+                      new Date(patient.Appointment?.appointmentDate).toISOString().split('T')[0]
                     ) : '-'}
                   </td>
                   <td>{patient.status}</td>
@@ -159,29 +159,28 @@ const Patient = () => {
       </div>
 
 
-  <div className="pagination d-flex align-items-center bg-white">
+  <div className="pagination d-flex align-items-center bg-white me-4">
    
     <button 
       onClick={handlePrevPage} 
       disabled={currentPage === 1} 
-      className="btn btn-outline-primary" 
+      className="btn" 
       style={{ width: "40px" }}
     >
-      <i className="bi bi-arrow-left-square-fill"></i>
+      <i className=" bi-arrow-left-short"></i>
     </button>
 
-    <span className="page-info text-center" style={{ fontSize: "16px", fontWeight: "500" }}>
+    <span className="page-info text-center" style={{ fontSize: "16px", fontWeight: "300" }}>
       {currentPage} of {totalPages}
     </span>
-
-    
+  
     <button 
       onClick={handleNextPage} 
       disabled={currentPage === totalPages} 
-      className="btn btn-outline-primary" 
+      className="btn " 
       style={{ width: "40px" }}
     >
-     <i className="bi bi-arrow-right-square-fill"></i>
+     <i className=" bi-arrow-right-short"></i>
     </button>
   </div>
 </div>

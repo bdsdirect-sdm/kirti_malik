@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import DoctorLogin from './login';
 import DoctorRegister from './Register';
 import VerifyOtp from './VerifyOtp';
-// import ODdashboard from './ODdashboard';
 import AddPatient from './AddPatient';
 import Layout from './Layout';
 import ForgotPassword from './ForgotPassword';
@@ -16,8 +15,11 @@ import ViewPatientAppointments from './ViewAppointment';
 import Chat from './Chat';
 import ViewPatient from './ViewPatient';
 import EditPatient from './EditPatient';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import DoctorProfile from './DoctorProfile';
+import Notification from './Notification';
+
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 
 
@@ -43,6 +45,8 @@ const App = () => {
            <Route path='viewPatient/:patientId' element={<ViewPatient/>}/>
            <Route path='editPatient/:patientId' element={<EditPatient/>}/>
            <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
+            <Route path='Notification' element={<Notification/>}/>
+
 
        </Route>
     </Routes>
