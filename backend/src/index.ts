@@ -6,44 +6,28 @@ import sequelize from './config/db';
 import router from './routers/authRoutes';
 
 const app = express();
-const server = http.createServer(app); 
-const io = new Server(server); 
-
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // Replace with your frontend's URL
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(cors());
 app.use(express.json());
 
-
 app.use('/app', router);
 
-
 io.on('connection', (socket) => {
   console.log('A new client connected:', socket.id);
 
-  
   socket.on('message', (message) => {
     console.log('Message received:', message);
 
-    io.emit('receive_message', message); 
+    io.emit('receive_message', message);
   });
 
-  
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
-  });
-});
-
-io.on('connection', (socket) => {
-  console.log('A new client connected:', socket.id);
-
-  
-  socket.on('message', (message) => {
-    console.log('Message received:', message);
-
-    io.emit('receive_message', message); 
-  });
-
-  
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
   });

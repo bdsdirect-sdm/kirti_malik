@@ -7,6 +7,7 @@ import { sendWelcomeEmail } from "../config/mailer";
 import Appointments from "../models/appointment.model";
 import { Op, Sequelize } from "sequelize";
 import { Where } from "sequelize/types/utils";
+import Message from "../models/message.model";
 
 
 //to regsiter the doctor as OD or MD
@@ -451,5 +452,14 @@ export const editPatient = async (req: any, res: any) => {
 
 
 export const sendMessage=async(req:any,res:any)=>{
+
+  const { patientId, senderId, receiverId, message,roomId } = req.body;
+  try {
+    
+    const chat = await Message.create({ patientId, senderId, receiverId, message,roomId });
+    res.json(chat);
+  } catch (error) {
+    res.status(500).json({ error: 'Error saving message' });
+  }
 
 }

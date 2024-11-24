@@ -49,6 +49,19 @@ const Layout = () => {
           <span className="dropdown-text d-block" style={{ fontSize: '0.875rem' }}>Welcome Back!</span>
         </div>
       </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+        <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
+        <Dropdown.Item as={Link} to="/change-password">Change Password</Dropdown.Item>
+        <Dropdown.Item 
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = '/login';
+          }}
+        >
+          Log Out
+        </Dropdown.Item>
+      </Dropdown.Menu>
     </Dropdown>
   </div>
 </Navbar>

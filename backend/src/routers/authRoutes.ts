@@ -28,5 +28,6 @@ router.get('/getAppointmentByPatient/:PatientId',getAppointmentsByPatient)
 router.post('/sendMessage',sendMessage)
 router.get('/viewPatient/:patientId',viewPatient)
 router.put('/editPatient/:patientId',upload.single('MedicalDocuments'),editPatient)
+router.post('/chat',sendMessage)
 
 export default router;

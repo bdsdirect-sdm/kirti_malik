@@ -1,41 +1,77 @@
-import React from 'react';
-import io from 'socket.io-client';
-import './style.css';
+import React, { useState, useEffect } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 
-const socket = io('http://localhost:8080');
+
+const socket: Socket = io('http://localhost:8080');
 
 const Chat: React.FC = () => {
-  return (
-    <div className="container-fluid d-flex" style={{ height: '50vh' }}>
-    
-      <div className="col-2 bg-light p-3" style={{ height: '50vh', overflowY: 'auto' }}>
-        <h3>patient</h3>
-        <ul className="list-unstyled">
-          <li>patient 1</li>
-          <li>patient 2</li>
-          <li>patient 3</li>
-        </ul>
-      </div>
+  const [message, setMessage] = useState<string>(''); // Input message
+  const [messages, setMessages] = useState<Array<{ sender: string; text: string }>>([]); // Chat history
 
-      <div className="col-10 d-flex flex-column p-3">
-        <div className="chat-header">
-          <h3>Chat Room</h3>
-        </div>
-        <div className="chat-messages flex-grow-1" style={{ overflowY: 'auto' }}>
-          
-          <div>
-            <p><strong>User 1:</strong> Hello!</p>
-            <p><strong>User 2:</strong> Hi there!</p>
-           
-          </div>
-        </div>
-        <div className="chat-footer mt-auto">
-        
-          <input type="text" className="form-control" placeholder="Type a message..." />
-          <button className=''></button>
-        </div>
-      </div>
-    </div>
+  useEffect(() => {
+    // Handle receiving messages
+    socket.on('receive_message', (data: { sender: string; text: string }) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
+
+    return () => {
+      socket.disconnect(); // Cleanup on unmount
+    };
+  }, []);
+
+  const sendMessage = () => {
+    if (message.trim() === '') return; // Prevent empty messages
+
+    // Send message to server
+    socket.emit('message', { sender: 'OD Doctor', text: message }); // Replace 'OD Doctor' with dynamic sender name
+
+    // Add to chat history
+    setMessages((prevMessages) => [...prevMessages, { sender: 'You', text: message }]);
+    setMessage(''); // Clear input
+  };
+
+  return (
+    <Container className="mt-4">
+      <Row>
+        <Col md={6} className="mx-auto">
+          <Card className="p-3 shadow">
+            <Card.Body>
+              <Card.Title>Chat Room</Card.Title>
+              <div
+                className="border rounded p-3 mb-3"
+                style={{ height: '300px', overflowY: 'scroll', backgroundColor: '#f8f9fa' }}
+              >
+                {messages.map((msg, index) => (
+                  <div key={index} className="mb-2">
+                    <strong>{msg.sender}:</strong> <span>{msg.text}</span>
+                  </div>
+                ))}
+              </div>
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Type a message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        sendMessage();
+                      }
+                    }}
+                  />
+                </Form.Group>
+                <Button variant="primary" onClick={sendMessage}>
+                  Send
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

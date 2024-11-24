@@ -130,7 +130,7 @@ const Patient = () => {
                   <td>{patient.status}</td>
                   <td>{patient.returnPatient}</td>
                   <td></td>
-                  <td><Link to="/chat">link</Link></td>
+                  <td><Link to={`/chat/${patient.id}`}>link</Link></td>
                   <td className="actions d-flex">
                     <div className='icon me-1 ' style={{background:'#43D79E'}}>
                       <i className="bi bi-eye-fill"onClick={() => navigate(`/viewPatient/${patient.id}`)} ></i>
