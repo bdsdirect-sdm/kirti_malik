@@ -8,7 +8,8 @@ getAllAppointments,
 getAppointmentsByPatient,
 sendMessage,
 viewPatient,
-editPatient} from '../controllers/authController';
+editPatient,
+getChatHistory} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -29,5 +30,6 @@ router.post('/sendMessage',sendMessage)
 router.get('/viewPatient/:patientId',viewPatient)
 router.put('/editPatient/:patientId',upload.single('MedicalDocuments'),editPatient)
 router.post('/chat',sendMessage)
+router.get('/chatHistory/:roomId',getChatHistory)
 
 export default router;

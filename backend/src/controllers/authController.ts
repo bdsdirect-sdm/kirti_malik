@@ -453,13 +453,43 @@ export const editPatient = async (req: any, res: any) => {
 
 export const sendMessage=async(req:any,res:any)=>{
 
-  const { patientId, senderId, receiverId, message,roomId } = req.body;
-  try {
+  const { patientId, senderId, recieverId, message,roomId } = req.body;
+ try {
+ 
+    const newMessage = new Message({
+      message,
+      senderId,
+      recieverId,
+      patientId,
+      roomId,
     
-    const chat = await Message.create({ patientId, senderId, receiverId, message,roomId });
-    res.json(chat);
+    });
+
+    await newMessage.save();
+    res.status(201).send({ success: true, message: 'Message saved' });
   } catch (error) {
-    res.status(500).json({ error: 'Error saving message' });
+    console.error('Error saving message:', error);
+    res.status(500).send({ success: false, error: 'Failed to save message' });
   }
+
+}
+
+export const getChatHistory=async(req:any,res:any)=>{
+  const  roomId  = req.params.roomId; 
+  console.log(roomId);
+  try{
+    const messages=await Message.findAll({
+      where:{
+        roomId:roomId
+      }
+    })
+    return res.status(200).json(messages)
+  }
+  catch(error)
+  {
+    console.error('error fetching chat history',error)
+    return res.status(500).json({error:"an error occured while fetching chat"})
+  }
+
 
 }

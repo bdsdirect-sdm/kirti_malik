@@ -1,15 +1,17 @@
 import { DataTypes,DateOnlyDataType,HasMany,Model } from "sequelize";
 import sequelize from "../config/db";
+import { referralPatientList } from "../controllers/authController";
+import ReferralPatient from "./referralPatient.model";
 
 
 class Message extends Model{
     public id!:number;
     public  senderId!:number;
      public  patientId!:number;
-    public roomId!:number;
-    public message!:string;
-    public  recieverId!:number;
-}
+      public  recieverId!:number;
+    public roomId!:string;
+    public message!:string;}
+   
 Message.init(
     {
         id:{
@@ -22,19 +24,19 @@ Message.init(
         type:DataTypes.INTEGER,
         allowNull:false},
 
+          patientId:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+          
+        },
+
         recieverId:{
         type:DataTypes.INTEGER,
         allowNull:false
       },
-
-        patientId:{
-        type:DataTypes.INTEGER,
-        allowNull:false
-        },
-
-        
+  
         roomId:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.STRING,
         allowNull:false
         },
         message:{
