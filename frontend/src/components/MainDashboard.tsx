@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import ODdashboard from './ODdashboard'
-import MDdashboard from './MDdashboard'
+import ODdashboard from '../components/ODdashboard'
+import MDdashboard from '../components/MDdashboard'
 
 const MainDashboard = () => {
     const[type,setType]=useState<any>('null')

@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Button, Container, Row, Col, Form as BootstrapForm } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import config from '../config';
 
 
 const validationSchema = Yup.object({
@@ -28,7 +29,7 @@ const AddAppointment: React.FC = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
+        const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
         setPatients(response.data); 
         console.log("huhuhuuh",response.data)
       } catch (error) {
@@ -43,7 +44,7 @@ const AddAppointment: React.FC = () => {
     try {
       const { patientId, appointmentDate, appointmentType,  } = values;
       
-      const response = await axios.post(`http://localhost:8080/app/addAppointment/${DoctorId}`, {
+      const response = await axios.post(`${config.BASE_URL}/addAppointment/${DoctorId}`, {
         patientId,
         appointmentDate,
         appointmentType,
@@ -73,7 +74,7 @@ const AddAppointment: React.FC = () => {
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <Row>
-              {/* Patient Selection */}
+             
               <Col md={6}>
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Label>Patient Name</BootstrapForm.Label>

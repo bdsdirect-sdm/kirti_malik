@@ -5,6 +5,7 @@ import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootst
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
+import config from '../config';
 
 // Validation schema similar to the "Add Patient"
 const validationSchema = Yup.object({
@@ -32,7 +33,7 @@ const EditPatient: React.FC = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/app/getmddoctor');
+        const response = await axios.get(`${config.BASE_URL}/getmddoctor`);
         setMDdoctors(response.data);
       } catch (error) {
         console.error('Error fetching doctors:', error);
@@ -41,7 +42,7 @@ const EditPatient: React.FC = () => {
 
     const fetchPatientData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/app/viewPatient/${patientId}`);
+        const response = await axios.get(`${config.BASE_URL}/viewPatient/${patientId}`);
         setPatientData(response.data?.patientInfo);
        
       } catch (error) {
@@ -71,7 +72,7 @@ const EditPatient: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:8080/app/editPatient/${patientId}`, formData, {
+      const response = await axios.put(`${config.BASE_URL}/editPatient/${patientId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import config from "../config";
 
 
 type ReferralPatient={
@@ -31,7 +32,7 @@ const AppointmentPage: React.FC = () => {
   const fetchAppointments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/app/getAppointments/${DoctorId}`
+        `${config.BASE_URL}/getAppointments/${DoctorId}`
       );
       console.log("hiuhuuh",response.data.appointments)
       setAppointments(response.data.appointments);
@@ -45,7 +46,7 @@ const AppointmentPage: React.FC = () => {
 
   const handleComplete = async (id: number) => {
     try {
-      await axios.put(`http://localhost:8080/app/completeAppointment/${id}`);
+      await axios.put(`${config.BASE_URL}/completeAppointment/${id}`);
       fetchAppointments(); 
     } catch (error) {
       console.error("Error completing appointment:", error);
@@ -54,7 +55,7 @@ const AppointmentPage: React.FC = () => {
 
   const handleCancel = async (id: number) => {
     try {
-      await axios.put(`http://localhost:8080/app/cancelAppointment/${id}`);
+      await axios.put(`${config.BASE_URL}/cancelAppointment/${id}`);
       fetchAppointments();
     } catch (error) {
       console.error("Error cancelling appointment:", error);

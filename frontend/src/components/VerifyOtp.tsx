@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import config from '../config';
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
@@ -10,7 +11,7 @@ const VerifyOtp = () => {
   const navigate=useNavigate()
   const handleVerifyOtp = async () => {
     try {
-      await axios.post('http://localhost:8080/app/verifyOtp', { email, otp });
+      await axios.post(`${config.BASE_URL}/verifyOtp`, { email, otp });
       console.log("========!!!!",email,otp)
       alert('OTP verified successfully!');
       localStorage.removeItem('email')

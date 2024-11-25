@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Table, Container, Spinner } from "react-bootstrap";
 import axios from "axios";
+import config from "../config";
 
 
 type Appointment = {
@@ -29,7 +30,7 @@ const ViewPatientAppointments: React.FC = () => {
   const fetchPatientAppointments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/app/getAppointmentsByPatient/${patientId}`
+        `${config.BASE_URL}/getAppointmentsByPatient/${patientId}`
       );
       setAppointments(response.data.appointments);
       setLoading(false);

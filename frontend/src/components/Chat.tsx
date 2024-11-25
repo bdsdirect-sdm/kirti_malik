@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, ListGroup, Navbar, Row } from 'react-bootstrap';
 import io from 'socket.io-client';
+import config from '../config';
 
 const socket = io('http://localhost:8080');
 
@@ -45,7 +46,7 @@ const Chat: React.FC = () => {
 
   const fetchReferredPatients = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
+      const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
       setPatients(response.data);
     } catch (error) {
       console.error('Error fetching referred patients', error);
@@ -56,7 +57,7 @@ const Chat: React.FC = () => {
     setSelectedPatient(patient);
     const roomId = patient.id;
     try {
-      const response = await axios.get(`http://localhost:8080/app/chatHistory/${roomId}`);
+      const response = await axios.get(`${config.BASE_URL}/app/chatHistory/${roomId}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching chat history', error);
@@ -76,7 +77,7 @@ const Chat: React.FC = () => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage('');
 
-    await axios.post('http://localhost:8080/app/chat', newMessage);
+    await axios.post(`${config.BASE_URL}/chat`, newMessage);
   };
 
   return (

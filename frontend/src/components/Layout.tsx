@@ -33,9 +33,9 @@ const Layout = () => {
  
   <div className="d-flex align-items-center">
   
-    <i className="bi bi-bell-fill me-3" style={{ fontSize: '1.5rem' }}></i>
-
-    
+   <Link to="/notification">
+  <i className="bi bi-bell-fill me-3" style={{ fontSize: '1.5rem' }}></i>
+</Link>
     <Dropdown align="end">
       <Dropdown.Toggle className="custom-dropdown-toggle d-flex align-items-center">
         <img

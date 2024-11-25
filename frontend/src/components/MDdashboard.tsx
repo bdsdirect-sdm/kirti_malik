@@ -3,6 +3,7 @@ import { Button,  Row, Col, Card, Table, Container,  } from 'react-bootstrap';
 import './style.css'
 import axios from 'axios';
 import { useNavigate,  } from 'react-router-dom';
+import config from '../config';
 
 
 type DashboardData = {
@@ -35,13 +36,13 @@ useEffect(()=>{
 },[])
 
   const fetchReferredPatients = async () => {
-   const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
+   const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
    console.log("datataaaaa",response.data)
     setReferredPatients(response.data);
   };
 
   const fetchDashboardData=async()=>{
-    const response=await axios.get(`http://localhost:8080/app/MDdashboardData/${DoctorId}`)
+    const response=await axios.get(`${config.BASE_URL}/MDdashboardData/${DoctorId}`)
     console.log("!!!!!!!",response.data)
     setDashboardData(response.data);
   }

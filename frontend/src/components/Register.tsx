@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import './style.css'; 
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required('First Name is required'),
@@ -30,7 +31,7 @@ const DoctorRegister = () => {
     const navigate=useNavigate()
   const onSubmit = async (values: IFormInput) => {
     try {
-      const response = await axios.post('http://localhost:8080/app/register', values);
+      const response = await axios.post(`${config.BASE_URL}/register`, values);
       alert('Registration successful!, now you will be redirected to a verification page');
       const user=response.data.email;
       console.log("=================",user)

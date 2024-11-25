@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Col, Row, Table } from 'react-bootstrap';
+import config from '../config';
 
 
 interface Doctor {
@@ -39,7 +40,7 @@ const ViewPatient: React.FC = () => {
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/app/viewPatient/${patientId}`);
+        const response = await axios.get(`${config.BASE_URL}/viewPatient/${patientId}`);
         setPatientData(response.data.patientInfo);
         console.log("-------",response.data.patientInfo)
       } catch (error) {

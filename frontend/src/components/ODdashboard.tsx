@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, Container, Row, Col, Card, Table,  } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
+import config from '../config';
 
 
 const ODdashboard = () => {
@@ -14,17 +15,17 @@ const ODdashboard = () => {
   useEffect(() => {
     fetchDashboardData();
     fetchReferredPatients();
-  }, []);
+  }, [DoctorId]);
 
   const fetchDashboardData = async () => {
-    const response = await axios.get('http://localhost:8080/app/oDdashboardData');
+    const response = await axios.get(`${config.BASE_URL}/oDdashboardData`);
     setDashboardData(response.data);
        console.log("'''''",response.data)
   };
 
   const fetchReferredPatients = async () => {
  
-    const response = await axios.get('http://localhost:8080/app/referralpatientlist');
+    const response = await axios.get(`${config.BASE_URL}/referralpatientlist`);
     setReferredPatients(response.data);
  
     

@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './style.css'; 
+import config from '../config';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email format').required('Email is required'),
@@ -21,7 +22,7 @@ const DoctorLogin = () => {
 
   const onSubmit = async (values: ILoginInput) => {
     try {
-      const response = await axios.post('http://localhost:8080/app/login', values);
+      const response = await axios.post(`${config.BASE_URL}/login`, values);
       alert('Login successful!');
      
       localStorage.setItem('token', response.data.token);

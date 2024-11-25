@@ -1,22 +1,23 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import DoctorLogin from './login';
-import DoctorRegister from './Register';
-import VerifyOtp from './VerifyOtp';
-import AddPatient from './AddPatient';
-import Layout from './Layout';
-import ForgotPassword from './ForgotPassword';
-import Patient from './Patient';
-import MDdoctors from './MDdoctors';
-import MainDashboard from './MainDashboard';
-import AddAppointment from './AddAppointment';
-import AppointmentPage from './AppointmentPage';
-import ViewPatientAppointments from './ViewAppointment';
-import Chat from './Chat';
-import ViewPatient from './ViewPatient';
-import EditPatient from './EditPatient';
-import DoctorProfile from './DoctorProfile';
-import Notification from './Notification';
+import DoctorLogin from './components/login';
+import DoctorRegister from './components/Register';
+import VerifyOtp from './components/VerifyOtp';
+import AddPatient from './components/AddPatient';
+import Layout from './components/Layout';
+import ForgotPassword from './components/ForgotPassword';
+import Patient from './components/Patient';
+import MDdoctors from './components/MDdoctors';
+import MainDashboard from './components/MDdashboard';
+import AddAppointment from './components/AddAppointment';
+import AppointmentPage from './components/AppointmentPage';
+import ViewPatientAppointments from './components/ViewAppointment';
+import Chat from './components/Chat';
+import ViewPatient from './components/ViewPatient';
+import EditPatient from './components/EditPatient';
+import DoctorProfile from './components/DoctorProfile';
+import Notification from './components/Notification';
+
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 

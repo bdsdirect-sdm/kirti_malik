@@ -5,7 +5,8 @@ import { Button, Container, Row, Col, Form as BootstrapForm } from 'react-bootst
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
-// import MDdoctors from './MDdoctors';
+import config from '../config';
+
 
 
 const validationSchema = Yup.object({
@@ -51,7 +52,7 @@ const AddPatient: React.FC = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/app/getmddoctor');
+        const response = await axios.get(`${config.BASE_URL}/getmddoctor`);
         setMDdoctors(response.data);
       // setDoctorId(response.data.id)
 
@@ -82,7 +83,7 @@ const AddPatient: React.FC = () => {
       formData.append('MedicalDocuments', values.MedicalDocuments);
     }
     try {
-      const response = await axios.post(`http://localhost:8080/app/addPatient/${DoctorId}`,formData, {
+      const response = await axios.post(`${config.BASE_URL}/addPatient/${DoctorId}`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

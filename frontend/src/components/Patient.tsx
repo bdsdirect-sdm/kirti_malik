@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
+import config from '../config';
 
 const Patient = () => {
   const [referredPatients, setReferredPatients] = useState<any[]>([]);
@@ -16,7 +17,7 @@ const Patient = () => {
   const navigate = useNavigate();
 
   const fetchReferredPatients = async () => {
-    const response = await axios.get(`http://localhost:8080/app/patient/${DoctorId}`);
+    const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
     console.log('Fetched Data:', response.data);
     setReferredPatients(response.data);
   };
