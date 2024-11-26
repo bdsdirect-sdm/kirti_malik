@@ -44,15 +44,19 @@ const NotificationPage: React.FC = () => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container fluid className="mt-4 px-4">
       <h3 className="mb-4 text-center">Notifications</h3>
-      <div>
+      <div className="d-flex flex-column align-items-center">
         {notifications.length > 0 ? (
           notifications.map((notification) => (
-            <Card key={notification.id} className="mb-3 p-3 shadow-sm rounded w-100vh">
+            <Card
+              key={notification.id}
+              className="mb-3 shadow-sm rounded"
+              style={{ width: '100%', maxWidth: '1200px' }}
+            >
               <Card.Body>
-                <Card.Text>
-                  <strong>Message:</strong> {notification.message}
+                <Card.Text style={{fontSize:'15px'}} className='pt-4'>
+                  {notification.message}
                 </Card.Text>
                 <Card.Footer className="text-muted">
                   <small>Received at: {formatDate(notification.createdAt)}</small>
