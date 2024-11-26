@@ -60,7 +60,8 @@ const Patient = () => {
 
   useEffect(() => {
     fetchReferredPatients();
-  }, [DoctorId,]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [DoctorId]);
 
   const handleDelete = (patientId: any) => {
     if (window.confirm('Are you sure you want to delete this patient?')) {
@@ -79,7 +80,7 @@ const Patient = () => {
       <div className='table-heading d-flex justify-content-between align-items-center'>
   <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
   <Button onClick={handleAddPatient} className='btn-color pt-2 mt-4'>
-    <img src='/add.png' alt='button'/>
+      <img src='/addAppointment.png' alt='button'/>
   </Button>
 </div>
 

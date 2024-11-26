@@ -27,8 +27,6 @@ const ODdashboard = () => {
  
     const response = await axios.get(`${config.BASE_URL}/referralpatientlist`);
     setReferredPatients(response.data);
- 
-    
   };
 
 const handleAddPatient=async()=>{

@@ -6,8 +6,15 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
 import config from '../config';
+import socket from '../socket';
 
 
+interface Notification{
+  senderId:string,
+  recieverId:string,
+  patientId:string,
+  message:string
+}
 
 const validationSchema = Yup.object({
   dob: Yup.date().required('Date of birth is required'),
@@ -44,6 +51,7 @@ const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
  
   const{DoctorId}=useParams();
+  const doctorName=localStorage.getItem('doctorName')
 
 
   const navigate=useNavigate();
@@ -60,6 +68,10 @@ const AddPatient: React.FC = () => {
         console.error('Error fetching doctors:', error);
       }
     };
+
+     socket.on('connect', () => {
+      console.log('Connected to server');
+    });
     fetchDoctors();
   }, []);
 
@@ -88,10 +100,23 @@ const AddPatient: React.FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      
      console.log("reeeeee",response.data)
 
       if (response.status === 201) {
         console.log('Patient added successfully');
+
+       const notification : Notification={
+        senderId: response.data.newPatient.ReferredBy,
+        recieverId: response.data.newPatient.MDdoctor,
+        patientId: response.data.newPatient.id,
+        message: `${doctorName} has referred ${response.data.newPatient.firstName} ${response.data.newPatient.lastName} to you for further consultation`
+
+       }
+       
+       socket.emit('sendNotification',notification)
+      console.log("sending notification.....",notification)
+
         navigate(`/dashboard/${DoctorId}`)
        
       } else {
@@ -100,6 +125,8 @@ const AddPatient: React.FC = () => {
     } catch (error) {
       console.error('Error adding patient:',error);
     }
+
+   
   };
 
     const handleFileChange = (event: any, setFieldValue: any) => {

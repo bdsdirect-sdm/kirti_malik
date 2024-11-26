@@ -8,7 +8,7 @@ import Layout from './components/Layout';
 import ForgotPassword from './components/ForgotPassword';
 import Patient from './components/Patient';
 import MDdoctors from './components/MDdoctors';
-import MainDashboard from './components/MDdashboard';
+import MainDashboard from './components/MainDashboard';
 import AddAppointment from './components/AddAppointment';
 import AppointmentPage from './components/AppointmentPage';
 import ViewPatientAppointments from './components/ViewAppointment';
@@ -16,12 +16,8 @@ import Chat from './components/Chat';
 import ViewPatient from './components/ViewPatient';
 import EditPatient from './components/EditPatient';
 import DoctorProfile from './components/DoctorProfile';
-import Notification from './components/Notification';
-
-
+import NotificationPage from './components/NotificationPage';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
-
 
 
 const App = () => {
@@ -46,7 +42,7 @@ const App = () => {
            <Route path='viewPatient/:patientId' element={<ViewPatient/>}/>
            <Route path='editPatient/:patientId' element={<EditPatient/>}/>
            <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
-            <Route path='Notification' element={<Notification/>}/>
+            <Route path='Notification' element={<NotificationPage/>}/>
 
 
        </Route>

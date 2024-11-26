@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, ListGroup, Navbar, Row } from 'react-bootstrap';
-import io from 'socket.io-client';
+import socket from '../socket';
 import config from '../config';
 
-const socket = io('http://localhost:8080');
+
 
 interface Message {
   message: string;
@@ -17,6 +18,8 @@ interface Message {
 const Chat: React.FC = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [messageRecieved, setMessageRecieved] = useState<Message[]>([]);
+
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
@@ -31,16 +34,17 @@ const Chat: React.FC = () => {
       console.log('Disconnected from server');
     });
 
-    socket.on('message', (newMessage: Message) => {
+    socket.on('receive_message', (newMessage: Message) => {
       if (newMessage.roomId === selectedPatient?.id) {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessageRecieved((prevMessages) => [...prevMessages, newMessage]);
       }
+      console.log("Message received", newMessage);
     });
 
     fetchReferredPatients();
 
     return () => {
-      socket.off('message');
+      socket.off('receive_message');
     };
   }, [DoctorId, selectedPatient]);
 
@@ -48,6 +52,7 @@ const Chat: React.FC = () => {
     try {
       const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
       setPatients(response.data);
+      console.log("--", response.data);
     } catch (error) {
       console.error('Error fetching referred patients', error);
     }
@@ -57,7 +62,7 @@ const Chat: React.FC = () => {
     setSelectedPatient(patient);
     const roomId = patient.id;
     try {
-      const response = await axios.get(`${config.BASE_URL}/app/chatHistory/${roomId}`);
+      const response = await axios.get(`${config.BASE_URL}/chatHistory/${roomId}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching chat history', error);
@@ -73,11 +78,13 @@ const Chat: React.FC = () => {
       roomId: selectedPatient?.id,
     };
 
-    socket.emit('message', newMessage); 
+    socket.emit('message', newMessage);
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage('');
+    console.log("Message sent", message);
 
-    await axios.post(`${config.BASE_URL}/chat`, newMessage);
+    // You may want to save the message in the backend here too.
+    // await axios.post(`${config.BASE_URL}/chat`, newMessage);
   };
 
   return (
@@ -100,6 +107,26 @@ const Chat: React.FC = () => {
           </Navbar>
 
           <div className="flex-grow-1 overflow-auto" style={{ maxHeight: 'calc(100vh - 120px)', padding: '10px' }}>
+            <ListGroup>
+              {messageRecieved.map((msg, index) => (
+                <ListGroup.Item
+                  key={index}
+                  style={{
+                    textAlign: msg.senderId === DoctorId ? 'left' : 'right',
+                    backgroundColor: msg.senderId === DoctorId ? '#d1ecf1' : '#f8d7da',
+                    borderRadius: '5px',
+                    marginBottom: '10px',
+                    padding: '10px',
+                    maxWidth: '80%',
+                    marginLeft: msg.senderId === DoctorId ? '0' : 'auto',
+                    marginRight: msg.senderId === DoctorId ? 'auto' : '0',
+                  }}
+                >
+                  <strong>{msg.senderId === DoctorId ? 'You' : msg.senderId}:</strong> {msg.message}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+
             <ListGroup>
               {messages.map((msg, index) => (
                 <ListGroup.Item

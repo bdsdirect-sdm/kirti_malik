@@ -5,8 +5,8 @@ import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
 import Appointments from "../models/appointment.model";
-import { Op, Sequelize } from "sequelize";
-import { Where } from "sequelize/types/utils";
+import { Op, Sequelize, where } from "sequelize";
+import Notification from "../models/notification.model";
 import Message from "../models/message.model";
 
 
@@ -126,8 +126,6 @@ export const addPatient = async (req:any, res:any) => {
     const { dob, email, phoneNumber, firstName, lastName, gender, diseaseName, laterality, returnPatient, MDdoctor } = req.body;
     const ReferredTo=MDdoctor;
     const ReferredBy=req.params.DoctorId;
-   
-    
     if (!req.file) {
         return res.status(400).json({ message: 'Medical documents are required' });
     }
@@ -451,28 +449,7 @@ export const editPatient = async (req: any, res: any) => {
 }
 
 
-export const sendMessage=async(req:any,res:any)=>{
 
-  const { patientId, senderId, recieverId, message,roomId } = req.body;
- try {
- 
-    const newMessage = new Message({
-      message,
-      senderId,
-      recieverId,
-      patientId,
-      roomId,
-    
-    });
-
-    await newMessage.save();
-    res.status(201).send({ success: true, message: 'Message saved' });
-  } catch (error) {
-    console.error('Error saving message:', error);
-    res.status(500).send({ success: false, error: 'Failed to save message' });
-  }
-
-}
 
 export const getChatHistory=async(req:any,res:any)=>{
   const  roomId  = req.params.roomId; 
@@ -491,5 +468,29 @@ export const getChatHistory=async(req:any,res:any)=>{
     return res.status(500).json({error:"an error occured while fetching chat"})
   }
 
+
+}
+
+export const getNotification=async(req:any,res:any)=>{
+ 
+  try{
+       const DoctorId=req.params.DoctorId;
+       console.log("yeeeee",DoctorId)
+  const notificaion =await Notification.findAll({
+    where:{
+      recieverId:DoctorId
+    }
+
+  })
+  return res.status(200).json(notificaion)
+  
+  }
+  catch(error){
+    console.error('error fetching notification',error)
+    return res.status(500).json({error:"an error occured while fetching patient "})
+
+
+  }
+ 
 
 }

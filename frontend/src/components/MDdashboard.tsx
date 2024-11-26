@@ -15,6 +15,7 @@ const MDdashboard = () => {
 
   const navigate=useNavigate();
   const[referredPatientsList,setReferredPatients]=useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const[isLoading,setIsLoading]=useState(false);
   const [dashboardData, setDashboardData] = useState<DashboardData>({
         referralsRecieved: 0,
@@ -33,6 +34,7 @@ useEffect(()=>{
   setIsLoading(true);
   fetchReferredPatients();
   fetchDashboardData();
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[])
 
   const fetchReferredPatients = async () => {
