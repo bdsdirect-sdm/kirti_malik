@@ -22,7 +22,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <Container fluid className="layout-container">
+    <Container fluid className="layout-container ">
      
      <Navbar fixed="top" className="layout-navbar d-flex justify-content-between align-items-center px-3">
   <Navbar.Brand className="d-flex align-items-center navbar-brand">
@@ -116,7 +116,7 @@ const Layout = () => {
           </div>
         </Col>
 
-        {/* Main Content */}
+      
         <Col sm={10} className="content-area offset-sm-2 bg-grey py-3">
           <Outlet />
         </Col>

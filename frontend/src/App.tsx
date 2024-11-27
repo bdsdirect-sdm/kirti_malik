@@ -20,6 +20,7 @@ import NotificationPage from './components/NotificationPage';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
+
 const App = () => {
   return (
     <Routes>
@@ -43,6 +44,8 @@ const App = () => {
            <Route path='editPatient/:patientId' element={<EditPatient/>}/>
            <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
             <Route path='Notification' element={<NotificationPage/>}/>
+             <Route path='profile' element={<DoctorProfile/>}/>
+            
 
 
        </Route>

@@ -1,17 +1,18 @@
-import axios from 'axios';
+// Patient.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './style.css';
 import config from '../config';
+import Pagination from './Pagination'; 
 
 const Patient = () => {
   const [referredPatients, setReferredPatients] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
-  const [currentPage,setCurrentPage]=useState(1);
-  const itemsPerPage=3;
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
 
   const DoctorId = localStorage.getItem('DoctorId');
   const navigate = useNavigate();
@@ -21,46 +22,31 @@ const Patient = () => {
     console.log('Fetched Data:', response.data);
     setReferredPatients(response.data);
   };
-  const roomId=`${DoctorId}-${referredPatients[0]?.ReferredTo}-${referredPatients[0]?.id}`;
-  console.log("room id",roomId)
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
-//pagination function 
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentProducts = filteredUsers.slice(indexOfFirst, indexOfLast);
 
-  const indexOfLast=currentPage*itemsPerPage;
-  const indexOfFirst=indexOfLast-itemsPerPage;
-  const currentProducts=filteredUsers.slice(indexOfFirst,indexOfLast);
 
-  const totalPages=Math.ceil(filteredUsers.length/itemsPerPage)
 
-   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
+ const handlePageChange=(page:number)=>{
+  setCurrentPage(page)
+ }
 
   useEffect(() => {
-
     const filteredItems = referredPatients.filter((patient) => {
       const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
-      return fullName.includes(search.toLowerCase()); 
+      return fullName.includes(search.toLowerCase());
     });
     setFilteredUsers(filteredItems);
   }, [search, referredPatients]);
 
   useEffect(() => {
     fetchReferredPatients();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DoctorId]);
 
   const handleDelete = (patientId: any) => {
@@ -71,19 +57,18 @@ const Patient = () => {
     }
   };
 
-  const handleAddPatient=async()=>{
-  navigate(`/add-patient/${DoctorId}`)
-}
+  const handleAddPatient = async () => {
+    navigate(`/add-patient/${DoctorId}`);
+  };
 
   return (
     <div>
       <div className='table-heading d-flex justify-content-between align-items-center'>
-  <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
-  <Button onClick={handleAddPatient} className='btn-color pt-2 mt-4'>
-      <img src='/addAppointment.png' alt='button'/>
-  </Button>
-</div>
-
+        <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
+        <Button onClick={handleAddPatient} className='btn-color pt-2 mt-4'>
+          <img src='/addAppointment.png' alt='button' />
+        </Button>
+      </div>
 
       <div className='search-box d-flex'>
         <input
@@ -136,20 +121,17 @@ const Patient = () => {
                   <td></td>
                   <td><Link to='/chat'>link</Link></td>
                   <td className="actions d-flex">
-                    <div className='icon me-1 ' style={{background:'#43D79E'}}>
-                      <i className="bi bi-eye-fill"onClick={() => navigate(`/viewPatient/${patient.id}`)} ></i>
+                    <div className='icon me-1' style={{ background: '#43D79E' }}>
+                      <i className="bi bi-eye-fill" onClick={() => navigate(`/viewPatient/${patient.id}`)}></i>
                     </div>
-                     
-                    <div className='icon me-1' style={{background:'#5BE4EC'}}>   
-                       <i className=" bi bi-pencil-fill" onClick={() => navigate(`/editPatient/${patient.id}`)}></i>
-                    </div>
-                     
-                     <div className='icon me-1' style={{background:'red'}}>
-                         <i className='bi bi-trash-fill' onClick={() => handleDelete(patient.id)}></i>
-                     </div>
 
-                   
-                   
+                    <div className='icon me-1' style={{ background: '#5BE4EC' }}>
+                      <i className="bi bi-pencil-fill" onClick={() => navigate(`/editPatient/${patient.id}`)}></i>
+                    </div>
+
+                    <div className='icon me-1' style={{ background: 'red' }}>
+                      <i className='bi bi-trash-fill' onClick={() => handleDelete(patient.id)}></i>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -162,33 +144,13 @@ const Patient = () => {
         </Table>
       </div>
 
-
-  <div className="pagination d-flex align-items-center bg-white me-4">
-   
-    <button 
-      onClick={handlePrevPage} 
-      disabled={currentPage === 1} 
-      className="btn" 
-      style={{ width: "40px" }}
-    >
-      <i className=" bi-arrow-left-short"></i>
-    </button>
-
-    <span className="page-info text-center" style={{ fontSize: "16px", fontWeight: "300" }}>
-      {currentPage} of {totalPages}
-    </span>
-  
-    <button 
-      onClick={handleNextPage} 
-      disabled={currentPage === totalPages} 
-      className="btn " 
-      style={{ width: "40px" }}
-    >
-     <i className=" bi-arrow-right-short"></i>
-    </button>
-  </div>
-</div>
-
+   \
+      <Pagination 
+        filteredItems={filteredUsers}
+        itemsPerPage={itemsPerPage}
+       onPageChange={handlePageChange}
+      />
+    </div>
   );
 };
 

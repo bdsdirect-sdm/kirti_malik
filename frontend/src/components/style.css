@@ -101,7 +101,7 @@ select {
 } */
 
 .layout-container {
-    height: 100vh;
+    height: 50vh;
 }
 
 .layout-navbar {
@@ -115,7 +115,7 @@ select {
     padding-left: 30px;
 }
 .sidebar {
-    border-top: 2px solid #ccc;
+    border-top: 2px solid grey;
     background-color: #FFFFFF;
     justify-content: center;
 }
@@ -136,9 +136,9 @@ select {
 }
 
 .content-area {
-    min-height: 100vh;
+    min-height: 87vh;
     padding: 15px;
-    overflow: auto;
+    /* overflow: auto; */
 }
 .custom-margin-top{
     margin-top: 5rem !important;
@@ -392,8 +392,16 @@ form {
     width: 140px;
    position: absolute;
     right: 0;
-    
 
- 
+}
+
+.chat{
+    background-color: white;
+}
+
+.patient div:hover{
+    background-color:hsl(156, 60%, 83%);
+    border-radius: 10px;
+    
 
 }

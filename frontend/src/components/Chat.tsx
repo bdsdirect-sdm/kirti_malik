@@ -60,6 +60,8 @@ const Chat: React.FC = () => {
 
   const selectPatient = async (patient: any) => {
     setSelectedPatient(patient);
+    const doctor=patient.Doctor?.firstName;
+    console.log("dddddd",doctor)
     const roomId = patient.id;
     try {
       const response = await axios.get(`${config.BASE_URL}/chatHistory/${roomId}`);
@@ -88,84 +90,72 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <Container fluid className="h-70">
-      <Row className="h-70">
-        <Col md={3} className="bg-light p-3" style={{ height: '90vh' }}>
-          <h4>Patient List</h4>
-          <ListGroup>
-            {patients.map((patient) => (
-              <ListGroup.Item key={patient.id} onClick={() => selectPatient(patient)}>
-                {patient.firstName} {patient.lastName}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </Col>
-
-        <Col md={9} className="d-flex flex-column h-90">
-          <Navbar bg="dark" variant="dark" className="mb-3">
-            <Navbar.Brand>{selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : 'Select a patient'}</Navbar.Brand>
-          </Navbar>
-
-          <div className="flex-grow-1 overflow-auto" style={{ maxHeight: 'calc(100vh - 120px)', padding: '10px' }}>
-            <ListGroup>
-              {messageRecieved.map((msg, index) => (
-                <ListGroup.Item
-                  key={index}
-                  style={{
-                    textAlign: msg.senderId === DoctorId ? 'left' : 'right',
-                    backgroundColor: msg.senderId === DoctorId ? '#d1ecf1' : '#f8d7da',
-                    borderRadius: '5px',
-                    marginBottom: '10px',
-                    padding: '10px',
-                    maxWidth: '80%',
-                    marginLeft: msg.senderId === DoctorId ? '0' : 'auto',
-                    marginRight: msg.senderId === DoctorId ? 'auto' : '0',
-                  }}
-                >
-                  <strong>{msg.senderId === DoctorId ? 'You' : msg.senderId}:</strong> {msg.message}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-
-            <ListGroup>
-              {messages.map((msg, index) => (
-                <ListGroup.Item
-                  key={index}
-                  style={{
-                    textAlign: msg.senderId === DoctorId ? 'left' : 'right',
-                    backgroundColor: msg.senderId === DoctorId ? '#d1ecf1' : '#f8d7da',
-                    borderRadius: '5px',
-                    marginBottom: '10px',
-                    padding: '10px',
-                    maxWidth: '80%',
-                    marginLeft: msg.senderId === DoctorId ? '0' : 'auto',
-                    marginRight: msg.senderId === DoctorId ? 'auto' : '0',
-                  }}
-                >
-                  <strong>{msg.senderId === DoctorId ? 'You' : msg.senderId}:</strong> {msg.message}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+    <Container fluid className="h-70 chat sm-0">
+  <Row className="h-70">
+ 
+ 
+    <Col md={3} className="p-3 border-end" style={{ height: '90vh' }}>
+      <h4>Patient List</h4>
+      <div className='mt-5 ps-3 patient'>
+        {patients.map((patient) => (
+          <div key={patient.id}>
+            <p className="ps-3" style={{ fontWeight: '600', marginBottom: '0' }} onClick={() => selectPatient(patient)}>
+              {patient.firstName} {patient.lastName}
+            </p>
+            <p className="ps-3" style={{ color: 'grey', marginTop: '0' }}>
+              {patient.Doctor?.firstName} {patient.Doctor?.lastName}
+            </p>
           </div>
+        ))}
+      </div>
+    </Col>
 
-          <div className="mt-auto p-3">
-            <Form>
-              <Form.Group controlId="messageInput">
-                <Form.Control
-                  type="text"
-                  placeholder="Type a message..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-              </Form.Group>
-              <Button variant="primary" onClick={sendMessage} className="w-100">
-                Send
-              </Button>
-            </Form>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+ 
+    <Col md={9} className="d-flex flex-column h-90">
+      <Navbar variant="dark" className="mb-3 border-bottom position-static">
+        <Navbar.Brand style={{ color: 'black', fontSize: '50' }}>
+          {selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : 'Select a patient'}
+          <p style={{ fontSize: '15px', color: 'grey' }}>Referred to:</p>
+        </Navbar.Brand>
+      </Navbar>
+
+      <div className="flex-grow-1 overflowY-auto" style={{ padding: '10px', flex: 1, }}>
+        <ListGroup>
+          {messages.map((msg, index) => (
+            <ListGroup.Item
+              key={index}
+              style={{
+                textAlign: msg.senderId === DoctorId ? 'left' : 'right',
+                backgroundColor: msg.senderId === DoctorId ? '#BAEED9' : '#D3D3D3',
+                borderRadius: '5px',
+                marginBottom: '10px',
+                padding: '10px',
+                maxWidth: '80%',
+                marginLeft: msg.senderId === DoctorId ? '0' : 'auto',
+                marginRight: msg.senderId === DoctorId ? 'auto' : '0',
+              }}
+            >
+              <strong>{msg.senderId === DoctorId ? 'You' : msg.senderId}:</strong> {msg.message}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </div>
+
+    
+      <div className="border-top chatFooter" style={{ position: 'sticky', bottom: '0', backgroundColor: 'white', zIndex: '1' }}>
+        <Form>
+          <Form.Control
+            type="text"
+            placeholder="Type a message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </Form>
+      </div>
+    </Col>
+  </Row>
+</Container>
+
   );
 };
 

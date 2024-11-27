@@ -489,8 +489,7 @@ export const getNotification=async(req:any,res:any)=>{
     console.error('error fetching notification',error)
     return res.status(500).json({error:"an error occured while fetching patient "})
 
-
   }
  
-
 }
+

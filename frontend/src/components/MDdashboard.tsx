@@ -23,6 +23,7 @@ const MDdashboard = () => {
         totalDoctor: 0,
        
     });
+    
   const DoctorId=localStorage.getItem('DoctorId')
  
 
