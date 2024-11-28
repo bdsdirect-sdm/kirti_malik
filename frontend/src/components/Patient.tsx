@@ -1,4 +1,3 @@
-// Patient.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,7 +11,7 @@ const Patient = () => {
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 6;
 
   const DoctorId = localStorage.getItem('DoctorId');
   const navigate = useNavigate();
@@ -31,11 +30,9 @@ const Patient = () => {
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentProducts = filteredUsers.slice(indexOfFirst, indexOfLast);
 
-
-
- const handlePageChange=(page:number)=>{
-  setCurrentPage(page)
- }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     const filteredItems = referredPatients.filter((patient) => {
@@ -57,17 +54,10 @@ const Patient = () => {
     }
   };
 
-  const handleAddPatient = async () => {
-    navigate(`/add-patient/${DoctorId}`);
-  };
-
   return (
-    <div>
-      <div className='table-heading d-flex justify-content-between align-items-center'>
+    <div className='ms-5 me-5'>
+      <div className='table-heading ms-2 d-flex justify-content-between align-items-center'>
         <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
-        <Button onClick={handleAddPatient} className='btn-color pt-2 mt-4'>
-          <img src='/addAppointment.png' alt='button' />
-        </Button>
       </div>
 
       <div className='search-box d-flex'>
@@ -76,13 +66,13 @@ const Patient = () => {
           placeholder="Search by first name or last name"
           value={search}
           onChange={handleSearch}
-          className='me-2 flex-grow-1 w-10'
+          className='me-2 flex-grow-1'
         />
         <button className="custom-btn">Search</button>
       </div>
 
-      <div className="mt-4" style={{ overflowX: 'auto' }}>
-        <Table>
+      <div className="mt-4 me-4" style={{ overflowX: 'auto' }}>
+        <Table className='w-100 me-4'>
           <thead>
             <tr>
               <th>Patient name</th>
@@ -144,12 +134,14 @@ const Patient = () => {
         </Table>
       </div>
 
-   \
-      <Pagination 
-        filteredItems={filteredUsers}
-        itemsPerPage={itemsPerPage}
-       onPageChange={handlePageChange}
-      />
+      {/* Pagination Container */}
+      <div className="mt-3 ms-4">
+        <Pagination 
+          filteredItems={filteredUsers}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };

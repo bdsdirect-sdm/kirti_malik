@@ -143,8 +143,8 @@ useEffect(()=>{
 </div>
 
 
-
-          <Table className='table'>
+       <div className="mt-4 me-4" style={{ overflowX: 'auto' }}>
+          <Table className='table '>
             <thead>
               <tr>
                 <th>Patient name</th>
@@ -188,6 +188,7 @@ useEffect(()=>{
               ))}
             </tbody>
           </Table>
+          </div>
         </Container>
   )
 }

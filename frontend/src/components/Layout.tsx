@@ -22,33 +22,33 @@ const Layout = () => {
   }, []);
 
   return (
-    <Container fluid className="layout-container ">
+    <Container fluid className="layout-container h-auto ">
      
      <Navbar fixed="top" className="layout-navbar d-flex justify-content-between align-items-center px-3">
-  <Navbar.Brand className="d-flex align-items-center navbar-brand">
-    <img src="/logo.png" alt="Eye Refer Logo" height="50" width="50" className="me-2" />
-    <span className="eye-text">EYE REFER</span>
-  </Navbar.Brand>
+       <Navbar.Brand className="d-flex align-items-center navbar-brand">
+         <img src="/logo.png" alt="Eye Refer Logo" height="50" width="50" className="me-2" />
+         <span className="eye-text">EYE REFER</span>
+       </Navbar.Brand>
 
  
-  <div className="d-flex align-items-center">
+       <div className="d-flex align-items-center">
   
-   <Link to="/notification">
-  <i className="bi bi-bell-fill me-3" style={{ fontSize: '1.5rem' }}></i>
-</Link>
-    <Dropdown align="end">
-      <Dropdown.Toggle className="custom-dropdown-toggle d-flex align-items-center">
-        <img
-          src="/user.jpg"
-          alt="User Icon"
-          className="me-2 user-avatar"
-          style={{ width: '50px', height: '50px' }}
-        />
-        <div className="ms-2">
-          <span className="bold-text dropdown-text d-block">Hi {name}!</span>
-          <span className="dropdown-text d-block" style={{ fontSize: '0.875rem' }}>Welcome Back!</span>
-        </div>
-      </Dropdown.Toggle>
+          <Link to="/notification">
+           <i className="bi bi-bell-fill me-3" style={{ fontSize: '1.5rem' }}></i>
+          </Link>
+          <Dropdown align="end">
+               <Dropdown.Toggle className="custom-dropdown-toggle d-flex align-items-center">
+                <img
+                 src="/user.jpg"
+                 alt="User Icon"
+                 className="me-2 user-avatar"
+                 style={{ width: '50px', height: '50px' }}
+                  />
+              <div className="ms-2">
+                <span className="bold-text dropdown-text d-block">Hi {name}!</span>
+               <span className="dropdown-text d-block" style={{ fontSize: '0.875rem' }}>Welcome Back!</span>
+               </div>
+              </Dropdown.Toggle>
 
         <Dropdown.Menu>
         <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
@@ -68,23 +68,23 @@ const Layout = () => {
 
 
      
-      <Row className="custom-margin-top">
+      <div className="custom-margin-top d-flex mt-6 ">
         
-        <Col sm={2} className="sidebar  vh-100 position-fixed">
-          <div className="sidebar-content py-4">
+        <Col className="sidebar mt-90px h-200   ">
+          <div className="  sidebar-content py-4 ">
             <ul className="list-unstyled">
-  <li>
-    <Link to={`/dashboard/${DoctorId}`} className="sidebar-link ">
-      <img src="/home(1).png" alt="Dashboard" className="sidebar-icon" />
-      Dashboard
-    </Link>
-  </li>
-  <li>
-    <Link to={`/patients/${DoctorId}`} className="sidebar-link">
-      <img src="/patientIcon.png" alt="Patients" className="sidebar-icon" />
-      Patients
-    </Link>
-  </li>
+              <li>
+                <Link to={`/dashboard/${DoctorId}`} className="sidebar-link ">
+                 <img src="/home(1).png" alt="Dashboard" className="sidebar-icon" />
+                 Dashboard
+               </Link>
+               </li>
+               <li>
+              <Link to={`/patients/${DoctorId}`} className="sidebar-link">
+              <img src="/patientIcon.png" alt="Patients" className="sidebar-icon" />
+               Patients
+         </Link>
+        </li>
   {userType !== 'OD' && (
     <li>
       <Link to={`/appointment/${DoctorId}`} className="sidebar-link">
@@ -117,10 +117,10 @@ const Layout = () => {
         </Col>
 
       
-        <Col sm={10} className="content-area offset-sm-2 bg-grey py-3">
+        <Col sm={10} className="content-area   ">
           <Outlet />
         </Col>
-      </Row>
+      </div>
     </Container>
   );
 };

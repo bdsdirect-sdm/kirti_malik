@@ -30,7 +30,7 @@ const Pagination: React.FC<PaginationProps> = ({ filteredItems, itemsPerPage, on
   };
 
   return (
-    <div className="pagination d-flex align-items-center bg-white me-4">
+    <div className="pagination d-flex align-items-center bg-white me-2">
       <button 
         onClick={handlePrevPage} 
         disabled={currentPage === 1} 

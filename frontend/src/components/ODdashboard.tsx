@@ -42,75 +42,78 @@ const ODdashboard = () => {
   };
 
   return (
-    <Container className="dashboard">
-      <Row className="mb-4 pt-0">
+    <div className="dashboard bg-grey h-auto ms-5 me-5">
+      <Row className="mb-4  pt-0 d-flex">
         <h5>Dashboard</h5>
-        <Col xs={12} sm={4} md={4}>
-          <Card className="custom-card">
-            <Card.Body className="d-flex">
-              <div className="d-flex flex-column me-3">
-                <div>
-                  <img
-                    src="/diversity_2.png"
-                    alt="Referral Icon"
-                    className="img-fluid"
-                    style={{ width: '50px', height: '50px' }}
-                  />
-                </div>
-                <Card.Title className="mt-2 small font">Referrals Placed</Card.Title>
-              </div>
-              <div className="d-flex flex-column justify-content-between">
-                <Card.Text className="text-end">{dashboardData.referralsPlaced}</Card.Text>
-                <hr />
-                <small className="text-muted">Last Updated: {}</small>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={12} sm={4} md={4}>
-          <Card className="custom-card">
-            <Card.Body className="d-flex">
-              <div className="d-flex flex-column me-3">
-                <div>
-                  <img
-                    src="/personal_injury.png"
-                    alt="Referral Icon"
-                    className="img-fluid"
-                    style={{ width: '50px', height: '50px' }}
-                  />
-                </div>
-                <Card.Title className="mt-2 small font">Referrals Completed</Card.Title>
-              </div>
-              <div className="d-flex flex-column justify-content-between">
-                <Card.Text className="text-end">{dashboardData.referralsCompleted}</Card.Text>
-                <hr />
-                <small className="text-muted">Last Updated: Aug 20</small>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={12} sm={4} md={4}>
-          <Card className="custom-card">
-            <Card.Body className="d-flex">
-              <div className="d-flex flex-column me-3">
-                <div>
-                  <img
-                    src="/stethoscope.png"
-                    alt="Referral Icon"
-                    className="img-fluid"
-                    style={{ width: '50px', height: '50px' }}
-                  />
-                </div>
-                <Card.Title className="mt-2 small font">MD Count</Card.Title>
-              </div>
-              <div className="d-flex flex-column justify-content-between">
-                <Card.Text className="text-end">{dashboardData.mdCount}</Card.Text>
-                <hr />
-                <small className="text-muted">Last Updated: {}</small>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
+      <Col  className="d-flex align-items-stretch">
+        <Card className="custom-card  w-100">
+          <Card.Body className="d-flex">
+           <div className="d-flex flex-column me-3">
+              <div>
+                <img
+                src="/diversity_2.png"
+                 alt="Referral Icon"
+                className="img-fluid"
+                 style={{ width: '50px', height: '50px' }}
+                 />
+            </div>
+              <Card.Title className="mt-2 small font">Referrals Placed</Card.Title>
+          </div>
+         <div className="d-flex flex-column justify-content-between">
+           <Card.Text className="text-end">{dashboardData.referralsPlaced}</Card.Text>
+        <hr />
+        <small className="text-muted">Last Updated: {}</small>
+      </div>
+    </Card.Body>
+  </Card>
+</Col>
+
+<Col className="d-flex align-items-stretch">
+  <Card className="custom-card w-100">
+    <Card.Body className="d-flex">
+      <div className="d-flex flex-column me-3">
+        <div>
+          <img
+            src="/personal_injury.png"
+            alt="Referral Icon"
+            className="img-fluid"
+            style={{ width: '50px', height: '50px' }}
+          />
+        </div>
+        <Card.Title className="mt-2 small font">Referrals Completed</Card.Title>
+      </div>
+      <div className="d-flex flex-column justify-content-between">
+        <Card.Text className="text-end">{dashboardData.referralsCompleted}</Card.Text>
+        <hr />
+        <small className="text-muted">Last Updated: Aug 20</small>
+      </div>
+    </Card.Body>
+  </Card>
+</Col>
+
+<Col  className="d-flex align-items-stretch me-0">
+  <Card className="custom-card w-100">
+    <Card.Body className="d-flex">
+      <div className="d-flex flex-column me-3">
+        <div>
+          <img
+            src="/stethoscope.png"
+            alt="Referral Icon"
+            className="img-fluid"
+            style={{ width: '50px', height: '50px' }}
+          />
+        </div>
+        <Card.Title className="mt-2 small font">MD Count</Card.Title>
+      </div>
+      <div className="d-flex flex-column justify-content-between">
+        <Card.Text className="text-end">{dashboardData.mdCount}</Card.Text>
+        <hr />
+        <small className="text-muted">Last Updated: {}</small>
+      </div>
+    </Card.Body>
+  </Card>
+</Col>
+
       </Row>
 
       <div className="d-flex justify-content-between w-100">
@@ -171,7 +174,7 @@ const ODdashboard = () => {
           onPageChange={handlePageChange}
         />
       </div>
-    </Container>
+    </div>
   );
 };
 

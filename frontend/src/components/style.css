@@ -88,34 +88,26 @@ select {
     background-color:#34aadc;
 }
 
-/*dashboard css*/
-
-/* .container-fluid {
-    font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #f8f9fa;
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-    border: 2px solid black;
-} */
 
 .layout-container {
-    height: 50vh;
+    height: 100vh;
 }
 
 .layout-navbar {
     background-color:#FFFFFF;
-    border-bottom: 0.2px  #ccc;
+    /* border-bottom: 0.2px  #ccc; */
     z-index: 1000;
     height: 90px;
 }
 .sidebar-content{
     align-items: center;
     padding-left: 30px;
+    
+   
 }
 .sidebar {
-    border-top: 2px solid grey;
+    border-top: 1px solid #8080805c !important;
+    border-right: 0.5px solid grey !important;
     background-color: #FFFFFF;
     justify-content: center;
 }
@@ -136,13 +128,16 @@ select {
 }
 
 .content-area {
-    min-height: 87vh;
-    padding: 15px;
+    height: auto;
+   height: calc(100vh - 97px);  
+    max-width: 100%;
+   /* // margin-left: 10px; */
+    /* margin-left: 9px !important; */
     /* overflow: auto; */
 }
 .custom-margin-top{
-    margin-top: 5rem !important;
-    background-color: #ECF1F3;
+    margin-top: 6rem !important;
+    background-color: #ECF1F3 !important;
 }
 .eye-text{
     font-size: 24px;
@@ -213,6 +208,7 @@ h3{
 .custom-card {
     display: flex;
     flex-direction: row;
+    max-width: 100% !important;
     /* Align content horizontally */
 }
 
@@ -330,7 +326,8 @@ form {
 
 .dashboard {
     padding-top: 40px;
-    border-radius: 10px;
+    /* max-width: 100%; */
+     background-color: #ECF1F3;
    
 }
 
@@ -338,11 +335,11 @@ form {
     background-color: #fff;
 }
 
-.content-area{
+/* .content-area{
     background-color: #ECF1F3;
    
     
-}
+} */
 .btn-color{
     background-color: #35C0E4 !important;
     border: none !important;
@@ -402,6 +399,4 @@ form {
 .patient div:hover{
     background-color:hsl(156, 60%, 83%);
     border-radius: 10px;
-    
-
 }

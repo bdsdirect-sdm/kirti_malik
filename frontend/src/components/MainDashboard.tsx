@@ -23,7 +23,7 @@ const MainDashboard = () => {
     
   return (
   
-    <div>{doctorType==='OD'?(<ODdashboard/>):(<MDdashboard/>)}</div>
+    <div style={{height: 'calc(100vh - 97px)'}}>{doctorType==='OD'?(<ODdashboard/>):(<MDdashboard/>)}</div>
   )
 }
 
