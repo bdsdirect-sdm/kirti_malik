@@ -14,7 +14,9 @@ interface Message {
 
 const Chat: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);  // Store all messages for the current conversation
+  const [messages, setMessages] = useState<Message[]>([]); 
+    const [recievedMessages, setRecievedMessages] = useState<Message[]>([]); 
+
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
   const DoctorId = JSON.parse(localStorage.getItem('DoctorId') || '{}');
