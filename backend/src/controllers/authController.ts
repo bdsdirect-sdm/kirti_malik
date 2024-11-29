@@ -634,7 +634,7 @@ export const getStaff=async(req:any,res:any)=>{
 
 export const getDoctor=async(req:any,res:any)=>{
   const doctorId=req.params.DoctorId;
-  console.log("huhhhihihihhihuhi",doctorId)
+ // console.log("huhhhihihihhihuhi",doctorId)
   try{
     const doctor=await Doctor.findOne({
       where:{

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { Col, Row, Table } from 'react-bootstrap';
 import config from '../config';
 
@@ -31,8 +30,8 @@ const DoctorProfile: React.FC = () => {
     const fetchDoctor = async () => {
       try {
         const response = await axios.get(`${config.BASE_URL}/getDoctor/${DoctorId}`);
-        setDoctor(response.data.doctor);
-        console.log("-------",response.data.doctor)
+        setDoctor(response.data);
+        console.log("-------",response.data)
       } catch (error) {
         console.error("Error fetching doctor:", error);
       }
@@ -54,14 +53,16 @@ const DoctorProfile: React.FC = () => {
       <div className="patient-section ms-4 me-4 mt-4">
        <Row>
          <Col md={6}>
-             <p className='ms-3 mt-3'><strong>Name:</strong> {doctor?.firstName}  {}</p>
-             <p className='ms-3 mt-3'><strong>DOB:</strong> {}  </p>
-             <p className='ms-3 mt-3'><strong>Phone:</strong> {}  </p>
+             <p className='ms-3 mt-3'><strong>Name:</strong> {doctor?.firstName}  {doctor?.lastName}</p>
+             <p className='ms-3 mt-3'><strong>Speciality:</strong> Opthalmologist  </p>
+                <p className='ms-3 mt-3'><strong>Location:</strong>  </p>
+             
          </Col>
 
          <Col md={6}>
-             <p className='ms-3 mt-3'><strong>Gender:</strong> {}</p>
-             <p><strong>Email:</strong> {}</p>
+             <p className='ms-3 mt-3'><strong>Email:</strong> {doctor?.email}</p>
+             <p className='ms-3 mt-3'><strong>Phone:</strong> {doctor?.phoneNumber}  </p> 
+             
          </Col>
       </Row>      
       </div>
