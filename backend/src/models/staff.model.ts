@@ -1,8 +1,10 @@
 import { DataTypes,DateOnlyDataType,HasMany,Model } from "sequelize";
 import sequelize from "../config/db";
+import Doctor from "./doctor.model";
 
 
 class Staff extends Model{
+  public id!:number;
     public firstName!:string;
     public  lastName!:string;
      public  gender!:string;
@@ -41,8 +43,13 @@ Staff.init(
             allowNull:false
         },
         doctorId:{
-            type:DataTypes.NUMBER,
-            allowNull:false
+            type:DataTypes.INTEGER.UNSIGNED,
+            allowNull:false,
+            references:{
+              model:Doctor,
+              key:'id'
+              
+            }
         }
     
     },
@@ -51,7 +58,8 @@ Staff.init(
     }
 )
 
-
+Doctor.hasMany(Staff,{foreignKey:'doctorId'});
+Staff.hasOne(Doctor,{foreignKey:'doctorId'})
 
 
 export default Staff;

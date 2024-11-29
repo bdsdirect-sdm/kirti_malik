@@ -7,7 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
 import config from '../config';
 
-// Validation schema similar to the "Add Patient"
 const validationSchema = Yup.object({
   dob: Yup.date().required('Date of birth is required'),
   email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -100,7 +99,7 @@ const EditPatient: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  console.log("????/",patientData)
+ //console.log("????/",patientData)
 
   return (
     <Container className="edit-form">

@@ -271,8 +271,6 @@ export const getPatientbyDoctor = async (req: any, res: any) => {
     }
 };
 
-
-
    //to create an appointment for the patient
 
 
@@ -297,9 +295,10 @@ export const addAppointment = async (req: any, res: any) => {
       
     });
 
+     await patient.update({status:'scheduled'})
     
     return res.status(201).json({
-      message: "Appointment added successfully",
+      message: "Appointment added successfully and patient staus updated successfully",
       appointment,
     });
 
@@ -344,22 +343,20 @@ export const getAllAppointments = async (req: any, res: any) => {
 // to view the appointment of particular patient on md dashboard
 
 export const getAppointmentsByPatient = async (req: any, res: any) => {
-  try {
-    const patientId  = req.params.PatientId;
 
+   const patientId  = req.params.PatientId;
+   //console.log("000000000000",patientId)
+  try {
    
-    const appointments = await Appointments.findAll({
-      where: { patientId },
+    const appointments = await Appointments.findOne({
+      where: { id:patientId },
       include: {
         model: ReferralPatient,
         attributes: ['firstName', 'lastName', 'email'],
       },
     });
 
-    if (appointments.length === 0) {
-      return res.status(404).json({ message: 'No appointments found for this patient.' });
-    }
-
+  
     return res.status(200).json({ appointments });
   } catch (error) {
     console.error('Error fetching appointments for patient:', error);
@@ -393,6 +390,97 @@ export const viewPatient=async(req:any,res:any)=>{
   }
   catch{
        return res.status(500).json({message:'error viewing the patient'})
+  }
+}
+
+//to edit the appointment
+
+export const editAppointment=async(req:any,res:any)=>{
+  const patientId=req.params.PatientId;
+  console.log("pppppp",patientId)
+
+  try{
+    const {  appointmentDate, appointmentType, } = req.body;
+
+    const appointment=await Appointments.findByPk(patientId)
+    if(!appointment){
+      return res.status(404).json({message:'appointment not found'})
+    }
+    
+    appointment.appointmentDate=appointmentDate,
+    appointment.appointmentType=appointmentType,
+
+    await appointment.save();
+
+    return res.status(200).json({message:'appointment updated successfully'})
+
+  }
+  catch (error) {
+    console.error('Error updating appointment:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
+
+//cancel the appointment
+
+export const cancelAppointment=async(req:any,res:any)=>{
+  const appointmentId=req.params.id;
+  try{
+    const appointment=await Appointments.findByPk(appointmentId)
+      if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found." });
+    }
+
+    const patient=await ReferralPatient.findByPk(appointment.patientId)
+    if(patient)
+    {
+      await patient.update({status:'cancelled'})
+    }
+ 
+
+    return res.status(200).json({
+      message:'appointment cancelled successfully'
+    })
+
+  }
+  catch (error) {
+    console.error("Error cancelling appointment:", error);
+    return res.status(500).json({
+      message: "Error cancelling appointment",
+      error,
+    });
+  }
+}
+
+//to complete the appointment
+
+
+export const completeAppointment=async(req:any,res:any)=>{
+  const appointmentId=req.params.id;
+  try{
+    const appointment=await Appointments.findByPk(appointmentId)
+      if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found." });
+    }
+
+    const patient=await ReferralPatient.findByPk(appointment.patientId)
+    if(patient)
+    {
+      await patient.update({status:'completed'})
+    }
+ 
+
+    return res.status(200).json({
+      message:'appointment completed successfully'
+    })
+
+  }
+  catch (error) {
+    console.error("Error completing appointment:", error);
+    return res.status(500).json({
+      message: "Error completing appointment",
+      error,
+    });
   }
 }
 
@@ -450,8 +538,6 @@ export const editPatient = async (req: any, res: any) => {
 }
 
 
-
-
 export const getChatHistory=async(req:any,res:any)=>{
   const  roomId  = req.params.roomId; 
   console.log(roomId);
@@ -498,8 +584,11 @@ export const getNotification=async(req:any,res:any)=>{
 
 export const addStaff=async(req:any,res:any)=>{
 
-  const{firstName,lastName,gender,email,phoneNumber,doctorId}=req.body
+  const{firstName,lastName,gender,email,phoneNumber,}=req.body
+  const doctorId=req.params.DoctorId;
+  //console.log("holaaaaa",doctorId)
   try{
+    
    const staff=await Staff.create({
     firstName,lastName,email,gender,phoneNumber,doctorId
    })
@@ -522,8 +611,13 @@ export const addStaff=async(req:any,res:any)=>{
 //to get staff list
 
 export const getStaff=async(req:any,res:any)=>{
+  const doctorId=req.params.DoctorId;
   try{
-    const staffList=await Staff.findAll()
+    const staffList=await Staff.findAll(
+      {where:{
+        doctorId:doctorId
+      }}
+    )
     return res.status(200).json(staffList)
   }
   catch(error){
@@ -534,4 +628,28 @@ export const getStaff=async(req:any,res:any)=>{
     });
 
   }
+}
+
+//to get the profile of doctor
+
+export const getDoctor=async(req:any,res:any)=>{
+  const doctorId=req.params.DoctorId;
+  console.log("huhhhihihihhihuhi",doctorId)
+  try{
+    const doctor=await Doctor.findOne({
+      where:{
+        id:doctorId
+      }
+    });
+    return res.status(200).json(doctor)
+  }
+  catch(error){
+     console.error("Error fetching doctor:", error);
+    return res.status(500).json({
+      message: "Error fetching doctor",
+      error,
+    });
+
+  }
+
 }

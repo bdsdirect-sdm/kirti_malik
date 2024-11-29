@@ -19,6 +19,7 @@ import DoctorProfile from './components/DoctorProfile';
 import NotificationPage from './components/NotificationPage';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Staff from './components/Staff';
+import EditAppointment from './components/EditAppointment';
 
 
 
@@ -43,9 +44,10 @@ const App = () => {
            <Route path='chat' element={<Chat/>}/>
            <Route path='viewPatient/:patientId' element={<ViewPatient/>}/>
            <Route path='editPatient/:patientId' element={<EditPatient/>}/>
+            <Route path='editAppointment/:patientId' element={<EditAppointment/>}/>
            <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
             <Route path='Notification' element={<NotificationPage/>}/>
-             <Route path='profile' element={<DoctorProfile/>}/>
+             <Route path='profile/:DoctorId' element={<DoctorProfile/>}/>
               <Route path='staff' element={<Staff/>}/>
             
 

@@ -9,13 +9,15 @@ import config from '../config';
 const Staff = () => {
   const [showModal, setShowModal] = useState(false); 
   const[staffList,setStaffList]=useState<any[]>([]);
+  const doctorId=localStorage.getItem('DoctorId')
+  console.log("_____",doctorId)
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     gender: '',
     email: '',
     phoneNumber: '',
-    doctorId:localStorage.getItem('DoctorId')
+    doctorId:doctorId
   }); 
 
   useEffect(()=>{
@@ -25,7 +27,7 @@ const Staff = () => {
 
   const getStaffList=async()=>{
     try{
-       const response=await axios.get(`${config.BASE_URL}/getStaff`);
+       const response=await axios.get(`${config.BASE_URL}/getStaff/${doctorId}`);
        setStaffList(response.data)
     }
     catch (error) {
@@ -51,7 +53,7 @@ const Staff = () => {
     e.preventDefault();
     try {
      
-    const response =  await axios.post(`${config.BASE_URL}/addStaff`, formData);
+    const response =  await axios.post(`${config.BASE_URL}/addStaff/${doctorId}`, formData);
       alert('Staff added successfully');
       setFormData( response.data); 
       handleCloseModal(); 

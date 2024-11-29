@@ -11,7 +11,11 @@ editPatient,
 getChatHistory,
 getNotification,
 addStaff,
-getStaff} from '../controllers/authController';
+getStaff,
+editAppointment,
+cancelAppointment,
+completeAppointment,
+getDoctor} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -28,11 +32,16 @@ router.get('/patient/:DoctorId',getPatientbyDoctor)
 router.post('/addAppointment/:DoctorId',addAppointment)
 router.get('/getAppointments/:DoctorId',getAllAppointments)
 router.get('/getAppointmentByPatient/:PatientId',getAppointmentsByPatient)
+router.put('/editAppointment/:PatientId',editAppointment)
 router.get('/viewPatient/:patientId',viewPatient)
 router.put('/editPatient/:patientId',upload.single('MedicalDocuments'),editPatient)
 router.get('/chatHistory/:roomId',getChatHistory)
 router.get('/getNotification/:DoctorId',getNotification)
-router.post('/addStaff',addStaff)
-router.get('/getStaff',getStaff)
+router.post('/addStaff/:DoctorId',addStaff)
+router.get('/getStaff/:DoctorId',getStaff)
+router.put('/cancelAppointment/:id',cancelAppointment)
+router.put('/completeAppointment/:id',completeAppointment)
+router.get('/getDoctor/:DoctorId',getDoctor)
+
 
 export default router;

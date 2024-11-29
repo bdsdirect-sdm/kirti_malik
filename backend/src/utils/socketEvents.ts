@@ -7,7 +7,7 @@ import setupSocket from './setupSocket';
 
 export const sendMessage = (socket: Socket, io: Server) => {
   socket.on('sendMessage', async (messageData: { patientId: string, senderId: string, recieverId: string, message: string, roomId: string }) => {
-    console.log('Received message data:', messageData);  // Log the message data
+    console.log('Received message data:', messageData);  
 
     try {
       const { patientId, senderId, recieverId, message, roomId } = messageData;
@@ -24,10 +24,10 @@ export const sendMessage = (socket: Socket, io: Server) => {
 
       console.log('Message saved:', newMessage);
 
-      // Emit the new message to the room
+    
       io.to(roomId).emit('receiveMessage', newMessage);
 
-      // Confirm the message was emitted
+     
       console.log(`Message emitted to room ${roomId}`);
     } catch (error) {
       console.error('Error saving message:', error);
@@ -62,8 +62,6 @@ export const sendNotification=(socket:Socket)=>{
         console.error('error saving notification to database',error)
 
     }
-
-
     })
  
 }

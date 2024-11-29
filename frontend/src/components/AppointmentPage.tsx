@@ -68,12 +68,12 @@ const AppointmentPage: React.FC = () => {
   };
 
   const handleEdit = (patientId: number) => {
-    navigate(`/editPatient/${patientId}`); 
+    navigate(`/editAppointment/${patientId}`); 
   };
 
   return (
     <Container>
-      <h2 className="text-center my-4">Appointments</h2>
+      <h2 className="text-center my-4"> Appointments</h2>
       <Table bordered hover>
         <thead>
           <tr>
@@ -94,24 +94,24 @@ const AppointmentPage: React.FC = () => {
               <td>{appointment.appointmentType}</td>
               <td>{appointment.ReferralPatient.status}</td>
               <td>
-                {appointment.status !== "completed" && (
+                {appointment.ReferralPatient.status !== "completed" ? (
                   <Button
                     variant="success"
                     onClick={() => handleComplete(appointment.id)}
                   >
                     Complete
                   </Button>
-                )}
+                ):'-'}
               </td>
               <td>
-                {appointment.status === "scheduled" && (
+                {appointment.ReferralPatient.status === "scheduled" ? (
                   <Button
                     variant="danger"
                     onClick={() => handleCancel(appointment.id)}
                   >
                     Cancel
                   </Button>
-                )}
+                ): '-'}
               </td>
               <td>
                 <Button
