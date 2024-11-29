@@ -12,12 +12,13 @@ const setupSocket = (server: any) => {
   io.on('connection', (socket: Socket) => {
     console.log('A new client connected:', socket.id);
 
+     io.emit('connected',   'You are now connected to the server' );
 
-    sendMessage(socket);
+        
+
+    sendMessage(socket,io);
+     
     sendNotification(socket);
-
-   
-    socket.emit('connected', { message: 'You are now connected to the server' });
 
     socket.on('disconnect', () => {
       console.log('Client disconnected:', socket.id);

@@ -1,14 +1,17 @@
-import { Socket } from 'socket.io';
+import { Socket ,Server} from 'socket.io';
 import Message from '../models/message.model';
 import Notification from '../models/notification.model';
+import setupSocket from './setupSocket';
 
 
-export const sendMessage = (socket: Socket) => {
-  socket.on('message', async (messageData: { patientId: string, senderId: string, recieverId: string, message: string, roomId: string }) => {
+
+export const sendMessage = (socket: Socket, io: Server) => {
+  socket.on('sendMessage', async (messageData: { patientId: string, senderId: string, recieverId: string, message: string, roomId: string }) => {
+    console.log('Received message data:', messageData);  // Log the message data
+
     try {
       const { patientId, senderId, recieverId, message, roomId } = messageData;
 
-      
       const newMessage = new Message({
         message,
         senderId,
@@ -19,16 +22,20 @@ export const sendMessage = (socket: Socket) => {
 
       await newMessage.save();
 
-    
-      socket.to(roomId).emit('receive_message', newMessage); 
-
       console.log('Message saved:', newMessage);
+
+      // Emit the new message to the room
+      io.to(roomId).emit('receiveMessage', newMessage);
+
+      // Confirm the message was emitted
+      console.log(`Message emitted to room ${roomId}`);
     } catch (error) {
       console.error('Error saving message:', error);
       socket.emit('error', { success: false, error: 'Failed to save message' });
     }
   });
 };
+
 
 export const sendNotification=(socket:Socket)=>{
     socket.on('sendNotification',async(notification:{senderId:string,patientId:string,recieverId:string,message:string})=>{

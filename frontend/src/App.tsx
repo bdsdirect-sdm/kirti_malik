@@ -18,6 +18,7 @@ import EditPatient from './components/EditPatient';
 import DoctorProfile from './components/DoctorProfile';
 import NotificationPage from './components/NotificationPage';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Staff from './components/Staff';
 
 
 
@@ -45,6 +46,7 @@ const App = () => {
            <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
             <Route path='Notification' element={<NotificationPage/>}/>
              <Route path='profile' element={<DoctorProfile/>}/>
+              <Route path='staff' element={<Staff/>}/>
             
 
 

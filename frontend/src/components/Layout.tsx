@@ -105,12 +105,12 @@ const Layout = () => {
       Chat
     </Link>
   </li>
-  {/* <li>
+  <li>
     <Link to="/staff" className="sidebar-link">
       <img src="/path-to-staff-icon.png" alt="Staff" className="sidebar-icon" />
       Staff
     </Link>
-  </li> */}
+  </li>
 </ul>
 
           </div>

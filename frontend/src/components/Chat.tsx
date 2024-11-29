@@ -14,31 +14,30 @@ interface Message {
 
 const Chat: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]); 
-    const [recievedMessages, setRecievedMessages] = useState<Message[]>([]); 
+  const [sentMessages, setSentMessages] = useState<Message[]>([]);  // Sent messages state
+  const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);  // Received messages state
 
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
   const DoctorId = JSON.parse(localStorage.getItem('DoctorId') || '{}');
 
-  // Fetch referred patients
+ 
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+    console.log(socket.on("connected", (message) => {
+      console.log(message);
+    }));
 
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
+    console.log("recieve message")
+    socket.on('receiveMessage', (newMessage: Message) => {
+      
+      if (newMessage.roomId === selectedPatient?.id) {
+        setReceivedMessages((prevMessages) => [...prevMessages, newMessage]);
+      }
+      console.log('Message received', newMessage);
     });
-
-   
 
     fetchReferredPatients();
-
-    return () => {
-      socket.off('receive_message'); 
-    };
-  }, [DoctorId, selectedPatient]);
+  }, [socket]);
 
   // Fetch referred patients for the doctor
   const fetchReferredPatients = async () => {
@@ -51,14 +50,15 @@ const Chat: React.FC = () => {
     }
   };
 
- 
+  // Select a patient and fetch their chat history
   const selectPatient = async (patient: any) => {
     setSelectedPatient(patient);
     const roomId = patient.id;
 
     try {
       const response = await axios.get(`${config.BASE_URL}/chatHistory/${roomId}`);
-      setMessages(response.data); 
+      setSentMessages(response.data); // Set initial sent messages (if any)
+      setReceivedMessages([]); // Clear previous messages when selecting new patient
     } catch (error) {
       console.error('Error fetching chat history', error);
     }
@@ -71,22 +71,14 @@ const Chat: React.FC = () => {
       senderId: DoctorId,
       recieverId: selectedPatient?.ReferredTo,
       patientId: selectedPatient?.id,
-      roomId: selectedPatient?.id,  // Use patient ID as roomId
+      roomId: selectedPatient?.id,  
     };
 
-    socket.emit('message', newMessage);
-    setMessages((prevMessages) => [...prevMessages, newMessage]); 
-    setMessage(''); 
+    socket.emit('sendMessage', newMessage); // Emit the message to the server
+    setSentMessages((prevMessages) => [...prevMessages, newMessage]); // Add sent message to state
+    setMessage(''); // Clear input field
     console.log("Message sent", message);
   };
-
-   socket.on('receive_message', (newMessage: Message) => {
-      
-      if (newMessage.roomId === selectedPatient?.id) {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      }
-      console.log("Message received", newMessage);
-    });
 
   return (
     <Row className="mt-0 bg-white border-top ms-1">
@@ -122,7 +114,27 @@ const Chat: React.FC = () => {
 
         <div className="flex-grow-1 overflowY-auto" style={{ padding: '10px', flex: 1 }}>
           <ListGroup>
-            {messages.map((msg, index) => (
+          
+            {sentMessages.map((msg, index) => (
+              <ListGroup.Item
+                key={index}
+                style={{
+                  textAlign: msg.senderId === DoctorId ? 'left' : 'right',
+                  backgroundColor: msg.senderId === DoctorId ? '#BAEED9' : '#D3D3D3',
+                  borderRadius: '5px',
+                  marginBottom: '10px',
+                  padding: '10px',
+                  maxWidth: '80%',
+                  marginLeft: msg.senderId === DoctorId ? '0' : 'auto',
+                  marginRight: msg.senderId === DoctorId ? 'auto' : '0',
+                }}
+              >
+                <strong>{msg.senderId === DoctorId ? 'You' : msg.senderId}:</strong> {msg.message}
+              </ListGroup.Item>
+            ))}
+
+           
+            {receivedMessages.map((msg, index) => (
               <ListGroup.Item
                 key={index}
                 style={{

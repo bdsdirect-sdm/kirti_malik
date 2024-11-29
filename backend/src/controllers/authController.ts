@@ -8,6 +8,7 @@ import Appointments from "../models/appointment.model";
 import { Op, Sequelize, where } from "sequelize";
 import Notification from "../models/notification.model";
 import Message from "../models/message.model";
+import Staff from "../models/staff.model";
 
 
 //to regsiter the doctor as OD or MD
@@ -493,3 +494,44 @@ export const getNotification=async(req:any,res:any)=>{
  
 }
 
+// to add the staff
+
+export const addStaff=async(req:any,res:any)=>{
+
+  const{firstName,lastName,gender,email,phoneNumber,doctorId}=req.body
+  try{
+   const staff=await Staff.create({
+    firstName,lastName,email,gender,phoneNumber,doctorId
+   })
+
+     return res.status(201).json({
+      message: "staff added successfully",
+      staff,
+    });
+  }
+  catch(error){
+     console.error("Error adding staff:", error);
+    return res.status(500).json({
+      message: "Error adding staff",
+      error,
+    });
+
+  }
+}
+
+//to get staff list
+
+export const getStaff=async(req:any,res:any)=>{
+  try{
+    const staffList=await Staff.findAll()
+    return res.status(200).json(staffList)
+  }
+  catch(error){
+     console.error("Error fetching staff:", error);
+    return res.status(500).json({
+      message: "Error fetching staff",
+      error,
+    });
+
+  }
+}
