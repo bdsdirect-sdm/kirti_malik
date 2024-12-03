@@ -115,7 +115,7 @@ const AddPatient: React.FC = () => {
        }
        
        socket.emit('sendNotification',notification)
-      console.log("sending notification.....",notification)
+          console.log("sending notification.....",notification)
 
         navigate(`/dashboard/${DoctorId}`)
        

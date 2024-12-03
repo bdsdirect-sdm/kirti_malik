@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Col, Form, ListGroup, Navbar, Row } from 'react-bootstrap';
+import { Col, ListGroup, Navbar, Row } from 'react-bootstrap';
 import socket from '../socket';
 import config from '../config';
 
@@ -20,30 +21,28 @@ const Chat: React.FC = () => {
   const [roomId, setRoomId] = useState<string>('');
   
   const DoctorId = JSON.parse(localStorage.getItem('DoctorId') || '{}');
+useEffect(() => {
+  if (selectedPatient) {
+    setRoomId(selectedPatient.id);
+  }
 
-  useEffect(() => {
-   
-    if (selectedPatient) {
-      setRoomId(selectedPatient.id);  
-    }
-
-    
-    if (roomId) {
-      socket.emit('joinRoom', roomId);
-    }
-
-    socket.on('receiveMessage', (newMessage: Message) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log('Message received', newMessage.message);
-    });
+  if (roomId) {
+    socket.emit('joinRoom', roomId);
+  }
 
   
-    fetchReferredPatients();
+  socket.on('receiveMessage', (newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    console.log('Message received', newMessage.message);
+  });
 
-    return () => {
-      socket.off('receiveMessage');  
-    };
-  }, [roomId, selectedPatient]);
+
+  fetchReferredPatients();
+
+  return () => {
+    socket.off('receiveMessage');  
+  };
+}, [roomId, selectedPatient]);
 
   
   const fetchReferredPatients = async () => {
@@ -56,6 +55,14 @@ const Chat: React.FC = () => {
     }
   };
 
+  // const fetchChats=async()=>{
+  //   try{
+          
+  //   }
+  //   catch{
+
+  //   }
+  // }
   
   const selectPatient = (patient: any) => {
     setSelectedPatient(patient);

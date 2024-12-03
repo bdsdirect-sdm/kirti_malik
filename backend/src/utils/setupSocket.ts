@@ -24,7 +24,7 @@ const setupSocket = (server: any) => {
 
     sendMessage(socket,io);
      
-    //sendNotification(socket);
+    sendNotification(socket);
 
     socket.on('disconnect', () => {
       console.log('Client disconnected:', socket.id);

@@ -42,9 +42,7 @@ export const sendNotification=(socket:Socket)=>{
       console.log("recievedNotification",notification)
     try{
         const{senderId,patientId,recieverId,message}=notification;
-
-        const newNotification=new Notification({
-         
+        const newNotification=new Notification({        
              senderId,
            recieverId,
           patientId,
@@ -53,10 +51,8 @@ export const sendNotification=(socket:Socket)=>{
 
         await newNotification.save();
 
-        socket.to(recieverId).emit('recieveNotification',notification)
-        
+        socket.to(recieverId).emit('recieveNotification',notification)       
      console.log("notification saved to database")
-
     }
     catch(error){
         console.error('error saving notification to database',error)

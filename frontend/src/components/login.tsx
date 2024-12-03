@@ -21,6 +21,8 @@ const DoctorLogin = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (values: ILoginInput) => {
+
+    console.log("hello0000")
     try {
       const response = await axios.post(`${config.BASE_URL}/login`, values);
       alert('Login successful!');

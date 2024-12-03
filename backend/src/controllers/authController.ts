@@ -554,8 +554,6 @@ export const getChatHistory=async(req:any,res:any)=>{
     console.error('error fetching chat history',error)
     return res.status(500).json({error:"an error occured while fetching chat"})
   }
-
-
 }
 
 export const getNotification=async(req:any,res:any)=>{
