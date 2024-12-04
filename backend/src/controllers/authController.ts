@@ -9,6 +9,8 @@ import { Op, Sequelize, where } from "sequelize";
 import Notification from "../models/notification.model";
 import Message from "../models/message.model";
 import Staff from "../models/staff.model";
+import { parse } from "json2csv";
+import PDFDocument from 'pdfkit'; 
 
 
 //to regsiter the doctor as OD or MD
@@ -650,4 +652,56 @@ export const getDoctor=async(req:any,res:any)=>{
 
   }
 
+}
+
+//to generate a csv file
+
+export const generateCSV=async(req:any,res:any)=>{
+  try{
+        const patients=await ReferralPatient.findAll();
+        const plainPatients=patients.map((patient:any)=>patient.toJSON());
+        const csv=parse(plainPatients);
+        res.header('content-type','text/csv');
+        res.attachment('patient_info.csv');
+        res.send(csv);
+  }
+  catch(error){
+    console.error('error generating csv',error);
+    res.status(500).json({message:'error generating csv',error})
+
+  }
+}
+
+//to generate a pdf file
+
+export const generatePDF=async(req:any,res:any)=>{
+  try{
+    const patients=await ReferralPatient.findAll();
+    const plainPatients=patients.map((patient:any)=>patient.toJSON());
+
+    const doc= new PDFDocument();
+    res.header('content-type','application/pdf')
+    res.attachment('patient_info.pdf');
+    doc.pipe(res);
+    doc.fontSize(18).text('Patients Data Report', { align: 'center' });
+    doc.moveDown();
+
+    plainPatients.forEach(patient=>{
+      // const patientData = `${patient.patient_name} | ${patient.age} | ${patient.gender} | ${patient.email}`;
+      // doc.text(patientData);
+
+      doc.text(`name: ${patient.firstName} ${patient.lastName}`)
+      doc.text(`dob: ${patient.dob}`)
+      doc.text(`phone: ${patient.phoneNumber}`)
+      doc.text(`email: ${patient.email}`)
+      doc.text(`disease: ${patient.diseaseName}`,{paragraphGap:50})
+    })
+    doc.end();
+
+  }
+  catch(error)
+  {
+    console.error('error generating pdf')
+    res.status(500).json({message:'pdf not downloaded',error})
+  }
 }

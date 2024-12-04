@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import {  Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
 import config from '../config';
 import Pagination from './Pagination'; 
+import { CSVLink,CSVDownload } from 'react-csv';
 
 const Patient = () => {
   const [referredPatients, setReferredPatients] = useState<any[]>([]);
@@ -54,6 +55,49 @@ const Patient = () => {
     }
   };
 
+  //function to download csv file
+
+  const downloadCSV=async()=>{
+    try{
+
+      const response=await axios.get(`${config.BASE_URL}/generateCSV`)
+      const blob=new Blob([response.data],{type:'text/csv'});
+      const url=window.URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.href=url;
+      link.download='patient_info.csv';
+      document.body.appendChild(link);
+      link.click();
+
+     document.body.removeChild(link)
+    }
+    catch(error){
+      console.error('error downloading the csv file',error)
+
+    }
+  }
+
+  const downloadPDF=async()=>{
+    try{
+      const response=await axios.get(`${config.BASE_URL}/generatePDF`,{
+        responseType:'arraybuffer'
+      });
+      const blob=new Blob([response.data],{type:'application/pdf'});
+        const url=window.URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.href=url;
+      link.download='patient_info.pdf';
+      document.body.appendChild(link);
+      link.click();
+
+     document.body.removeChild(link)
+    }
+    catch(error){
+      console.error('error downloading the pdf file')
+
+    }
+  }
+
   return (
     <div className='ms-5 me-5'>
       <div className='table-heading ms-2 d-flex justify-content-between align-items-center'>
@@ -71,6 +115,13 @@ const Patient = () => {
         <button className="custom-btn">Search</button>
       </div>
 
+    <div>
+      <button className="custom-btn" onClick={downloadCSV}>download csv</button>
+    </div>
+
+    <div>
+      <button className="custom-btn" onClick={downloadPDF}>download pdf</button>
+    </div>
       <div className="mt-4 me-4" style={{ overflowX: 'auto' }}>
         <Table className='w-100 me-4'>
           <thead>

@@ -15,7 +15,9 @@ getStaff,
 editAppointment,
 cancelAppointment,
 completeAppointment,
-getDoctor} from '../controllers/authController';
+getDoctor,
+generateCSV,
+generatePDF} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -42,6 +44,8 @@ router.get('/getStaff/:DoctorId',getStaff)
 router.put('/cancelAppointment/:id',cancelAppointment)
 router.put('/completeAppointment/:id',completeAppointment)
 router.get('/getDoctor/:DoctorId',getDoctor)
+router.get('/generateCSV',generateCSV)
+router.get('/generatePDF',generatePDF);
 
 
 export default router;
