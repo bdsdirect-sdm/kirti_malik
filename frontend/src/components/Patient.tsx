@@ -77,26 +77,7 @@ const Patient = () => {
     }
   }
 
-  const downloadPDF=async()=>{
-    try{
-      const response=await axios.get(`${config.BASE_URL}/generatePDF`,{
-        responseType:'arraybuffer'
-      });
-      const blob=new Blob([response.data],{type:'application/pdf'});
-        const url=window.URL.createObjectURL(blob);
-      const link=document.createElement('a');
-      link.href=url;
-      link.download='patient_info.pdf';
-      document.body.appendChild(link);
-      link.click();
-
-     document.body.removeChild(link)
-    }
-    catch(error){
-      console.error('error downloading the pdf file')
-
-    }
-  }
+  
 
   return (
     <div className='ms-5 me-5'>
@@ -119,9 +100,7 @@ const Patient = () => {
       <button className="custom-btn" onClick={downloadCSV}>download csv</button>
     </div>
 
-    <div>
-      <button className="custom-btn" onClick={downloadPDF}>download pdf</button>
-    </div>
+   
       <div className="mt-4 me-4" style={{ overflowX: 'auto' }}>
         <Table className='w-100 me-4'>
           <thead>

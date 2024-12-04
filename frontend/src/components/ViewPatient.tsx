@@ -57,8 +57,31 @@ const ViewPatient: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+const downloadPDF=async()=>{
+    try{
+      const response=await axios.get(`${config.BASE_URL}/generatePDF`,{
+        responseType:'arraybuffer'
+      });
+      const blob=new Blob([response.data],{type:'application/pdf'});
+        const url=window.URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.href=url;
+      link.download='patient_info.pdf';
+      document.body.appendChild(link);
+      link.click();
+
+     document.body.removeChild(link)
+    }
+    catch(error){
+      console.error('error downloading the pdf file')
+    }
+  }
+
   return (
     <div  className='patient-info mb-10 mt-5 ms-4 position-relative'>
+       <div>
+      <button className="custom-btn" onClick={downloadPDF}>download pdf</button>
+    </div>
      <h2 style={{ fontSize: '18px',fontWeight:'bold' }} className='mt-6 ms-4 pt-4'>Basic Information</h2>
 
       <div className="patient-section ms-4 me-4 mt-4">
