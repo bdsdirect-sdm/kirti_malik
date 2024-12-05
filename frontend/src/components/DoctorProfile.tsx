@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Col, Row, Table } from 'react-bootstrap';
+import { Col, Row, Table ,Image} from 'react-bootstrap';
 import config from '../config';
 
 
@@ -47,47 +47,70 @@ const DoctorProfile: React.FC = () => {
   // }
 
   return (
-    <div  className='patient-info mb-10 mt-5 ms-4 position-relative'>
-     <h2 style={{ fontSize: '18px',fontWeight:'bold' }} className='mt-6 ms-4 pt-4'>Profile</h2>
 
-      <div className="patient-section ms-4 me-4 mt-4">
-       <Row>
-         <Col md={6}>
-             <p className='ms-3 mt-3'><strong>Name:</strong> {doctor?.firstName}  {doctor?.lastName}</p>
-             <p className='ms-3 mt-3'><strong>Speciality:</strong> Opthalmologist  </p>
-                <p className='ms-3 mt-3'><strong>Location:</strong>  </p>
-             
-         </Col>
+    <div >
+    <h2 style={{ fontSize: '18px', fontWeight: 'bold' }} className='mt-6 ms-4 pt-4'>Profile</h2>
 
-         <Col md={6}>
-             <p className='ms-3 mt-3'><strong>Email:</strong> {doctor?.email}</p>
-             <p className='ms-3 mt-3'><strong>Phone:</strong> {doctor?.phoneNumber}  </p> 
-             
-         </Col>
-      </Row>      
-      </div>
+    <div className='doctor-info mb-10 mt-5  me-4 position-relative'>
+        <Row className='ms-2 mt-6'>
+            <Col md={6} className='d-flex'>
+            <div className='mt-3'>
+                 <Image src="/doctor.jpeg" roundedCircle />
+            </div>
+             <div className='mt-4'>
+                 <p className='ms-3 mt-3'><strong>{doctor?.firstName}  {doctor?.lastName}</strong> </p>
+                  <p className='ms-3 mt-3'> Opthalmologist</p>
+            </div>
+                
+            </Col>
 
-      <h2 style={{ fontSize: '18px',fontWeight:'bold' }} className='mt-7 ms-4 pt-4'>Address information</h2>
-      
-       <div className="patient-section ms-4 me-4 mt-4">
-       <Row>
-         <Col md={6}>
-             <p className='ms-3 mt-3'><strong>Reason:</strong> {}</p>
-             <p className='ms-3 mt-3'><strong>DOB:</strong> {}  </p>
-             <p className='ms-3 mt-3'><strong>Patient will return:</strong> {}  </p>
-         </Col>
+            <Col md={6} className='mt-4'>
+                <button type="button" className="btn btn-primary ms-10">Add address</button>
+            </Col>
+        </Row>
 
-         <Col md={6}>
-             <p className='ms-3 mt-3'><strong>Laterality:</strong> {}</p>
-             
-         </Col>
-      </Row>      
-      </div>
+        <div className="doctor-section ms-4 me-4 mt-6">
 
-      
-      
-      
+            <Row className='mt-5'>
+                <Col md={6}>
+                    
+                     <p className='ms-3 mt-3'><strong>Name:</strong> {doctor?.firstName} {doctor?.lastName}</p>
+                      <p className='ms-3 mt-3'><strong>Speciality: </strong>Opthalmologist</p>
+                    
+                </Col>
+
+                <Col md={6}>
+                    <p className='ms-3 mt-3'><strong>Email:</strong> {doctor?.email}</p>
+                      <p className='ms-3 mt-3'><strong>Location: </strong></p>
+                   
+                </Col>
+            </Row>
+        </div>
+
+       <div className="doctor-section ms-4 me-4 mt-4 ">
+        <div className='mt-4'>
+                 <p>Address Information</p>
+        </div>
+       
+            <Row className='mb-4'>
+                <Col md={6} className='mb-3'>
+                    
+                     <p className='ms-3 mt-3'><strong>Name:</strong> {doctor?.firstName} {doctor?.lastName}</p>
+                      <p className='ms-3 mt-3'><strong>Speciality: </strong>Opthalmologist</p>
+                    
+                </Col>
+
+                <Col md={6}>
+                    <p className='ms-3 mt-3'><strong>Email:</strong> {doctor?.email}</p>
+                      <p className='ms-3 mt-3'><strong>Location: </strong></p>
+                   
+                </Col>
+            </Row>
+        </div>
     </div>
+</div>
+
+    
   );
 };
 

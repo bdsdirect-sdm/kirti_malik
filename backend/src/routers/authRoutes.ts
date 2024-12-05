@@ -17,12 +17,14 @@ cancelAppointment,
 completeAppointment,
 getDoctor,
 generateCSV,
-generatePDF} from '../controllers/authController';
+generatePDF,
+doctorAddress} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
 
 router.post('/register',registerDoctor)
+router.post('/doctorAddress/:doctorId',doctorAddress)
 router.post('/login',loginDoctor)
 router.post('/verifyOtp',verifyOtp)
 router.post('/addPatient/:DoctorId',upload.single('MedicalDocuments'),addPatient)
@@ -45,7 +47,7 @@ router.put('/cancelAppointment/:id',cancelAppointment)
 router.put('/completeAppointment/:id',completeAppointment)
 router.get('/getDoctor/:DoctorId',getDoctor)
 router.get('/generateCSV',generateCSV)
-router.get('/generatePDF',generatePDF);
+router.get('/generatePDF/:patientId',generatePDF);
 
 
 export default router;

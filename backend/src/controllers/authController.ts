@@ -11,6 +11,7 @@ import Message from "../models/message.model";
 import Staff from "../models/staff.model";
 import { parse } from "json2csv";
 import PDFDocument from 'pdfkit'; 
+import DoctorAddress from "../models/address.model";
 
 
 //to regsiter the doctor as OD or MD
@@ -51,6 +52,23 @@ export const registerDoctor=async(req:any,res:any)=>
 
 }
 
+//to add the address of the doctor
+
+export const doctorAddress=async(req:any,res:any)=>{
+  try{
+    const doctorId=req.params.doctorId;
+       const{address,country,state, city,pincode}=req.body;
+
+       const doctorAddress=await DoctorAddress.create({
+        doctorId,address,country,state,city,pincode
+       })
+
+       res.status(201).json(doctorAddress)
+  }
+  catch(error){
+       res.status(500).json({message:'add address failed',error})
+  }
+}
 
 //to login the doctor
 export const loginDoctor=async(req:any, res:any)=>{
@@ -293,11 +311,13 @@ export const addAppointment = async (req: any, res: any) => {
       patientId, 
       appointmentDate, 
       appointmentType, 
-      doctor
+      doctor,
+      status:'pending'
       
     });
 
      await patient.update({status:'scheduled'})
+     await appointment.update({status:'scheduled'})
     
     return res.status(201).json({
       message: "Appointment added successfully and patient staus updated successfully",
@@ -674,34 +694,86 @@ export const generateCSV=async(req:any,res:any)=>{
 
 //to generate a pdf file
 
-export const generatePDF=async(req:any,res:any)=>{
-  try{
-    const patients=await ReferralPatient.findAll();
-    const plainPatients=patients.map((patient:any)=>patient.toJSON());
+export const generatePDF = async (req: any, res: any) => {
+  try {
+    const patientId = req.params.patientId;
 
-    const doc= new PDFDocument();
-    res.header('content-type','application/pdf')
+    const patients = await ReferralPatient.findOne({
+      where: { id: patientId },
+      include: [
+        {
+          model: Doctor,
+        },
+        {
+          model: Appointments,
+        },
+      ],
+    });
+
+    
+    if (!patients) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    const plainPatients = patients.toJSON();
+    const doc = new PDFDocument();
+
+    res.header('content-type', 'application/pdf');
     res.attachment('patient_info.pdf');
     doc.pipe(res);
-    doc.fontSize(18).text('Patients Data Report', { align: 'center' });
+
+
+    doc.font('Helvetica-Bold').fontSize(12).text('Basic Information', { align: 'left' });
+    doc.font('Helvetica').fontSize(10);
+    doc.text(`Name: ${plainPatients.firstName} ${plainPatients.lastName}`, { align: 'left' });
+    doc.text(`DOB: ${plainPatients.dob}`, { align: 'left' });
+    doc.text(`Phone: ${plainPatients.phoneNumber}`, { align: 'left' });
+    doc.text(`Email: ${plainPatients.email}`, { align: 'left' });
+    doc.text(`Gender: ${plainPatients.gender}`, { align: 'left' });
+
     doc.moveDown();
 
-    plainPatients.forEach(patient=>{
-      // const patientData = `${patient.patient_name} | ${patient.age} | ${patient.gender} | ${patient.email}`;
-      // doc.text(patientData);
+   
+    doc.font('Helvetica-Bold').fontSize(12).text('Reason of Consult', { align: 'left' });
+    doc.font('Helvetica').fontSize(10);
+    doc.text(`Reason: ${plainPatients.diseaseName}`, { align: 'left' });
+    doc.text(`Laterality: ${plainPatients.laterality}`, { align: 'left' });
+    doc.text(`Patient will return: ${plainPatients.returnPatient}`, { align: 'left' });
 
-      doc.text(`name: ${patient.firstName} ${patient.lastName}`)
-      doc.text(`dob: ${patient.dob}`)
-      doc.text(`phone: ${patient.phoneNumber}`)
-      doc.text(`email: ${patient.email}`)
-      doc.text(`disease: ${patient.diseaseName}`,{paragraphGap:50})
-    })
+    doc.moveDown();
+
+
+    doc.font('Helvetica-Bold').fontSize(12).text('Referral To', { align: 'left' });
+    doc.font('Helvetica').fontSize(10);
+    doc.text(`Doctor Name: ${plainPatients.Doctor?.firstName} ${plainPatients.Doctor?.lastName}`, { align: 'left' });
+    doc.text(`Location: ${plainPatients.Doctor?.location || 'Not available'}`, { align: 'left' });
+
+    doc.moveDown();
+
+
+    doc.font('Helvetica-Bold').fontSize(12).text('Appointment History', { align: 'left' });
+
+  
+    doc.font('Helvetica-Bold').fontSize(10);
+    doc.text('Type', { align: 'left', continued: true });
+    doc.text('Date', { align: 'center', continued: true });
+    doc.text('Status', { align: 'right' });
+
+   
+    doc.font('Helvetica').fontSize(10);
+    if (plainPatients.Appointments && plainPatients.Appointments.length > 0) {
+      plainPatients.Appointments.forEach((appointment: any, index: number) => {
+        doc.text(appointment.appointmentType, { align: 'left', continued: true });
+        doc.text(appointment.appointmentDate, { align: 'center', continued: true });
+        doc.text(appointment.status || 'N/A', { align: 'right' });
+      });
+    } else {
+      doc.text('No appointments available', { align: 'left' });
+    }
+
     doc.end();
-
+  } catch (error) {
+    console.error('Error generating PDF');
+    res.status(500).json({ message: 'PDF not downloaded', error });
   }
-  catch(error)
-  {
-    console.error('error generating pdf')
-    res.status(500).json({message:'pdf not downloaded',error})
-  }
-}
+};

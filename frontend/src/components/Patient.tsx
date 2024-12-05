@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import {  Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import axios from 'axios';
 import './style.css';
 import config from '../config';
 import Pagination from './Pagination'; 
-import { CSVLink,CSVDownload } from 'react-csv';
+
 
 const Patient = () => {
   const [referredPatients, setReferredPatients] = useState<any[]>([]);

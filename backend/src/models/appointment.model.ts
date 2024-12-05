@@ -7,7 +7,9 @@ class Appointments extends Model{
     public id!:number;
     public appointmentDate!:Date;
     public appointmentType!:'consultation' | 'surgery';
-    public patientId!:number
+    public patientId!:number;
+     public status!: 'pending' |'scheduled' | 'completed ' | 'cancelled';
+
     public doctor!:number
 }
 Appointments.init(
@@ -40,7 +42,12 @@ Appointments.init(
             model:Doctor,
             key:'id'
           }
-        }
+        },
+          status: {
+      type: DataTypes.ENUM('pending','scheduled','completed', 'cancelled'),
+      defaultValue: "pending",
+    },
+
     }
     ,{
         sequelize, tableName:'appointments'

@@ -370,10 +370,19 @@ form {
 }
 .patient-info{
     background-color: white;
+    max-height: 500px;
     overflow-y: auto;
    
 }
+.doctor-info{
+    background-color: white;
+     max-height: 450px;
+    overflow-y: auto;
+}
 .patient-section{
+    background-color: #F5F5F5;
+}
+.doctor-section{
     background-color: #F5F5F5;
 }
 .icon i{
