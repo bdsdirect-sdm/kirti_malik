@@ -12,7 +12,7 @@ const MDdoctors = () => {
       try {
         const response = await axios.get(`${config.BASE_URL}/getmddoctor`);
         setMDdoctors(response.data);
-        console.log("doctottttttt",response.data)
+        //console.log("doctottttttt",response.data)
       } catch (error) {
         console.error('Error fetching doctors:', error);
       }
@@ -23,7 +23,7 @@ const MDdoctors = () => {
 
 
   return (
-    <div>
+    <div className='ms-4 me-3'>
       <div className='table-heading d-flex justify-content-between align-items-center'>
         <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Doctors List</h2>
        

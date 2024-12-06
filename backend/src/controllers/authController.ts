@@ -1,23 +1,24 @@
 import { Request,Response } from "express";
-import Doctor from "../models/doctor.model";
-import ReferralPatient from "../models/referralPatient.model"
 import bcrypt from 'bcrypt';
 import  jwt  from "jsonwebtoken";
 import { sendWelcomeEmail } from "../config/mailer";
-import Appointments from "../models/appointment.model";
 import { Op, Sequelize, where } from "sequelize";
+import { parse } from "json2csv";
+import PDFDocument from 'pdfkit'; 
+import Joi from "joi";
+
+import Doctor from "../models/doctor.model";
+import ReferralPatient from "../models/referralPatient.model"
+import Appointments from "../models/appointment.model";
 import Notification from "../models/notification.model";
 import Message from "../models/message.model";
 import Staff from "../models/staff.model";
-import { parse } from "json2csv";
-import PDFDocument from 'pdfkit'; 
 import DoctorAddress from "../models/address.model";
 
 
 //to regsiter the doctor as OD or MD
 export const registerDoctor=async(req:any,res:any)=>
 {
-
     const{firstName,lastName,email,userType,password}=req.body;
     const hashedPassword= await bcrypt.hash(password,10)
     try{
@@ -63,7 +64,7 @@ export const doctorAddress=async(req:any,res:any)=>{
         doctorId,address,country,state,city,pincode
        })
 
-       res.status(201).json(doctorAddress)
+       res.status(201).json({message:'address added successfully',doctorAddress})
   }
   catch(error){
        res.status(500).json({message:'add address failed',error})
@@ -659,7 +660,10 @@ export const getDoctor=async(req:any,res:any)=>{
     const doctor=await Doctor.findOne({
       where:{
         id:doctorId
-      }
+      },
+    include:[{
+      model:DoctorAddress
+    }]
     });
     return res.status(200).json(doctor)
   }

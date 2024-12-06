@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
 import config from '../config';
@@ -10,7 +11,7 @@ const Staff = () => {
   const [showModal, setShowModal] = useState(false); 
   const[staffList,setStaffList]=useState<any[]>([]);
   const doctorId=localStorage.getItem('DoctorId')
-  console.log("_____",doctorId)
+ // console.log("_____",doctorId)
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -34,7 +35,7 @@ const Staff = () => {
       console.error('Error fetching staff', error);
     }
   }
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -180,6 +181,8 @@ const Staff = () => {
             </Button>
           </Form>
         </Modal.Body>
+
+        
       </Modal>
     </div>
   );
