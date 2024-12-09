@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
 import config from '../config';
 import socket from '../socket';
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 interface Notification{
@@ -49,7 +51,6 @@ const initialValues = {
 
 const AddPatient: React.FC = () => {
   const [MDdoctors, setMDdoctors] = useState<any[]>([]);
- 
   const{DoctorId}=useParams();
   const doctorName=localStorage.getItem('doctorName')
 
@@ -75,6 +76,9 @@ const AddPatient: React.FC = () => {
     fetchDoctors();
   }, []);
 
+
+ 
+  
   const handleSubmit = async (values: typeof initialValues) => {
     const formData = new FormData();
     formData.append('dob', values.dob);
@@ -101,7 +105,7 @@ const AddPatient: React.FC = () => {
         },
       });
       
-     console.log("reeeeee",response.data)
+    
 
       if (response.status === 201) {
         console.log('Patient added successfully');
@@ -117,6 +121,7 @@ const AddPatient: React.FC = () => {
        socket.emit('sendNotification',notification)
           console.log("sending notification.....",notification)
 
+          toast.success('patient added successfully')
         navigate(`/dashboard/${DoctorId}`)
        
       } else {
@@ -140,6 +145,7 @@ const AddPatient: React.FC = () => {
   return (    
   <Container className="add-form">
   <h5 className="pt-4 pb-4">Add Referral Patient</h5>
+ 
   <Formik
     initialValues={initialValues}
     validationSchema={validationSchema}
@@ -283,6 +289,7 @@ const AddPatient: React.FC = () => {
               type="submit"
               className="w-50 custom-btn"
               disabled={isSubmitting}
+            
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>

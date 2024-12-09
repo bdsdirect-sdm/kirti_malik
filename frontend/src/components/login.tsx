@@ -41,15 +41,14 @@ const DoctorLogin = () => {
   return (
     <div className="container-fluid min-vh-100 d-flex p-0">
     
-      {/* Left Section: Fixed */}
-      <div className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white left-section">
-        <img src="logo.png" alt="Logo" className="mb-4" style={{ width: '150px', height: '150px' }} />
-        <h1>EYE REFER</h1>
-      </div>
+     
+     <div className="col-md-6 d-flex justify-content-center align-items-center text-white left-section">
+  <img src="logo.png" alt="Logo" className="me-3" style={{ width: '100px', height: '100px' }} />
+  <h1 className='text-light'>EYE REFER</h1>
+</div>
 
-      {/* Right Section: Scrollable Form */}
       <div className="col-md-6 bg-light p-5">
-        <h2 className="text-center mb-4">LOGIN</h2>
+        <h2 className="text-center mb-4">Log In</h2>
 
         <Formik
           initialValues={{
@@ -63,13 +62,13 @@ const DoctorLogin = () => {
             <Form>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">User Email</label>
-                <Field id="email" name="email" type="email" className="form-control" />
+                <Field id="email" name="email" type="email" className="form-control" placeholder="user email"/>
                 <ErrorMessage name="email" component="div" className="text-danger" />
               </div>
 
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">Password</label>
-                <Field id="password" name="password" type="password" className="form-control" />
+                <Field id="password" name="password" type="password" className="form-control" placeholder="password" />
                 <ErrorMessage name="password" component="div" className="text-danger" />
               </div>
 
@@ -77,15 +76,17 @@ const DoctorLogin = () => {
                 <p className="text-muted" onClick={() => navigate('/forgotPassword')}>Forgot password?</p>
               </div>
 
-              <button type="submit" className="btn btn-primary w-100">Login</button>
+              <button type="submit" className="btn btn-info w-100 text-light" >Login</button>
 
-              <div className="mt-3 text-center">
-                <p>Don’t have an account? 
-                  <button type="button" className="btn btn-info" onClick={() => navigate('/register')}>
-                    Sign up
-                  </button>
-                </p>
-              </div>
+           <div className="mt-3 text-center">
+  <div className="d-flex justify-content-center align-items-center">
+    <p className="mb-0">Don’t have an account?</p>
+    <p onClick={() => navigate('/register')} className="mb-0 ms-2 text-primary" style={{ cursor: 'pointer' }}>
+      Sign up
+    </p>
+  </div>
+</div>
+
             </Form>
           )}
         </Formik>

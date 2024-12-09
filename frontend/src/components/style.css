@@ -13,7 +13,7 @@
     color: white;
     justify-content: center;
     align-items: center; */
-    background-color:color-mix(in srgb,  #43D79E 30%, #35C0E4 40%);
+   background: linear-gradient(to bottom, #43D79E,#35C0E4);
     /* max-height: 100vh;
      */
 

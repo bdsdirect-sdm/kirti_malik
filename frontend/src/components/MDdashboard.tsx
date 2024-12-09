@@ -68,11 +68,11 @@ useEffect(()=>{
               style={{ width: '50px', height: '50px' }}
             />
           </div>
-          <Card.Title className="mt-2 small font">Referrals Placed</Card.Title>
+          <Card.Title className="mt-2 small font">Referrals Recieved</Card.Title>
         </div>
 
         <div className="d-flex flex-column justify-content-between">
-          <Card.Text className="text-end">{dashboardData.referralsCompleted}</Card.Text>
+          <Card.Text className="text-end">{dashboardData.referralsRecieved}</Card.Text>
           <hr />
           <small className="text-muted">Last Updated: {}</small>
         </div>

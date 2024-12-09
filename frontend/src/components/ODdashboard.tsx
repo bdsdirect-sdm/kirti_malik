@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Container, Row, Col, Card, Table } from 'react-bootstrap';
+import { Button, Row, Col, Card, Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
 import config from '../config';
 import Pagination from './Pagination';
+import {toast} from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const ODdashboard = () => {
+     
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState({ referralsPlaced: 0, referralsCompleted: 0, mdCount: 0 });
   const [referredPatients, setReferredPatients] = useState<any[]>([]);
@@ -17,6 +20,7 @@ const ODdashboard = () => {
   useEffect(() => {
     fetchDashboardData();
     fetchReferredPatients();
+     toast.success('Login successfull!')
   }, [DoctorId]);
 
   const fetchDashboardData = async () => {
