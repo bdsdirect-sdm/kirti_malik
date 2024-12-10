@@ -418,3 +418,7 @@ form {
     max-height: 90vh;
     overflow-y: auto;
 }
+.notification{
+    max-height: 90vh;
+    overflow-y: auto;
+}

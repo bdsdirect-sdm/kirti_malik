@@ -44,7 +44,7 @@ const NotificationPage: React.FC = () => {
   };
 
   return (
-    <Container fluid className="mt-4 px-4">
+    <Container fluid className="mt-4 px-4 notification">
       <h3 className="mb-4 text-center">Notifications</h3>
       <div className="d-flex flex-column align-items-center">
         {notifications.length > 0 ? (

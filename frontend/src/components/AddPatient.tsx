@@ -70,7 +70,6 @@ const AddPatient: React.FC = () => {
       }
     };
 
-    
     fetchDoctors();
   }, []);
 

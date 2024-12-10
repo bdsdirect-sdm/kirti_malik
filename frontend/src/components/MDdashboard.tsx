@@ -5,13 +5,24 @@ import axios from 'axios';
 import socket from '../socket';
 import { useNavigate,  } from 'react-router-dom';
 import config from '../config';
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type DashboardData = {
     referralsRecieved: number;
     referralsCompleted: number;
     totalDoctor:number
 };
+
+
+interface Notification{
+
+          senderId:string,
+           recieverId:string,
+          patientId:string,
+           message:string,
+
+}
 const MDdashboard = () => {
 
   const navigate=useNavigate();
@@ -23,7 +34,7 @@ const MDdashboard = () => {
         referralsRecieved: 0,
         referralsCompleted: 0,
         totalDoctor: 0,
-       
+      
     });
     
   const DoctorId=localStorage.getItem('DoctorId')
@@ -39,13 +50,12 @@ useEffect(()=>{
   fetchDashboardData();
    
 
-    socket.on('recieveNotification',(notification:string)=>{
-        console.log("new notification recieved",notification);
-        setNotifications((prev)=>[notification, ...prev])
+    socket.on('recieveNotification',(newNotification:Notification)=>{
+        console.log("new notification recieved",newNotification);
+       toast.info(newNotification.message)
       })
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
-},[socket])
+},[socket,DoctorId])
 
   const fetchReferredPatients = async () => {
    const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);

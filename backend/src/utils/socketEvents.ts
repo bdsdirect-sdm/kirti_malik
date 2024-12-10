@@ -54,7 +54,7 @@ export const sendNotification=(socket:Socket,io:Server)=>{
         await newNotification.save();
 
         io.to(recieverId).emit('recieveNotification',newNotification)       
-     console.log(`message emitted to room ${recieverId}`)
+     console.log(`message emitted to reciver with id  ${recieverId}`)
     }
    
     catch(error){
