@@ -4,13 +4,21 @@ import { Outlet, Link } from 'react-router-dom';
 import { Container, Row, Col, Navbar, Dropdown } from 'react-bootstrap';
 import './style.css';
 
+// import toast from 'react-toastify';
+// import "react-toastify/dist/ReactToastify.css";
+
 const Layout = () => {
   const [name, setName] = useState<string>('User');
+  // const[notificationCount,setNotificationCount]=useState(0);
+
   const DoctorId = localStorage.getItem('DoctorId');
   const userType = localStorage.getItem('userType');
 
   useEffect(() => {
-    const fetchDoctorName = async () => {
+    fetchDoctorName();
+  }, []);
+
+  const fetchDoctorName = async () => {
       try {
         const doctor = localStorage.getItem('doctorName') || 'User';
         setName(doctor);
@@ -18,8 +26,6 @@ const Layout = () => {
         console.error('Error fetching doctor name:', error);
       }
     };
-    fetchDoctorName();
-  }, []);
 
   return (
     <Container fluid className="layout-container h-auto ">

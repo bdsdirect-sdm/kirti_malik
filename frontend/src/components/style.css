@@ -413,3 +413,8 @@ form {
     background-color:hsl(156, 60%, 83%);
     border-radius: 10px;
 }
+
+.chat-sidebar{
+    max-height: 90vh;
+    overflow-y: auto;
+}

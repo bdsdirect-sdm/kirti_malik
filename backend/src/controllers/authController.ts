@@ -285,7 +285,7 @@ export const getPatientbyDoctor = async (req: any, res: any) => {
             ]
         });
 
-        console.log("======", patients);
+       
         return res.status(200).json(patients);
     } catch (error) {
         return res.status(500).json({ message: "server error", error });

@@ -26,18 +26,20 @@ export const sendMessage = (socket: Socket, io: Server) => {
 
     
       io.to(roomId).emit('receiveMessage', newMessage);
-
-     
       console.log(`Message emitted to room ${roomId}`);
+
     } catch (error) {
       console.error('Error saving message:', error);
       socket.emit('error', { success: false, error: 'Failed to save message' });
     }
   });
+
+     
+
 };
 
 
-export const sendNotification=(socket:Socket)=>{
+export const sendNotification=(socket:Socket,io:Server)=>{
     socket.on('sendNotification',async(notification:{senderId:string,patientId:string,recieverId:string,message:string})=>{
       console.log("recievedNotification",notification)
     try{
@@ -51,9 +53,10 @@ export const sendNotification=(socket:Socket)=>{
 
         await newNotification.save();
 
-        socket.to(recieverId).emit('recieveNotification',notification)       
-     console.log("notification saved to database")
+        io.to(recieverId).emit('recieveNotification',newNotification)       
+     console.log(`message emitted to room ${recieverId}`)
     }
+   
     catch(error){
         console.error('error saving notification to database',error)
 

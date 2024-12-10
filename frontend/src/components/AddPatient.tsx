@@ -70,9 +70,7 @@ const AddPatient: React.FC = () => {
       }
     };
 
-     socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+    
     fetchDoctors();
   }, []);
 

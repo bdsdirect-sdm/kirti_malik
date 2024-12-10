@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ODdashboard = () => {
      
   const navigate = useNavigate();
+
   const [dashboardData, setDashboardData] = useState({ referralsPlaced: 0, referralsCompleted: 0, mdCount: 0 });
   const [referredPatients, setReferredPatients] = useState<any[]>([]);
   const DoctorId = localStorage.getItem('DoctorId');
@@ -20,7 +21,8 @@ const ODdashboard = () => {
   useEffect(() => {
     fetchDashboardData();
     fetchReferredPatients();
-     toast.success('Login successfull!')
+      toast.success('Login successfull!')
+     
   }, [DoctorId]);
 
   const fetchDashboardData = async () => {

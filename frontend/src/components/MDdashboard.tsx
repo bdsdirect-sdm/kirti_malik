@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Row, Col, Card, Table, Container,  } from 'react-bootstrap';
+import { Button,  Row, Col, Card, Table, Container, Alert,  } from 'react-bootstrap';
 import './style.css'
 import axios from 'axios';
+import socket from '../socket';
 import { useNavigate,  } from 'react-router-dom';
 import config from '../config';
 
@@ -15,7 +16,8 @@ const MDdashboard = () => {
 
   const navigate=useNavigate();
   const[referredPatientsList,setReferredPatients]=useState<any[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const[notifications,setNotifications]=useState<string[]>([]);
+
   const[isLoading,setIsLoading]=useState(false);
   const [dashboardData, setDashboardData] = useState<DashboardData>({
         referralsRecieved: 0,
@@ -35,23 +37,35 @@ useEffect(()=>{
   setIsLoading(true);
   fetchReferredPatients();
   fetchDashboardData();
+   
+
+    socket.on('recieveNotification',(notification:string)=>{
+        console.log("new notification recieved",notification);
+        setNotifications((prev)=>[notification, ...prev])
+      })
+
 // eslint-disable-next-line react-hooks/exhaustive-deps
-},[])
+},[socket])
 
   const fetchReferredPatients = async () => {
    const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
-   console.log("datataaaaa",response.data)
     setReferredPatients(response.data);
   };
 
   const fetchDashboardData=async()=>{
     const response=await axios.get(`${config.BASE_URL}/MDdashboardData/${DoctorId}`)
-    console.log("!!!!!!!",response.data)
     setDashboardData(response.data);
   }
 
   return (
      <Container className='dashboard'>
+
+         {notifications.length > 0 && (
+        <Alert variant="info">
+          <h5>New Notification</h5>
+          <p>{notifications[0]}</p>
+        </Alert>
+      )}
      
 <Row className="mb-4 pt-0">
   <h5>Dashboard</h5>

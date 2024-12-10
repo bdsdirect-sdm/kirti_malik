@@ -21,77 +21,65 @@ const Chat: React.FC = () => {
   const [roomId, setRoomId] = useState<string>('');
   
   const DoctorId = JSON.parse(localStorage.getItem('DoctorId') || '{}');
-useEffect(() => {
-  if (selectedPatient) {
-    setRoomId(selectedPatient.id);
-  }
 
-  if (roomId) {
-    socket.emit('joinRoom', roomId);
-  }
+  useEffect(() => {
+    if (selectedPatient) {
+      setRoomId(selectedPatient.id);
+    }
 
-  
-  socket.on('receiveMessage', (newMessage: Message) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    console.log('Message received', newMessage.message);
-  });
+    if (roomId) {
+      socket.emit('joinRoom', roomId);
+      console.log(`Socket joined room ${roomId}`); 
+    }
 
+    socket.on('receiveMessage', (newMessage: Message) => {
+      console.log('Message received', newMessage.message);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
 
-  fetchReferredPatients();
+    fetchReferredPatients();
 
-  return () => {
-    socket.off('receiveMessage');  
-  };
-}, [roomId, selectedPatient]);
+    return () => {
+      socket.off('receiveMessage'); 
+    };
+  }, [ selectedPatient]);
 
-  
   const fetchReferredPatients = async () => {
     try {
       const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
       setPatients(response.data);
-      console.log("--", response.data);
     } catch (error) {
       console.error('Error fetching referred patients', error);
     }
   };
 
-  // const fetchChats=async()=>{
-  //   try{
-          
-  //   }
-  //   catch{
-
-  //   }
-  // }
-  
   const selectPatient = (patient: any) => {
     setSelectedPatient(patient);
     setMessages([]); 
     setRoomId(patient.id);  
   };
 
- 
   const sendMessage = async () => {
-    if (!message.trim()) return;  
-
+    if (!message.trim()) return; 
     const newMessage: Message = {
       message,
       senderId: DoctorId,
       recieverId: selectedPatient?.ReferredTo,
       patientId: selectedPatient?.id,
-      roomId: roomId,  
+      roomId: roomId,
     };
 
-    socket.emit('sendMessage', newMessage); 
-   // setMessages((prevMessages) => [...prevMessages, newMessage]); 
+    console.log("Emitting message:", newMessage);
+   
+    socket.emit('sendMessage', newMessage);  
+    //setMessages((prevMessages) => [...prevMessages, newMessage]); 
     setMessage(''); 
     console.log("Message sent", newMessage.message);
   };
 
   return (
     <Row className="mt-0 bg-white border-top ms-1">
-     
-      <Col md={3} className="p-3 border-end" style={{ height: '90vh' }}>
+      <Col md={3} className="p-3 border-end chat-sidebar">
         <div className="input-group">
           <div className="form-outline" data-mdb-input-init>
             <input type="search" id="form1" className="form-control" placeholder='search patient' />
@@ -111,7 +99,6 @@ useEffect(() => {
         </div>
       </Col>
 
-     
       <Col md={9} className="d-flex flex-column h-90">
         <Navbar variant="dark" className="mb-3 border-bottom position-static">
           <Navbar.Brand style={{ color: 'black', fontSize: '50' }}>
@@ -136,7 +123,7 @@ useEffect(() => {
                   marginRight: msg.senderId === DoctorId ? 'auto' : '0',
                 }}
               >
-                <strong>{msg.senderId === DoctorId ? 'You' : msg.senderId}:</strong> {msg.message}
+                <strong>{msg.senderId === DoctorId ? 'You' : 'Other'}:</strong> {msg.message}
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -149,7 +136,7 @@ useEffect(() => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button className='btn btn-outline-success ms-3' onClick={sendMessage}>send message</button>
+          <button className='btn btn-outline-success ms-3' onClick={sendMessage}>Send Message</button>
         </div>
       </Col>
     </Row>
