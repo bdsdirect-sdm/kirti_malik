@@ -19,9 +19,9 @@ import DoctorProfile from './components/DoctorProfile';
 import NotificationPage from './components/NotificationPage';
 import Staff from './components/Staff';
 import EditAppointment from './components/EditAppointment';
-import { ToastContainer } from "react-toastify";
+
 import InActivityTimeout from './components/InActivityTimeout';
-import "react-toastify/dist/ReactToastify.css";
+
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
@@ -30,7 +30,7 @@ const App = () => {
   return (
     <>
 
-     <ToastContainer position='top-right'/>
+   
     {/* // <InActivityTimeout/> */}
       <Routes>
     

@@ -8,7 +8,6 @@ import './style.css';
 import config from '../config';
 import socket from '../socket';
 import {toast} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 
 interface Notification{
@@ -155,19 +154,19 @@ const AddPatient: React.FC = () => {
           <Col md={4}>
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>DOB</BootstrapForm.Label>
-              <Field type="date" name="dob" className="form-control" placeholder="YYYY-MM-DD" />
+              <Field type="date" name="dob" className="form-control py-3" placeholder="YYYY-MM-DD" />
               <ErrorMessage name="dob" component="div" className="text-danger" />
             </BootstrapForm.Group>
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>First Name</BootstrapForm.Label>
-              <Field type="text" name="firstName" className="form-control" placeholder="Enter first name" />
+              <Field type="text" name="firstName" className="form-control py-3" placeholder="Enter first name" />
               <ErrorMessage name="firstName" component="div" className="text-danger" />
             </BootstrapForm.Group>
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Disease Name</BootstrapForm.Label>
-              <Field as="select" name="diseaseName" className="form-control">
+              <Field as="select" name="diseaseName" className="form-control py-3">
                 <option value="">Select Disease</option>
                 <option value="Glaucoma">Glaucoma</option>
                 <option value="Cataract">Cataract</option>
@@ -178,7 +177,7 @@ const AddPatient: React.FC = () => {
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>MD Doctor</BootstrapForm.Label>
-              <Field as="select" name="MDdoctor" className="form-control">
+              <Field as="select" name="MDdoctor" className="form-control py-3">
                 <option value="">Select MD Doctor</option>
                 {MDdoctors.length > 0 ? (
                   MDdoctors.map((doctor) => (
@@ -197,19 +196,19 @@ const AddPatient: React.FC = () => {
           <Col md={4}>
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Email</BootstrapForm.Label>
-              <Field type="email" name="email" className="form-control" />
+              <Field type="email" name="email" className="form-control py-3" placeholder="Email"/>
               <ErrorMessage name="email" component="div" className="text-danger" />
             </BootstrapForm.Group>
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Last Name</BootstrapForm.Label>
-              <Field type="text" name="lastName" className="form-control" />
+              <Field type="text" name="lastName" className="form-control py-3" placeholder="Enter last name" />
               <ErrorMessage name="lastName" component="div" className="text-danger" />
             </BootstrapForm.Group>
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Laterality</BootstrapForm.Label>
-              <Field as="select" name="laterality" className="form-control">
+              <Field as="select" name="laterality" className="form-control py-3">
                 <option value="">Select</option>
                 <option value="left">Left</option>
                 <option value="right">Right</option>
@@ -225,7 +224,7 @@ const AddPatient: React.FC = () => {
                 type="file"
                 name="MedicalDocuments"
                 onChange={(e) => handleFileChange(e, setFieldValue)}
-                className="form-control"
+                className="form-control py-3"
               />
               <ErrorMessage name="MedicalDocuments" component="div" className="text-danger" />
             </BootstrapForm.Group>
@@ -235,13 +234,13 @@ const AddPatient: React.FC = () => {
           <Col md={4}>
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Phone Number</BootstrapForm.Label>
-              <Field type="text" name="phoneNumber" className="form-control" />
+              <Field type="text" name="phoneNumber" className="form-control py-3" placeholder="Enter phone Number" />
               <ErrorMessage name="phoneNumber" component="div" className="text-danger" />
             </BootstrapForm.Group>
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Gender</BootstrapForm.Label>
-              <Field as="select" name="gender" className="form-control">
+              <Field as="select" name="gender" className="form-control py-3">
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -252,7 +251,7 @@ const AddPatient: React.FC = () => {
 
             <BootstrapForm.Group className="mb-3">
               <BootstrapForm.Label>Return Patient</BootstrapForm.Label>
-              <Field as="select" name="returnPatient" className="form-control">
+              <Field as="select" name="returnPatient" className="form-control py-3">
                 <option value="">Select</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>

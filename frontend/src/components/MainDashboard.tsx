@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ODdashboard from '../components/ODdashboard'
 import MDdashboard from '../components/MDdashboard'
+import { useNavigate } from 'react-router-dom'
+
 
 
 const MainDashboard = () => {
- 
+  
+    const navigate=useNavigate();
     const doctorType=localStorage.getItem('userType')
+    
+
+    useEffect(()=>{
+      const token=localStorage.getItem('token');
+      if(!token){
+        navigate('/login',{replace:true})
+      }
+
+
+    },[navigate])
 
 
   return (
   
-    <div style={{height: 'calc(100vh - 97px)'}}>{doctorType==='OD'?(<ODdashboard/>):(<MDdashboard/>)}</div>
+    <div>{doctorType==='OD'?(<ODdashboard/>):(<MDdashboard/>)}</div>
   )
 }
 

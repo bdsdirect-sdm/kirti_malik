@@ -1,4 +1,5 @@
 
+
 .register-container {
     display: flex;
     justify-content: space-between;
@@ -94,7 +95,7 @@ select {
 
 
 .layout-container {
-    height: 100vh;
+    height: 600px;
 }
 
 .layout-navbar {
@@ -111,7 +112,7 @@ select {
 }
 .sidebar {
     border-top: 1px solid #8080805c !important;
-    border-right: 0.5px solid grey !important;
+    /* border-right: 0.5px solid grey !important; */
     background-color: #FFFFFF;
     justify-content: center;
 }
@@ -132,12 +133,13 @@ select {
 }
 
 .content-area {
-    height: auto;
-   height: calc(100vh - 97px);  
+/*   
+   height: calc(100vh - 97px);   */
+   height: 700px;
     max-width: 100%;
    /* // margin-left: 10px; */
     /* margin-left: 9px !important; */
-    /* overflow: auto; */
+    overflow: auto;
 }
 .custom-margin-top{
     margin-top: 6rem !important;
@@ -421,4 +423,21 @@ form {
 .notification{
     max-height: 90vh;
     overflow-y: auto;
+}
+
+.notification-count {
+  position: absolute;
+  top: -6px; 
+  right: 4px; 
+  background-color:black;
+  color: white;
+  border-radius: 50%;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

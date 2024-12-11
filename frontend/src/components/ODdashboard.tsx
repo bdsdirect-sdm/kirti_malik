@@ -5,8 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
 import config from '../config';
 import Pagination from './Pagination';
-import {toast} from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+
 
 const ODdashboard = () => {
      
@@ -16,12 +15,12 @@ const ODdashboard = () => {
   const [referredPatients, setReferredPatients] = useState<any[]>([]);
   const DoctorId = localStorage.getItem('DoctorId');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 7;
 
   useEffect(() => {
     fetchDashboardData();
     fetchReferredPatients();
-      toast.success('Login successfull!')
+      
      
   }, [DoctorId]);
 

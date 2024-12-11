@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import config from '../config';
+import {toast} from 'react-toastify';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email format').required('Email is required'),
@@ -22,7 +23,7 @@ const DoctorLogin = () => {
   const onSubmit = async (values: ILoginInput) => {
     try {
       const response = await axios.post(`${config.BASE_URL}/login`, values);
-      alert('Login successful!');
+     toast.success('Login successfull!')
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('doctorName', response.data.doctor.firstName);
       const DoctorId = response.data.doctor.id;
@@ -31,7 +32,7 @@ const DoctorLogin = () => {
       const type = response.data.doctor.userType;
       localStorage.setItem('userType', type);
 
-      navigate(`/dashboard/${DoctorId}`);
+      navigate(`/dashboard/${DoctorId}`,{replace:true});
     } catch (error) {
       console.error(error);
       alert('Login failed!');
@@ -62,17 +63,17 @@ const DoctorLogin = () => {
             <Form>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">User Email</label>
-                <Field id="email" name="email" type="email" className="form-control" placeholder="user email"/>
+                <Field id="email" name="email" type="email" className="form-control py-3" placeholder="user email"/>
                 <ErrorMessage name="email" component="div" className="text-danger" />
               </div>
 
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">Password</label>
-                <Field id="password" name="password" type="password" className="form-control" placeholder="password" />
+                <Field id="password" name="password" type="password" className="form-control py-3" placeholder="password" />
                 <ErrorMessage name="password" component="div" className="text-danger" />
               </div>
 
-              <div className="mb-3 text-end">
+              <div className="mb-4  text-end">
                 <p className="text-muted" onClick={() => navigate('/forgotPassword')}>Forgot password?</p>
               </div>
 

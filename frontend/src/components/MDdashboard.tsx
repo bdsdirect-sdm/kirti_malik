@@ -6,7 +6,6 @@ import socket from '../socket';
 import { useNavigate,  } from 'react-router-dom';
 import config from '../config';
 import {  toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 type DashboardData = {
     referralsRecieved: number;
@@ -53,6 +52,9 @@ useEffect(()=>{
     socket.on('recieveNotification',(newNotification:Notification)=>{
         console.log("new notification recieved",newNotification);
        toast.info(newNotification.message)
+
+       
+
       })
 
 },[socket,DoctorId])
