@@ -18,7 +18,9 @@ completeAppointment,
 getDoctor,
 generateCSV,
 generatePDF,
-doctorAddress} from '../controllers/authController';
+doctorAddress,
+updateNotification,
+getNotificationCount} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -41,6 +43,8 @@ router.get('/viewPatient/:patientId',viewPatient)
 router.put('/editPatient/:patientId',upload.single('MedicalDocuments'),editPatient)
 router.get('/chatHistory/:roomId',getChatHistory)
 router.get('/getNotification/:DoctorId',getNotification)
+router.put('/updateNotification/:id',updateNotification)
+router.get('/getNotificationCount/:DoctorId',getNotificationCount)
 router.post('/addStaff/:DoctorId',addStaff)
 router.get('/getStaff/:DoctorId',getStaff)
 router.put('/cancelAppointment/:id',cancelAppointment)

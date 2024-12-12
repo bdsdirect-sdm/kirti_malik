@@ -114,7 +114,7 @@ export const verifyOtp=async(req:any,res:any)=>{
     const{email,otp}=req.body;
     try{
         const doctor=await Doctor.findOne({where:{email}});
-        console.log("doctor backend=====",doctor)
+        
 
         if(!doctor)
         {
@@ -579,15 +579,16 @@ export const getChatHistory=async(req:any,res:any)=>{
   }
 }
 
+//to get the notification on the notification page
+
 export const getNotification=async(req:any,res:any)=>{
  
   try{
        const DoctorId=req.params.DoctorId;
        console.log("yeeeee",DoctorId)
   const notificaion =await Notification.findAll({
-    where:{
-      recieverId:DoctorId
-    }
+    where:{recieverId:DoctorId,},
+     order:[['createdAt','DESC']]
 
   })
   return res.status(200).json(notificaion)
@@ -595,11 +596,48 @@ export const getNotification=async(req:any,res:any)=>{
   }
   catch(error){
     console.error('error fetching notification',error)
-    return res.status(500).json({error:"an error occured while fetching patient "})
+    return res.status(500).json({error:"an error occured while fetching notification "})
 
   }
  
 }
+
+
+//to update the notification status
+
+export const updateNotification=async(req:any,res:any)=>{
+  try{
+    const notificationId=req.params.id
+    const notificaion=await Notification.findByPk(notificationId);
+    if(!notificaion)
+    {
+      return res.status(404).json({message:'notification not found'})
+    }
+    notificaion.isRead=true;
+    await notificaion.save();
+
+    return res.status(200).json({message:'notification marked as read',notificaion})
+
+  }
+  catch(error){
+    console.error('error updating notification',error)
+    return res.status(500).json({error:"an error occured while updating notification"})
+
+  }
+}
+//to get notification count
+
+export const getNotificationCount=async(req:any,res:any)=>{
+  try{
+      const id=req.params.DoctorId;
+      const notificaionCount=await Notification.count({where:{recieverId:id,isRead:false}})
+      res.status(200).json(notificaionCount)
+  }
+  catch(error){
+    console.error({message:'error getting notification count',error})
+  }
+}
+
 
 // to add the staff
 

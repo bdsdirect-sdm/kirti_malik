@@ -23,6 +23,8 @@ import EditAppointment from './components/EditAppointment';
 import InActivityTimeout from './components/InActivityTimeout';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Charts from './components/Charts';
+import PieCharts from './components/PieCharts';
 
 
 
@@ -56,6 +58,9 @@ const App = () => {
             <Route path='Notification' element={<NotificationPage/>}/>
              <Route path='profile/:DoctorId' element={<DoctorProfile/>}/>
               <Route path='staff' element={<Staff/>}/>
+               <Route path='charts' element={<Charts/>}/>
+                       <Route path='piecharts' element={<PieCharts/>}/>
+
             {/* <ToastContainer newestOnTop={false} closeOnClick /> */}
 
 

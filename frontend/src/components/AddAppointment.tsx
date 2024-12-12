@@ -31,7 +31,7 @@ const AddAppointment: React.FC = () => {
       try {
         const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
         setPatients(response.data); 
-        console.log("huhuhuuh",response.data)
+       
       } catch (error) {
         console.error("Error fetching patients:", error);
       }

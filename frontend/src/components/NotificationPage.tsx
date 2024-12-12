@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import socket from '../socket';
 import config from '../config';
-import { Card, Container } from 'react-bootstrap'; // Bootstrap components
+import { Container } from 'react-bootstrap'; // Bootstrap components
 
 interface Notification {
   id: number;
@@ -11,6 +11,7 @@ interface Notification {
   recieverId: number;
   message: string;
   createdAt: string;
+  isRead:boolean
 }
 
 const NotificationPage: React.FC = () => {
@@ -19,7 +20,7 @@ const NotificationPage: React.FC = () => {
   console.log('Doctor ID:', doctorId);
 
   useEffect(() => {
-    // Listen to incoming notifications from socket
+
     socket.on('sendNotification', (notification: Notification) => {
       console.log('Notification received:', notification);
       setNotifications((prevNotifications) => [...prevNotifications, notification]);
@@ -32,7 +33,7 @@ const NotificationPage: React.FC = () => {
     try {
       const response = await axios.get(`${config.BASE_URL}/getNotification/${doctorId}`);
       setNotifications(response.data);
-      console.log('Notifications fetched:', response.data);
+     console.log('Notifications fetched:', response.data);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
@@ -40,8 +41,20 @@ const NotificationPage: React.FC = () => {
 
   const formatDate = (date: string) => {
     const notificationDate = new Date(date);
-    return notificationDate.toLocaleString(); // Formats the date
+    return notificationDate.toLocaleString(); 
   };
+  const handleRead=async(notificationId:number)=>{
+    try{
+          await axios.put(`${config.BASE_URL}/updateNotification/${notificationId}`)
+           setNotifications((prevNotification)=>
+            prevNotification.map((notif)=>notif.id===notificationId?
+           {...notif,isRead:true}:notif))
+    }
+    catch(error){
+        console.error('error marking notification as read',error)
+    }
+    
+  }
 
   return (
     <Container fluid className="mt-4 px-4 notification">
@@ -50,9 +63,10 @@ const NotificationPage: React.FC = () => {
   {notifications.length > 0 ? (
     notifications.map((notification) => (
       <div
-        key={notification.id}
-        className="notification-item mb-3 p-3 shadow-sm rounded w-100"
+        key={notification.id} 
+        className={`notification-item mb-3 p-3 shadow-sm rounded w-100 ${notification.isRead ? 'read': 'unread'}`}
         style={{ maxWidth: '1200px', backgroundColor: '#f8f9fa' }}
+        onClick={()=>handleRead(notification.id)}
       >
         <p className="notification-text" style={{ fontSize: '15px' }}>
           {notification.message}

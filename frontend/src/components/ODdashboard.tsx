@@ -48,6 +48,8 @@ const ODdashboard = () => {
 
   return (
     <div className="dashboard bg-grey h-auto ms-5 me-5">
+      <button onClick={()=>navigate('/charts')}>go to barcharts</button>
+        <button onClick={()=>navigate('/piecharts')}>go to piechart</button>
       <Row className="mb-4  pt-0 d-flex">
         <h5>Dashboard</h5>
       <Col  className="d-flex align-items-stretch">

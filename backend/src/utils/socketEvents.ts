@@ -49,6 +49,7 @@ export const sendNotification=(socket:Socket,io:Server)=>{
            recieverId,
           patientId,
            message,
+          
         })
 
         await newNotification.save();

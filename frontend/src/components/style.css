@@ -441,3 +441,30 @@ form {
   justify-content: center;
   align-items: center;
 }
+
+
+.notification-item {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.notification-item.unread {
+  background-color: #f8f9fa; 
+  font-weight: bold; 
+  border-left: 5px solid #007bff; 
+}
+
+.notification-item.read {
+  background-color: #d3d3d3; 
+  font-weight: normal; 
+  border-left: 5px solid #6c757d; 
+}
+
+
+.notification-item:hover {
+  background-color: #e9ecef;
+}
+
+.notification-item.unread:hover {
+  background-color: #add8e6;
+}

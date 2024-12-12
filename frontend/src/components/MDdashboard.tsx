@@ -1,11 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { Button,  Row, Col, Card, Table, Container, Alert,  } from 'react-bootstrap';
+import { Button,  Row, Col, Card, Table, Container,   } from 'react-bootstrap';
 import './style.css'
 import axios from 'axios';
 import socket from '../socket';
 import { useNavigate,  } from 'react-router-dom';
 import config from '../config';
 import {  toast } from 'react-toastify';
+import Pagination from './Pagination';
+
 
 type DashboardData = {
     referralsRecieved: number;
@@ -26,8 +29,8 @@ const MDdashboard = () => {
 
   const navigate=useNavigate();
   const[referredPatientsList,setReferredPatients]=useState<any[]>([]);
-  const[notifications,setNotifications]=useState<string[]>([]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const[isLoading,setIsLoading]=useState(false);
   const [dashboardData, setDashboardData] = useState<DashboardData>({
         referralsRecieved: 0,
@@ -35,6 +38,9 @@ const MDdashboard = () => {
         totalDoctor: 0,
       
     });
+      const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
     
   const DoctorId=localStorage.getItem('DoctorId')
  
@@ -47,14 +53,9 @@ useEffect(()=>{
   setIsLoading(true);
   fetchReferredPatients();
   fetchDashboardData();
-   
-
     socket.on('recieveNotification',(newNotification:Notification)=>{
         console.log("new notification recieved",newNotification);
        toast.info(newNotification.message)
-
-       
-
       })
 
 },[socket,DoctorId])
@@ -69,16 +70,17 @@ useEffect(()=>{
     setDashboardData(response.data);
   }
 
+    const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const filteredUsers = referredPatientsList.slice(indexOfFirst, indexOfLast);
+
+   const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
      <Container className='dashboard'>
 
-         {notifications.length > 0 && (
-        <Alert variant="info">
-          <h5>New Notification</h5>
-          <p>{notifications[0]}</p>
-        </Alert>
-      )}
-     
 <Row className="mb-4 pt-0">
   <h5>Dashboard</h5>
 
@@ -188,7 +190,7 @@ useEffect(()=>{
               </tr>
             </thead>
             <tbody>
-              {referredPatientsList.map((patient, index) => (
+              {filteredUsers.map((patient, index) => (
                 <tr key={index}>
                   <td>{patient.firstName} {patient.lastName}</td>
                   <td>{patient.dob}</td>
@@ -214,6 +216,11 @@ useEffect(()=>{
               ))}
             </tbody>
           </Table>
+           <Pagination
+          filteredItems={referredPatientsList}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
           </div>
         </Container>
   )

@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { Container, Row, Col, Navbar, Dropdown } from 'react-bootstrap';
+import { Container, Col, Navbar, Dropdown } from 'react-bootstrap';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import config from '../config';
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ const Layout = () => {
       navigate('/login');
     }
     fetchDoctorName();
+    fetchNotificationCount();
   }, []);
 
   const handleLogout = () => {
@@ -35,6 +39,17 @@ const Layout = () => {
       console.error('Error fetching doctor name:', error);
     }
   };
+
+  const fetchNotificationCount=async()=>{
+    try{
+       const response=await axios.get(`${config.BASE_URL}/getNotificationCount/${DoctorId}`)
+       setNotificationCount(response.data)
+       console.log("response=======",response.data)
+    }
+    catch(error){
+      console.error('error fetching notification count:',error)
+    }
+  }
 
   return (
     <Container fluid className="layout-container">

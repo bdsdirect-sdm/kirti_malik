@@ -7,7 +7,9 @@ class Notification extends Model{
     public  senderId!:number;
      public  patientId!:number;
       public  recieverId!:number;
-    public message!:string;}
+    public message!:string;
+    public isRead!:Boolean;
+  }
    
 Notification.init(
     {
