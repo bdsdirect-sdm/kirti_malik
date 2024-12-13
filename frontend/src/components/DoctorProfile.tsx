@@ -123,8 +123,8 @@ const DoctorProfile: React.FC = () => {
           </div>
 
           <Row className='mb-4'>
-            <p>{doctor?.DoctorAddress.address}<br/>{doctor?.DoctorAddress.country}<br/>
-            {doctor?.DoctorAddress.state}<br/>{doctor?.DoctorAddress.city}<br/>{doctor?.DoctorAddress.pincode}
+            <p>{doctor?.DoctorAddress?.address}<br/>{doctor?.DoctorAddress?.country}<br/>
+            {doctor?.DoctorAddress?.state}<br/>{doctor?.DoctorAddress?.city}<br/>{doctor?.DoctorAddress?.pincode}
             </p>
           </Row>
         </div>

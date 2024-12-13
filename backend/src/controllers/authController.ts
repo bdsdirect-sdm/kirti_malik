@@ -5,7 +5,10 @@ import { sendWelcomeEmail } from "../config/mailer";
 import { Op, Sequelize, where } from "sequelize";
 import { parse } from "json2csv";
 import PDFDocument from 'pdfkit'; 
-import Joi from "joi";
+import fs from 'fs';
+import Papa from 'papaparse';
+// import csvtojson from 'csvtojson';
+
 
 import Doctor from "../models/doctor.model";
 import ReferralPatient from "../models/referralPatient.model"
@@ -14,6 +17,7 @@ import Notification from "../models/notification.model";
 import Message from "../models/message.model";
 import Staff from "../models/staff.model";
 import DoctorAddress from "../models/address.model";
+import CSVdata from "../models/csvdata.model";
 
 
 //to regsiter the doctor as OD or MD
@@ -817,5 +821,45 @@ export const generatePDF = async (req: any, res: any) => {
   } catch (error) {
     console.error('Error generating PDF');
     res.status(500).json({ message: 'PDF not downloaded', error });
+  }
+};
+
+//to upload csv file
+
+
+
+export const uploadcsv = async (req: any, res: any) => {
+  try {
+    const filepath = req.file.path;
+    const readStream = fs.createReadStream(filepath);
+    let parsedData: any[] = [];
+
+    Papa.parse(readStream, {
+      header: true,
+      skipEmptyLines: true, 
+      step: function (result) {
+        const row:any = result.data;
+   
+        if (row.Name && row.Code) {
+          parsedData.push({
+            name: row.Name.trim(),
+            code: row.Code.trim(),
+          });
+        } else {
+          console.log('Skipping row with missing data:', row);
+        }
+      },
+      complete: async function () {
+        try {
+          await CSVdata.bulkCreate(parsedData);
+          res.status(200).json({ message: 'CSV data successfully saved to database' });
+        } catch (dbError) {
+          console.error('Error saving data to database:', dbError);
+          res.status(500).json({ message: 'Error saving data to database', error: dbError });
+        }
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Data not generated from CSV properly', error });
   }
 };

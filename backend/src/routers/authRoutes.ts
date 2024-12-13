@@ -20,7 +20,8 @@ generateCSV,
 generatePDF,
 doctorAddress,
 updateNotification,
-getNotificationCount} from '../controllers/authController';
+getNotificationCount,
+uploadcsv} from '../controllers/authController';
 import { upload } from '../middlewares/multer';
 
 const router=express.Router();
@@ -52,6 +53,8 @@ router.put('/completeAppointment/:id',completeAppointment)
 router.get('/getDoctor/:DoctorId',getDoctor)
 router.get('/generateCSV',generateCSV)
 router.get('/generatePDF/:patientId',generatePDF);
+router.post('/uploadCSV',upload.single('csv'),uploadcsv)
+
 
 
 export default router;

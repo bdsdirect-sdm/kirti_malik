@@ -1,6 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import bodyParser from 'body-parser';
 
 const uploadsDir=path.join(__dirname,'..','uploads');
 

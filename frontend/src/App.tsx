@@ -25,6 +25,7 @@ import InActivityTimeout from './components/InActivityTimeout';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Charts from './components/Charts';
 import PieCharts from './components/PieCharts';
+import CSVfileUpload from './components/CSVfileUpload';
 
 
 
@@ -57,9 +58,11 @@ const App = () => {
            <Route path='doctorProfile/:DoctorId' element={<DoctorProfile/>}/>
             <Route path='Notification' element={<NotificationPage/>}/>
              <Route path='profile/:DoctorId' element={<DoctorProfile/>}/>
-              <Route path='staff' element={<Staff/>}/>
-               <Route path='charts' element={<Charts/>}/>
-                       <Route path='piecharts' element={<PieCharts/>}/>
+            <Route path='staff' element={<Staff/>}/>
+              <Route path='charts' element={<Charts/>}/>
+              <Route path='piecharts' element={<PieCharts/>}/>
+              <Route path='csvFileUpload' element={<CSVfileUpload/>}/>
+                
 
             {/* <ToastContainer newestOnTop={false} closeOnClick /> */}
 
