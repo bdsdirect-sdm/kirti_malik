@@ -20,7 +20,7 @@ const Patient = () => {
 
   const fetchReferredPatients = async () => {
     const response = await axios.get(`${config.BASE_URL}/patient/${DoctorId}`);
-    console.log('Fetched Data:', response.data);
+    // console.log('Fetched Data:', response.data);
     setReferredPatients(response.data);
   };
 

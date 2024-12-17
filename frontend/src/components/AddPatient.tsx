@@ -72,9 +72,6 @@ const AddPatient: React.FC = () => {
     fetchDoctors();
   }, []);
 
-
- 
-  
   const handleSubmit = async (values: typeof initialValues) => {
     const formData = new FormData();
     formData.append('dob', values.dob);
@@ -101,8 +98,6 @@ const AddPatient: React.FC = () => {
         },
       });
       
-    
-
       if (response.status === 201) {
         console.log('Patient added successfully');
 
@@ -115,8 +110,6 @@ const AddPatient: React.FC = () => {
        }
        
        socket.emit('sendNotification',notification)
-          console.log("sending notification.....",notification)
-
           toast.success('patient added successfully')
         navigate(`/dashboard/${DoctorId}`)
        

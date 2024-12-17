@@ -15,6 +15,8 @@ interface Message {
 
 const Chat: React.FC = () => {
   const [message, setMessage] = useState('');
+  const[search,setSearch]=useState('');
+  const[filteredUsers,setFilteredUsers]=useState<any[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
@@ -26,17 +28,14 @@ const Chat: React.FC = () => {
     if (selectedPatient) {
       setRoomId(selectedPatient.id);
     }
-
     if (roomId) {
       socket.emit('joinRoom', roomId);
       console.log(`Socket joined room ${roomId}`); 
     }
-
     socket.on('receiveMessage', (newMessage: Message) => {
       console.log('Message received', newMessage.message);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
-
     fetchReferredPatients();
 
     return () => {
@@ -77,16 +76,31 @@ const Chat: React.FC = () => {
     console.log("Message sent", newMessage.message);
   };
 
+  const handleSearch=(event: React.ChangeEvent<HTMLInputElement>)=>{
+       setSearch(event.target.value)
+  }
+
+ useEffect(() => {
+ 
+    const filteredItems = patients.filter((patient) => {
+      const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
+      return fullName.includes(search.toLowerCase());
+    });
+    setFilteredUsers(filteredItems);
+  }, [patients, search]); 
+
   return (
     <Row className="mt-0 bg-white border-top ms-1">
       <Col md={3} className="p-3 border-end chat-sidebar">
         <div className="input-group">
           <div className="form-outline" data-mdb-input-init>
-            <input type="search" id="form1" className="form-control" placeholder='search patient' />
+            <input type="search" id="form1"  value={search} 
+            onChange={handleSearch}
+            className="form-control" placeholder='search patient' />
           </div>
         </div>
         <div className='mt-5 ps-1 patient'>
-          {patients.map((patient) => (
+          {filteredUsers.map((patient) => (
             <div key={patient.id}>
               <p className="ps-3 fw-semibold mb-0" onClick={() => selectPatient(patient)}>
                 {patient.firstName} {patient.lastName}
