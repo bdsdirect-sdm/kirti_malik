@@ -96,8 +96,8 @@ const Layout = () => {
 
       <div className="custom-margin-top d-flex mt-6">
         {/* Sidebar (Fixed) */}
-        <Col className="sidebar position-fixed h-100" style={{ top: '60px', left: '0', width: '200px', zIndex: '999' }}>
-          <div className="sidebar-content py-4">
+        <Col className="sidebar position-fixed h-100" style={{ top: '96px', left: '0', width: '200px', zIndex: '999' }}>
+          <div className="sidebar-content pt-4">
             <ul className="list-unstyled">
               <li>
                 <Link to={`/dashboard/${DoctorId}`} className="sidebar-link">

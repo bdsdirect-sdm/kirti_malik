@@ -24,7 +24,7 @@ const Staff = () => {
   useEffect(()=>{
     getStaffList();
 
-  },[])
+  },[doctorId])
 
   const getStaffList=async()=>{
     try{
@@ -56,6 +56,7 @@ const Staff = () => {
      
     const response =  await axios.post(`${config.BASE_URL}/addStaff/${doctorId}`, formData);
       alert('Staff added successfully');
+      console.log("staff added successfully")
       setFormData( response.data); 
       handleCloseModal(); 
     } catch (error) {

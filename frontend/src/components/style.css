@@ -142,7 +142,7 @@ select {
     overflow: auto;
 }
 .custom-margin-top{
-    margin-top: 6rem !important;
+    /* margin-top: 6rem !important; */
     background-color: #ECF1F3 !important;
 }
 .eye-text{
@@ -316,7 +316,7 @@ form {
 }
 
 .table td {
-  text-align: center;
+  /* text-align: center; */
   font-weight: 350;
 }
 
@@ -358,6 +358,7 @@ form {
     border: none !important;
     color: white;
     border-radius: 2px;
+    margin-top: 6px;
 }
 .add-form {
   max-height: 600px; 
