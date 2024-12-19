@@ -39,7 +39,7 @@ const MDdashboard = () => {
       
     });
       const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 4;
 
     
   const DoctorId=localStorage.getItem('DoctorId')
@@ -82,7 +82,7 @@ useEffect(()=>{
      <Container className='dashboard'>
 
 <Row className="mb-4 pt-0">
-  <h5>Dashboard</h5>
+  <h5 style={{ fontSize: '24px' }}>Dashboard</h5>
 
   <Col xs={12} sm={4} md={4}>
     <Card className="custom-card">

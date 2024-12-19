@@ -72,7 +72,7 @@ const AppointmentPage: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container className="dashboard">
       <h2 className="text-center my-4"> Appointments</h2>
       <Table bordered hover>
         <thead>

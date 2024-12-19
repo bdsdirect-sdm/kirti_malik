@@ -95,7 +95,10 @@ select {
 
 
 .layout-container {
-    height: 600px;
+    height: 100vh;
+    padding-right: 0 !important;
+ 
+    
 }
 
 .layout-navbar {
@@ -133,16 +136,16 @@ select {
 }
 
 .content-area {
-/*   
-   height: calc(100vh - 97px);   */
-   height: 700px;
+
+ 
+     height: 100vh;
     max-width: 100%;
-   /* // margin-left: 10px; */
-    /* margin-left: 9px !important; */
     overflow: auto;
 }
 .custom-margin-top{
     /* margin-top: 6rem !important; */
+    height: 100vh;
+       /* border: 2px solid black; */
     background-color: #ECF1F3 !important;
 }
 .eye-text{
@@ -331,7 +334,8 @@ form {
 }
 
 .dashboard {
-    padding-top: 40px;
+    padding-top: 102px;
+    height: 100vh;
     /* max-width: 100%; */
      background-color: #ECF1F3;
    
@@ -341,11 +345,7 @@ form {
     background-color: #fff;
 }
 
-/* .content-area{
-    background-color: #ECF1F3;
-   
-    
-} */
+
 .btn-color{
     background-color: #35C0E4 !important;
     border: none !important;
@@ -404,16 +404,19 @@ form {
 .pagination{
     width: 140px;
    position: absolute;
-    right: 0;
+    right: 38px;
 
 }
 
 .chat{
     background-color: white;
 }
+.patient{
+    margin-top: 90px;
+}
 
 .patient div:hover{
-    background-color:hsl(156, 60%, 83%);
+  
     border-radius: 10px;
 }
 

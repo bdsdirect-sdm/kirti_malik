@@ -23,7 +23,7 @@ const MDdoctors = () => {
 
 
   return (
-    <div className='ms-4 me-3'>
+    <div className=' dashboard ms-4 me-3'>
       <div className='table-heading d-flex justify-content-between align-items-center'>
         <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Doctors List</h2>
        

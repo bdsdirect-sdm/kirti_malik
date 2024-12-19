@@ -79,7 +79,7 @@ const Patient = () => {
   }
 
   return (
-    <div className='ms-5 me-5'>
+    <div className=' dashboard ms-4 me-2 '>
       <div className='table-heading ms-2 d-flex justify-content-between align-items-center'>
         <h2 className="pt-4 pb-2" style={{ fontSize: '24px' }}>Referred Patients</h2>
       </div>

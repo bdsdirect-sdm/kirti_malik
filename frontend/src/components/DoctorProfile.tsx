@@ -79,7 +79,7 @@ const DoctorProfile: React.FC = () => {
   });
 
   return (
-    <div>
+    <div className='dashboard'>
       <h2 style={{ fontSize: '18px', fontWeight: 'bold' }} className='mt-6 ms-4 pt-4'>Profile</h2>
 
       <div className='doctor-info mb-10 mt-5  me-4 ms-3 position-relative'>

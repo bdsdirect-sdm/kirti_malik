@@ -53,7 +53,7 @@ const Layout = () => {
 
   return (
     <Container fluid className="layout-container">
-      {/* Navbar */}
+    
       <Navbar fixed="top" className="layout-navbar d-flex justify-content-between align-items-center px-3">
         <Navbar.Brand className="d-flex align-items-center navbar-brand">
           <img src="/logo.png" alt="Eye Refer Logo" height="50" width="50" className="me-2" />
@@ -94,9 +94,9 @@ const Layout = () => {
         </div>
       </Navbar>
 
-      <div className="custom-margin-top d-flex mt-6">
-        {/* Sidebar (Fixed) */}
-        <Col className="sidebar position-fixed h-100" style={{ top: '96px', left: '0', width: '200px', zIndex: '999' }}>
+      <div className="custom-margin-top d-flex ">
+      
+        <Col className="sidebar position-fixed h-100" style={{ top: '90px', left: '0', width: '200px', zIndex: '999' }}>
           <div className="sidebar-content pt-4">
             <ul className="list-unstyled">
               <li>
@@ -141,8 +141,8 @@ const Layout = () => {
           </div>
         </Col>
 
-        {/* Content Area (Scrollable) */}
-        <Col sm={10} className="content-area" style={{ marginLeft: '220px', overflowY: 'auto', height: 'calc(100vh - 60px)' }}>
+     
+        <Col sm={10} className="content-area ms-auto ps-4 " style={{top:'90px'}} >
           <Outlet />
         </Col>
       </div>

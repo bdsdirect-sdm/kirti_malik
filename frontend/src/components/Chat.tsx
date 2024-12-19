@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Col, ListGroup, Navbar, Row } from 'react-bootstrap';
+import { Col, Container, ListGroup, Navbar, Row } from 'react-bootstrap';
 import socket from '../socket';
 import config from '../config';
 
@@ -90,7 +90,7 @@ const Chat: React.FC = () => {
   }, [patients, search]); 
 
   return (
-    <Row className="mt-0 bg-white border-top ms-1">
+    <Container className=" dashboard d-flex ">
       <Col md={3} className="p-3 border-end chat-sidebar">
         <div className="input-group">
           <div className="form-outline" data-mdb-input-init>
@@ -113,7 +113,7 @@ const Chat: React.FC = () => {
         </div>
       </Col>
 
-      <Col md={9} className="d-flex flex-column h-90">
+      <Col md={9} className='main-chat'>
         <Navbar variant="dark" className="mb-3 border-bottom position-static">
           <Navbar.Brand style={{ color: 'black', fontSize: '50' }}>
             {selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : 'Select a patient'}
@@ -143,7 +143,7 @@ const Chat: React.FC = () => {
           </ListGroup>
         </div>
 
-        <div className="border-top chatFooter mb-5 d-flex" style={{ position: 'sticky', bottom: '0', backgroundColor: 'white', zIndex: '1' }}>
+        <div className="border-top chatFooter  d-flex" >
           <input
             type="text"
             placeholder="Type a message..."
@@ -153,7 +153,7 @@ const Chat: React.FC = () => {
           <button className='btn btn-outline-success ms-3' onClick={sendMessage}>Send Message</button>
         </div>
       </Col>
-    </Row>
+    </Container>
   );
 };
 
